@@ -17,30 +17,80 @@
     margin-left:15px;
     margin-top:20px;
 }
-
-.navbar-container .second-section{
+.user-section{
+    height:100%;
+}
+.userName-box{
     width:50px;
     height:50px;
     border-radius:50%;
     background-color:#2666CF;
     color:#FFFFFF;
     margin-right:20px;
-}
-.navbar-container .second-section h3{
-    text-align:center;
     margin-top:10px;
-    font-size:25px;
+    display:flex;
     cursor:pointer;
 }
-.navbar-container .second-section .user-popup{
-    background:#FFFFFF;
-    margin-top:15px;
-    width:150px;
-    height:100px;
-    margin-right:100px;
-    border:1px solid black;
-    color:black;
+.userName-box h3{
+    margin:auto;
+    text-align:center;
+    font-size:25px;
 }
-.navbar-container .second-section .user-popup ul li{
-    list-style: none;
+.user-section:hover .user-popup{
+    visibility: visible;
+    opacity: 1;
+    top:8%;
+}
+.user-popup{
+    visibility: hidden;
+    opacity:0;
+    width:150px;
+    height:120px;
+    background: #FFFFFF;
+    border-radius:8px;
+    box-shadow:rgba(0,0,0,0.16) 5px 5px 5px 5px;
+    position:absolute;
+    top:-30px;
+    right:70px;
+    transition: top 300ms,opacity 500ms;
+}
+.user-popup ul li{
+    display:flex;
+    list-style-type: none;
+    padding:5px;
+    margin-left:10px;
+    margin-top:5px;
+}
+.user-popup ul li p{
+    font-weight:600;
+    margin-left:6px;
+    margin-top:5px;
+}
+.no-user-buttons{
+    margin-right:30px;
+    margin-top:20px;
+}
+.no-user-buttons .no-user-login{
+    font-size:18px;
+    background:transparent;
+    margin-right:10px;
+    border:none;
+    cursor: pointer;
+}
+.no-user-buttons .no-user-login:hover{
+    color: #2666CF;
+}
+.no-user-buttons .no-user-register{
+    padding:10px 30px;
+    border-radius:5px;
+    text-align:center;
+    font-size:17px;
+    background-color: #2666CF;
+    border:none;
+    color:white;
+    cursor: pointer;
+}
+.no-user-buttons .no-user-register:hover{
+    transform:translateY(-6px);
+    transition:transform 300ms;
 }

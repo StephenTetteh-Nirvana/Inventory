@@ -1,4 +1,10 @@
-import { LayoutDashboard,ShoppingBasket,Warehouse,UsersRound,FileText,MessageCircleWarning,ArrowLeft,ArrowRight } from "lucide-react"
+import { LayoutDashboard,
+  ShoppingBasket,
+  Warehouse,UsersRound,
+  FileText,
+  MessageCircleWarning,
+  ArrowLeft,
+  ArrowRight } from "lucide-react"
 import { useState } from "react"
 import "../css/Sidebar.css"
 
