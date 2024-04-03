@@ -1,9 +1,12 @@
+import { useState } from "react"
 import { Link } from "react-router-dom"
 import { User,Settings,LogOut  } from "lucide-react"
 import Logo from "../images/logo.png"
 import "../css/Navbar.css"
 
-const Navbar = ({user}) => {
+
+const Navbar = () => {
+  const [user,setUser] = useState(false)
   return (
     <div className="navbar-container">
       <div className="first-section">
