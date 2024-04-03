@@ -1,0 +1,41 @@
+.sidebar{
+    width:80px;
+    background:#333;
+    height:100vh;
+    position:fixed;
+    color:white;
+    transition: width 300ms;
+}
+.open {
+    width:200px;
+}
+.toggle-btn-container{
+    width:100%;
+    margin-top:20px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.toggle-btn{
+   padding:10px;
+   background: white;
+   border:none;
+   color:black;
+   cursor: pointer;
+   border-radius: 50%;
+}
+.sidebar ul{
+    margin-top:10px;
+}
+.sidebar ul li{
+    display:flex;
+    padding:20px;
+    text-decoration: none;
+    border-bottom:1px solid grey;
+}
+.sidebar ul li p{
+    font-weight:600;
+    margin-left:10px;
+    font-size:20px;
+    cursor:pointer;
+}

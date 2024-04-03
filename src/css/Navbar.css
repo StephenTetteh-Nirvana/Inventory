@@ -32,3 +32,15 @@
     font-size:25px;
     cursor:pointer;
 }
+.navbar-container .second-section .user-popup{
+    background:#FFFFFF;
+    margin-top:15px;
+    width:150px;
+    height:100px;
+    margin-right:100px;
+    border:1px solid black;
+    color:black;
+}
+.navbar-container .second-section .user-popup ul li{
+    list-style: none;
+}
