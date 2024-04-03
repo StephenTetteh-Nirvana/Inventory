@@ -1,0 +1,34 @@
+.navbar-container{
+    width:100%;
+    display:flex;
+    justify-content: space-between;
+    padding:10px 0px;
+    border-bottom:1px solid grey;
+}
+.navbar-container .first-section{
+    display:flex;
+    margin-left:20px;
+}
+.navbar-container .first-section img{
+    width:60px;
+    height:60px;
+}
+.navbar-container .first-section h3{
+    margin-left:15px;
+    margin-top:20px;
+}
+
+.navbar-container .second-section{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    background-color:#2666CF;
+    color:#FFFFFF;
+    margin-right:20px;
+}
+.navbar-container .second-section h3{
+    text-align:center;
+    margin-top:10px;
+    font-size:25px;
+    cursor:pointer;
+}
