@@ -1,0 +1,39 @@
+.products-table{
+    margin-top:50px;
+    width:97%;
+    height:70vh;
+    background-color: #FFFFFF;
+    box-shadow:rgba(0,0,0,0.14) 3px 3px 3px 3px;
+}
+.search-and-add-section{
+    display:flex;
+    justify-content: space-between;
+    padding:10px 20px;
+}
+.add-product,.products-search-section{
+    position: relative;
+}
+.products-search-section span{
+    position: absolute;
+    padding-left: 8px;
+    top:5px;
+}
+.products-search-section input{
+    padding:10px 30px;
+    padding-left: 40px;
+}
+
+.add-product button{
+    padding:10px 30px;
+    background-color: orangered;
+    color:white;
+    border:none;
+    cursor: pointer;
+    text-align:center;
+}
+.add-product span{
+    position:absolute;
+    left:5px;
+    top:5px;
+    padding-right:6px;
+}
