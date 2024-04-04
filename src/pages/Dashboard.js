@@ -6,7 +6,7 @@ import ProductsTable from "../components/ProductsTable.jsx";
 import { useState } from "react";
 
 const Dashboard = () => {
-    const [width,setWidth] = useState(true)
+    const [width,setWidth] = useState(false)
 
     return(
         <div>

@@ -23,10 +23,10 @@
 .register-input-section{
     margin-top:10px;
 }
-.register-input-section .register-email-section,.register-input-section .register-password-section{
+.register-userName-section,.register-role-section,.register-email-section,.register-password-section{
     width:100%;
 }
-.register-userName-section input,.register-email-section input,.register-password-section input{
+.register-userName-section input,.register-role-section select,.register-email-section input,.register-password-section input{
   padding:9px;
   border:1px solid grey;
   outline:none;
@@ -34,7 +34,10 @@
   width:90%;
   margin-top:6px;
 }
-.register-email-section,.register-password-section{
+.register-role-section select{
+  width:97%;
+}
+.register-email-section,.register-role-section,.register-password-section{
     margin-top:8px;
 }
 .register-form-container button{

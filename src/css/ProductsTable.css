@@ -13,7 +13,7 @@
 .add-product,.products-search-section{
     position: relative;
 }
-.products-search-section span{
+.products-search-section .search-span{
     position: absolute;
     padding-left: 8px;
     top:5px;
@@ -21,6 +21,24 @@
 .products-search-section input{
     padding:10px 30px;
     padding-left: 40px;
+    font-weight:600;
+}
+.products-search-section select{
+    padding:10px 28px;
+    padding-left: 10px;
+    font-weight:600;
+    margin-left:10px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius:5px;
+    border:2px solid black;
+    position:relative;
+}
+.products-search-section .select-span{
+    position: absolute;
+    top:8px;
+    left:93%;
 }
 
 .add-product button{

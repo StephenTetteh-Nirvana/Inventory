@@ -14,6 +14,14 @@ const Register = () => {
             <input type="text" placeholder="UserName"/>
           </div>
 
+          <div className="register-role-section">
+            <label>Role</label><br/>
+           <select>
+            <option>Admin</option>
+            <option>Regular</option>
+           </select>
+          </div>
+
           <div className="register-email-section">
             <label>Email</label><br/>
             <input type="text" placeholder="Email"/>
