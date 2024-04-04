@@ -1,0 +1,29 @@
+.inventoryStats-container{
+    margin-top:20px;
+}
+.all-stats-container{
+    display:grid;
+    grid-template-columns: repeat(4,1fr);
+}
+.first-inventory-stat,.second-inventory-stat,.third-inventory-stat,.fourth-inventory-stat{
+    display:flex;
+    justify-content: space-around;
+    border-radius:5px;
+    width:250px;
+    padding:10px 0px;
+    background-color: #333;
+    color:white;
+    box-shadow:rgba(0,0,0,0.14) 3px 3px 3px 3px;
+}
+.second-inventory-stat{
+    background-color: green;
+    color:white;
+}
+.third-inventory-stat{
+    background-color: red;
+    color:white;
+}
+.fourth-inventory-stat{
+    background-color: #2666CF;
+    color:white;
+}

@@ -2,12 +2,15 @@
     width:80px;
     background:#333;
     height:100vh;
-    position:fixed;
+    position:absolute;
     color:white;
     transition: width 300ms;
 }
 .open {
     width:200px;
+}
+.active{
+    color:#2666CF;
 }
 .toggle-btn-container{
     width:100%;

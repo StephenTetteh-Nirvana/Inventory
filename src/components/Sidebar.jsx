@@ -1,18 +1,22 @@
 import { LayoutDashboard,
   ShoppingBasket,
-  Warehouse,UsersRound,
+  Warehouse,
+  UsersRound,
   FileText,
   MessageCircleWarning,
   ArrowLeft,
   ArrowRight } from "lucide-react"
 import { useState } from "react"
+import { useLocation } from "react-router-dom"
 import "../css/Sidebar.css"
 
-const Sidebar = () => {
-    const [isOpen, setIsOpen] = useState(false);
+const Sidebar = ({width,setWidth}) => {
+    const [isOpen, setIsOpen] = useState(true);
+    const location = useLocation()
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
+    setWidth(!width)
   };
 
   return (
@@ -24,28 +28,28 @@ const Sidebar = () => {
     </div>
      
       <ul>
-        <li>
+        <li className={`${location.pathname === "/dashboard" ? "active" : ''}`}>
           <LayoutDashboard />
           {isOpen && <p>Dashboard</p>}
         </li>
         
-        <li>
+        <li className={`${location.pathname === "/warehouse" ? "active" : ''}`}>
           <Warehouse />
           {isOpen && <p>Warehouse</p>}
         </li>
-        <li>
+        <li className={`${location.pathname === "/products" ? "active" : ''}`}>
           <ShoppingBasket />
           {isOpen && <p>Products</p>}
         </li>
-        <li>
+        <li className={`${location.pathname === "/orders" ? "active" : ''}`}>
           <FileText />
           {isOpen && <p>Orders</p>}
         </li>
-        <li>
+        <li className={`${location.pathname === "/users" ? "active" : ''}`}>
           <UsersRound />
           {isOpen && <p>Users</p>}
         </li>
-        <li>
+        <li className={`${location.pathname === "/report" ? "active" : ''}`}>
           <MessageCircleWarning />
           {isOpen && <p>Report</p>}
         </li>

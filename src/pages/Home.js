@@ -2,7 +2,6 @@ import "../css/Home.css"
 import noUser from "../images/no-user.png"
 import Navbar from "../components/Navbar.jsx";
 
-
 const Home = () => {
 
     return(
@@ -10,7 +9,7 @@ const Home = () => {
             <Navbar />
             <div className="homePage-container">
               <img src={noUser} alt="Logo"/>
-              <h2>Nothing To See Here</h2>
+              <h2>Nothing To See Here...</h2>
             </div>
         </div>
     )

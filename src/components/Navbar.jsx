@@ -6,7 +6,7 @@ import "../css/Navbar.css"
 
 
 const Navbar = () => {
-  const [user,setUser] = useState(false)
+  const [user,setUser] = useState(true)
   return (
     <div className="navbar-container">
       <div className="first-section">

@@ -5,7 +5,7 @@ import Logo from "../images/logo.png"
 const Login = () => {
   return (
     <div className="login-container">
-      <form className="login-form-container">
+      <form className="login-form-container" onSubmit={(e)=>e.preventDefault()}>
         <Link to="/"><div className="login-logo-box"><img src={Logo}/></div></Link>
         <h4>LOGIN FORM</h4>
         <div className="login-input-section">

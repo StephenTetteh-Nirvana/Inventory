@@ -5,7 +5,7 @@ import Logo from "../images/logo.png"
 const Register = () => {
   return (
     <div className="register-container">
-      <form className="register-form-container">
+      <form className="register-form-container" onSubmit={(e)=>e.preventDefault()}>
         <Link to="/"><div className="register-logo-box"><img src={Logo}/></div></Link>
         <h4>REGISTER FORM</h4>
         <div className="register-input-section">
