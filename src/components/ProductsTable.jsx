@@ -17,7 +17,7 @@ const ProductsTable = () => {
     <div className="products-table">
          <div className="search-and-add-section">
             <div className="products-search-section">
-            <span className="search-span"><Search /></span><input type="text" placeholder="Search..."/>
+            <span className="search-span"><Search /></span><input type="text" placeholder="Search by name..."/>
             <select onClick={toggleSelect}>
               <option>All</option>
               <option>Available</option>

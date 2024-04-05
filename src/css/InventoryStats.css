@@ -5,6 +5,10 @@
     display:grid;
     grid-template-columns: repeat(4,1fr);
 }
+.all-stats-container > div:hover{
+    transform: translateY(-10px);
+    transition: transform 300ms;
+}
 .first-inventory-stat,.second-inventory-stat,.third-inventory-stat,.fourth-inventory-stat{
     display:flex;
     justify-content: space-around;

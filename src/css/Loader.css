@@ -1,0 +1,32 @@
+.loading-btn-container{
+    width: 100%;
+    margin-top:7px;
+}
+.loading-btn{
+    padding:6px;
+    width: 100%;
+    background-color: #2666CF;
+    color:white;
+    font-size:18px;
+    border:none;
+    opacity:0.8;
+    cursor:pointer;
+}
+
+.loading-btn div {
+    width: 20px;
+    height: 20px;
+    margin: auto;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    animation: loading 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: #fff transparent transparent transparent;
+  }
+  @keyframes loading{
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }

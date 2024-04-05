@@ -33,6 +33,7 @@
   appearance: none;
   width:90%;
   margin-top:6px;
+  font-weight:600;
 }
 .register-role-section select{
   width:97%;
@@ -49,6 +50,13 @@
     cursor:pointer;
     margin-top:10px;
     text-align:center;
+}
+.error-msg{
+    text-align:center;
+    color:red;
+    font-weight:600;
+    margin-top:6px;
+    font-size:15px;
 }
 .register-form-container p{
     margin-top:20px;
