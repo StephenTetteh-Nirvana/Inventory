@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword } from "firebase/auth"
-import { collection,doc,setDoc } from "firebase/firestore"
+import { collection,doc,serverTimestamp,setDoc } from "firebase/firestore"
 import { auth,db } from "../firebase"
 import { Link,useNavigate } from "react-router-dom"
 import "../css/Register.css"
@@ -28,7 +28,8 @@ const Register = () => {
           await setDoc(userDoc,{
             userName:userName,
             role:role,
-            password:password
+            password:password,
+            createdAt:serverTimestamp()
           })
           navigate("/login")
       }
