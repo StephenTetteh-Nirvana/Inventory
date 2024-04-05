@@ -5,14 +5,21 @@ import User from "../images/brothers.png"
 import Sidebar from "../components/Sidebar"
 import Navbar from "../components/Navbar"
 import UserImg from "../components/UserImg"
+import AddNewUser from "../components/AddNewUser"
+
 
 
 const Users = () => {
     const [width,setWidth] = useState(false)
     const [fullImg,setFullImg] = useState(false)
+    const [newUser,setnewUser] = useState(false)
 
     const toggleFullImage = () =>{
         setFullImg(true)
+    }
+
+    const AddNewUserPopup = () => {
+        setnewUser(true)
     }
 
     return(
@@ -23,7 +30,7 @@ const Users = () => {
             <div className={`content ${width ? "add-width" : ""}`}>
                 <div className="users-header-section">
                 <h1>Users</h1>
-                <button>Add New</button>
+                <button onClick={AddNewUserPopup}>Add New</button>
                 </div>
                 <div className="users-table-header">
                     <ul>
@@ -60,6 +67,7 @@ const Users = () => {
                 
             </div>
         </div>
+        {newUser && <AddNewUser setnewUser={setnewUser}/>}
         {fullImg && <UserImg setFullImg={setFullImg}/>}
     </div>
      )
