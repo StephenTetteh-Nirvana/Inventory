@@ -1,4 +1,4 @@
-import { Plus,Search,ChevronUp,ChevronDown, Pointer } from "lucide-react"
+import { Plus,Search,ChevronUp,ChevronDown } from "lucide-react"
 import "../css/ProductsTable.css"
 import { useState } from "react"
 import AddNewProduct from "./AddNewProduct"

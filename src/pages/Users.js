@@ -1,12 +1,19 @@
 import { useState } from "react"
+import { Eye,Pencil,Trash } from "lucide-react"
 import "../css/Users.css"
 import User from "../images/brothers.png"
 import Sidebar from "../components/Sidebar"
 import Navbar from "../components/Navbar"
+import UserImg from "../components/UserImg"
 
 
 const Users = () => {
     const [width,setWidth] = useState(false)
+    const [fullImg,setFullImg] = useState(false)
+
+    const toggleFullImage = () =>{
+        setFullImg(true)
+    }
 
     return(
     <div>
@@ -44,13 +51,16 @@ const Users = () => {
                             <p>Fruits Warehouse</p>
                         </div>
                         <div>
-                            <p>View/Delete</p>
+                        <Eye size={20} onClick={toggleFullImage} style={{color:"green",cursor:"pointer"}} />
+                        <Pencil size={20} style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
+                        <Trash size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}} />
                         </div>
                     </div>
                 </div>
                 
             </div>
         </div>
+        {fullImg && <UserImg setFullImg={setFullImg}/>}
     </div>
      )
 }
