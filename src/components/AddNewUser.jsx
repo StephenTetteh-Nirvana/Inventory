@@ -20,6 +20,13 @@ const AddNewUser = ({setnewUser}) => {
              <label>Username</label><br/>
              <input type="text" placeholder="Username"/>
             </div> 
+            <div className="new-role">
+             <label>Role</label><br/>
+             <select>
+                <option>Admin</option>
+                <option>Regular</option>
+             </select>
+            </div> 
             <div className="new-email">
              <label>Email</label><br/>
              <input type="text" placeholder="Email"/>
