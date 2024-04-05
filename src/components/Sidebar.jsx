@@ -5,9 +5,10 @@ import { LayoutDashboard,
   FileText,
   MessageCircleWarning,
   ArrowLeft,
-  ArrowRight } from "lucide-react"
+  ArrowRight, 
+  ListOrdered} from "lucide-react"
 import { useState } from "react"
-import { useLocation } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import "../css/Sidebar.css"
 
 const Sidebar = ({width,setWidth}) => {
@@ -28,14 +29,21 @@ const Sidebar = ({width,setWidth}) => {
     </div>
      
       <ul>
+        <Link style={{color:"white",textDecoration:"none"}}  to="/dashboard">
         <li className={`${location.pathname === "/dashboard" ? "active" : ''}`}>
           <LayoutDashboard />
           {isOpen && <p>Dashboard</p>}
         </li>
-        
+        </Link>
+        <Link style={{color:"white",textDecoration:"none"}} to="/warehouse">
         <li className={`${location.pathname === "/warehouse" ? "active" : ''}`}>
           <Warehouse />
           {isOpen && <p>Warehouse</p>}
+        </li>
+        </Link>
+        <li className={`${location.pathname === "/orders" ? "active" : ''}`}>
+          <ListOrdered />
+          {isOpen && <p>Orders</p>}
         </li>
         <li className={`${location.pathname === "/users" ? "active" : ''}`}>
           <UsersRound />

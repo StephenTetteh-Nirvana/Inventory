@@ -1,0 +1,36 @@
+.warehouse-buttons{
+    margin-top: 10px;
+}
+.add-warehouse-btn{
+    background: #333;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    cursor: pointer;
+}
+.warehouse-buttons input{
+    margin-left:10px;
+    padding:8px 30px;
+    border:2px solid black;
+    border-radius:3px;
+}
+.warehouse-container{
+    width: 98%;
+    border:1px solid grey;
+    margin-top:10px;
+    padding:10px;
+}
+.warehouse-container ul{
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+}
+.warehouse-container ul li{
+    list-style: none;
+    font-weight:600;
+}
+.warehouse{
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    padding-top:10px;
+    font-weight:500;
+}

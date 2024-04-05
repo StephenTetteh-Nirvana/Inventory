@@ -9,16 +9,16 @@ const Dashboard = () => {
     const [width,setWidth] = useState(false)
 
     return(
-        <div>
-         <Navbar/>
-         <div className="main-container">
-         <Sidebar width={width} setWidth={setWidth}/>
-         <div className={`content ${width ? "add-width" : ""}`}>
-         <InventoryStats />
-         <ProductsTable />
-         </div>
+    <div>
+        <Navbar/>
+        <div className="main-container">
+            <Sidebar width={width} setWidth={setWidth}/>
+            <div className={`content ${width ? "add-width" : ""}`}>
+            <InventoryStats />
+            <ProductsTable />
+            </div>
         </div>
-        </div>
+    </div>
      )
 }
 
