@@ -45,10 +45,12 @@ const Sidebar = ({width,setWidth}) => {
           <ListOrdered />
           {isOpen && <p>Orders</p>}
         </li>
+        <Link style={{color:"white",textDecoration:"none"}} to="/users">
         <li className={`${location.pathname === "/users" ? "active" : ''}`}>
           <UsersRound />
           {isOpen && <p>Users</p>}
         </li>
+        </Link>
         <li className={`${location.pathname === "/report" ? "active" : ''}`}>
           <MessageCircleWarning />
           {isOpen && <p>Report</p>}

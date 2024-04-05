@@ -8,6 +8,7 @@ import Login from "./pages/Login.js"
 import Register from "./pages/Register.js"
 import Dashboard from "./pages/Dashboard.js"
 import Warehouse from "./pages/Warehouse.js"
+import Users from "./pages/Users.js"
 import NotFound from "./pages/NotFound.js"
 import { useEffect } from "react"
 
@@ -37,6 +38,8 @@ return(
 
         <Route path="/dashboard" element={<Dashboard/>}></Route>
         <Route path="/warehouse" element={<Warehouse/>}></Route>
+        <Route path="/users" element={<Users/>}></Route>
+
       </Routes>
   </div>
 )

@@ -25,18 +25,23 @@ const Navbar = () => {
   useEffect(()=>{
     const fetchUser = async() =>{
     onAuthStateChanged(auth,async(user)=>{
-    if(user){
-    setUser(true)
-    const colRef = doc(db,"users",user.uid)
-    const docRef = await getDoc(colRef)
-
-    if(docRef.exists){
-    setDisplayName(docRef.data().userName[0])
-    }
-    }else{
-      console.log("no-user")
-      setUser(false)
-    }
+      try{
+        if(user){
+          setUser(true)
+          const colRef = doc(db,"users",user.uid)
+          const docRef = await getDoc(colRef)
+      
+          if(docRef.exists){
+          setDisplayName(docRef.data().userName[0])
+          }
+          }else{
+            console.log("no-user")
+            setUser(false)
+          }
+      }catch(error){
+        console.log(error)
+      }
+    
     })
     }
     fetchUser()
