@@ -21,9 +21,15 @@
     margin-top:20px;
 }
 .userImg-section img{
-    width:80px;
-    height:80px;
+    width:100px;
+    height:100px;
     margin-left:100px;
+    border-radius:50%;
+    background-position:center;
+}
+.progress{
+    font-weight:600;
+    margin-top:10px;
 }
 .new-user-inputs{
     width:100%;
