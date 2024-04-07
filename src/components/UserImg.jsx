@@ -10,10 +10,9 @@ const UserImg = ({setFullImg,FoundUser}) => {
     
   return (
     <div className="userImg-container">
-      {console.log(FoundUser.Img)}
        <div className="userImg-box">
         <div onClick={closeImgPopUp} className="closeImg-popUp">
-          <X style={{cursor:"pointer"}}  size={30}/>
+          <X style={{cursor:"pointer",color:"white"}}  size={30}/>
         </div>
           <img src={FoundUser.Img ? FoundUser.Img : User} alt="User"/>
       </div>
