@@ -16,6 +16,7 @@ const Navbar = () => {
     await signOut(auth)
     .then(()=>{
       alert("You Logged Out")
+      setLoggedIn(false)
     }).catch((error)=>{
       alert(error)
     })

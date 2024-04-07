@@ -17,7 +17,10 @@
     border:1px solid grey;
     padding:15px 0px;
     padding-left:10px;
+    padding-right:10px;
     margin-top:20px;
+    min-height:30vh;
+    position: relative;
 }
 .users-table-header ul{
     display:grid;
@@ -29,11 +32,18 @@
     list-style: none;
     text-align:center;
 }
+.loading-users{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+}
 .user{
     display:grid;
     grid-template-columns: repeat(6,1fr);
-    margin-top:15px;
+    margin-top:10px;
     padding-bottom:8px;
+    border-bottom:1px solid grey;
 }
 .user > div{
     text-align: center;
@@ -41,6 +51,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
 .user-image-box{
     width:60px;
     height:60px;
@@ -53,4 +64,7 @@
     height: 100%;
     background-position:center;
     border-radius:50%;
+}
+.user > div p{
+    font-weight:500;
 }

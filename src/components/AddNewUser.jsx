@@ -4,13 +4,16 @@ import { createUserWithEmailAndPassword } from "firebase/auth"
 import { serverTimestamp } from "firebase/firestore"
 import { setDoc, collection,doc } from "firebase/firestore"
 import { storage,db, auth } from "../firebase"
-import {Images} from "lucide-react"
-import noUser from "../images/no-user-Img.png"
-import "../css/AddNewUser.css"
+import {ChevronLeft, Images } from "lucide-react"
 import { useNavigate } from "react-router-dom"
+import noUser from "../images/no-user-Img.png"
+import Loader from "../components/Loader"
+import "../css/AddNewUser.css"
+
 
 const AddNewUser = () => {
     const [file,setFile] = useState("")
+    const [loading,setLoading] = useState(false)
     const [required,setRequired] = useState("")
     const [userNameRequired,setUserNameRequired] = useState("")
     const [Emailrequired,setEmailRequired] = useState("")
@@ -83,17 +86,20 @@ const AddNewUser = () => {
                 setEmailRequired("Fill The Form")
                 setPasswordRequired("Fill The Form")
             }else{
+            setLoading(true)
             await createUserWithEmailAndPassword(auth,email,password)
             const user = auth.currentUser;
             const colRef = collection(db,"users")
             const userDoc = doc(colRef,user.uid)
             await setDoc(userDoc,{
                 userName:username,
+                email:email,
                 role:role,
                 password:password,
                 Img:imageUrl,
                 createdAt:serverTimestamp()
           })
+          navigate("/users")
           }
           }catch(error){
             console.log(error)
@@ -123,7 +129,11 @@ const AddNewUser = () => {
   return (
     <div className="add-user-container">
         <form onSubmit={(e)=>e.preventDefault()}>
-        <h2>Add New User</h2>
+        <div className="form-title">
+           <span><ChevronLeft onClick={closeuserPopup} style={{cursor:"pointer"}} size={30}/></span>
+           <h2>Add New User</h2>
+        </div>
+        
         <div className="userImg-section">
             <img src={imageUrl ? imageUrl : noUser} alt="noUser" />
             <label htmlFor="file-upload"><Images style={{cursor:"pointer"}} /></label>
@@ -184,16 +194,14 @@ const AddNewUser = () => {
             {<p className="error-msg">{errMsg}</p>}
         </div>
         <div className="new-user-buttons">
-        <button disabled={disabled} 
-        className={`new-user-saveBtn ${disabled ? "disabled" : ""}`}
-        style={disabled ? {cursor:"not-allowed"} : {}} 
-        onClick={()=>RegiserNewUser()}>Save</button>
-
-        <button disabled={disabled}
-        onClick={closeuserPopup} 
-        style={disabled ? {cursor:"not-allowed"} : {}}
-        className={`new-user-cancelBtn ${disabled ? "disabled" : ""}`}>Cancel</button>
-
+            { loading ? (
+                <Loader/>
+            ) : (
+                <button disabled={disabled} 
+                className={`new-user-saveBtn ${disabled ? "disabled" : ""}`}
+                style={disabled ? {cursor:"not-allowed"} : {}} 
+                onClick={()=>RegiserNewUser()}>Save</button>
+            )}
         </div>
         </form>
     </div>

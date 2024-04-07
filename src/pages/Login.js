@@ -19,6 +19,7 @@ const Login = () => {
       setLoading(true)
       await signInWithEmailAndPassword(auth,email,password);
       const user = auth.currentUser;
+      localStorage.setItem("user",JSON.stringify(user))
       console.log(user.uid)
       navigate("/dashboard")
     }catch(error){

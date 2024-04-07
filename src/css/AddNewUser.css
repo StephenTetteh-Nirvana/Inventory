@@ -16,6 +16,12 @@
     border-radius:5px;
     padding:20px;
 }
+.form-title{
+    display:flex;
+}
+.form-title h2{
+    margin-left:10px;
+}
 .userImg-section{
     width:100%;
     margin-top:20px;
@@ -71,15 +77,8 @@
 .new-user-saveBtn{
     background-color: #2666CF;
     color:white;
-    padding:8px 20px;
-    border:none;
-    cursor:pointer;
-}
-.new-user-cancelBtn{
-    background-color: red;
-    color:white;
-    padding:8px 20px;
-    margin-left:10px;
+    padding:8px;
+    width:100%;
     border:none;
     cursor:pointer;
 }

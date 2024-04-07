@@ -27,6 +27,8 @@ const Register = () => {
           const userDoc = doc(colRef,user.uid)
           await setDoc(userDoc,{
             userName:userName,
+            email:email,
+            warehouse:"Not Assigned",
             role:role,
             password:password,
             createdAt:serverTimestamp()
