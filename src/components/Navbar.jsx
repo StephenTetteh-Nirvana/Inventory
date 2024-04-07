@@ -11,6 +11,7 @@ import { signOut } from "firebase/auth"
 const Navbar = () => {
   const [displayName,setDisplayName] = useState("")
   const [LoggedIn,setLoggedIn] = useState(null)
+  const [userImg,setUserImg] = useState(null)
 
   const logOut = async() =>{
     await signOut(auth)
@@ -35,6 +36,7 @@ const Navbar = () => {
       
           if(docRef.exists){
           setDisplayName(docRef.data().userName[0])
+          setUserImg(docRef.data().Img)
           }
           }else{
             console.log("no-user")
@@ -57,9 +59,18 @@ const Navbar = () => {
         {
           LoggedIn ? (
             <div className="user-section">
-              <div className="userName-box">
-              <h3>{displayName}</h3>  
-              </div>
+               {userImg ? (
+                  <div className="userImgProfile">
+                    <img src={userImg} alt="User Profile"/>
+                  </div>
+               ) : (
+                <div className="userName-box">
+                <h3>{displayName}</h3>  
+                </div>
+               ) 
+
+               }
+             
               
               <div className="user-popup">
                 <ul>
