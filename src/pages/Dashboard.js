@@ -1,4 +1,3 @@
-import "../css/Dashboard.css"
 import Sidebar from "../components/Sidebar.jsx";
 import Navbar from "../components/Navbar.jsx";
 import InventoryStats from "../components/InventoryStats.jsx";

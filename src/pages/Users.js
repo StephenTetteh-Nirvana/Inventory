@@ -1,26 +1,44 @@
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import { Eye,Pencil,Trash } from "lucide-react"
+import { onSnapshot,collection } from "firebase/firestore";
+import { db,auth } from "../firebase";
 import "../css/Users.css"
 import User from "../images/brothers.png"
 import Sidebar from "../components/Sidebar"
 import Navbar from "../components/Navbar"
 import UserImg from "../components/UserImg"
-import AddNewUser from "../components/AddNewUser"
+import { Link } from "react-router-dom";
 
 
 
 const Users = () => {
+    const [data,setData] = useState([])
     const [width,setWidth] = useState(false)
     const [fullImg,setFullImg] = useState(false)
-    const [newUser,setnewUser] = useState(false)
 
     const toggleFullImage = () =>{
         setFullImg(true)
     }
 
-    const AddNewUserPopup = () => {
-        setnewUser(true)
+    const fetchUsers = async () =>{
+        const unsub = onSnapshot(collection(db, "users"), (snapshot) => {
+            try {
+                let list = [];
+                snapshot.forEach((doc) => {
+                    list.push({id:doc.id, ...doc.data()});
+                })
+                setData([...list]);
+                console.log(list)
+            } catch (error) {
+                console.error("Error fetching data: ", error);
+            }
+            return unsub;
+        })
     }
+
+    useEffect(()=>{
+        fetchUsers()
+    },[])
 
     return(
     <div>
@@ -30,7 +48,9 @@ const Users = () => {
             <div className={`content ${width ? "add-width" : ""}`}>
                 <div className="users-header-section">
                 <h1>Users</h1>
-                <button onClick={AddNewUserPopup}>Add New</button>
+                <Link to="/users/new">
+                <button>Add New</button>
+                </Link> 
                 </div>
                 <div className="users-table-header">
                     <ul>
@@ -67,7 +87,6 @@ const Users = () => {
                 
             </div>
         </div>
-        {newUser && <AddNewUser setnewUser={setnewUser}/>}
         {fullImg && <UserImg setFullImg={setFullImg}/>}
     </div>
      )

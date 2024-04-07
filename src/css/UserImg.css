@@ -30,23 +30,8 @@
     height:100%;
 }
 .closeImg-popUp{
-    border:2px solid black;
     margin-left:100%;
     width:30px;
     height:30px;
     border-radius:5px;
-}
-.disable-popUp{
-  animation: hideFullImg 0.7s forwards;
-}
-
-@keyframes hideFullImg{
-    0%{
-       top:20%;
-       transform: scale(0.8); 
-    }
-    100%{
-        top:-20%;
-        transform: scale(0);
-    }
 }

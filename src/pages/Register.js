@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword } from "firebase/auth"
-import { collection,doc,serverTimestamp,setDoc } from "firebase/firestore"
+import { collection,doc,setDoc,serverTimestamp } from "firebase/firestore"
 import { auth,db } from "../firebase"
 import { Link,useNavigate } from "react-router-dom"
 import "../css/Register.css"
@@ -31,6 +31,7 @@ const Register = () => {
             password:password,
             createdAt:serverTimestamp()
           })
+          localStorage.setItem("user",JSON.stringify(user))
           navigate("/login")
       }
       }catch(error){

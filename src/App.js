@@ -11,6 +11,7 @@ import Warehouse from "./pages/Warehouse.js"
 import Users from "./pages/Users.js"
 import NotFound from "./pages/NotFound.js"
 import { useEffect } from "react"
+import NewUser from "./pages/NewUser.js"
 
 
 function App() {
@@ -39,7 +40,7 @@ return(
         <Route path="/dashboard" element={<Dashboard/>}></Route>
         <Route path="/warehouse" element={<Warehouse/>}></Route>
         <Route path="/users" element={<Users/>}></Route>
-
+        <Route path="/users/new" element={<NewUser/>}/>
       </Routes>
   </div>
 )

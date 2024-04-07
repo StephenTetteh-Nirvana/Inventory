@@ -5,12 +5,12 @@ import Logo from "../images/logo.png"
 import "../css/Navbar.css"
 import { auth, db } from "../firebase"
 import { doc,getDoc } from "firebase/firestore"
-import { onAuthStateChanged, signOut } from "firebase/auth"
+import { signOut } from "firebase/auth"
 
 
 const Navbar = () => {
   const [displayName,setDisplayName] = useState("")
-  const [user,setUser] = useState(null)
+  const [LoggedIn,setLoggedIn] = useState(null)
 
   const logOut = async() =>{
     await signOut(auth)
@@ -24,11 +24,12 @@ const Navbar = () => {
 
   useEffect(()=>{
     const fetchUser = async() =>{
-    onAuthStateChanged(auth,async(user)=>{
       try{
-        if(user){
-          setUser(true)
-          const colRef = doc(db,"users",user.uid)
+        const userData = localStorage.getItem("user") !== null ? JSON.parse(localStorage.getItem("user")) : []
+        if(userData){
+          console.log("logged in")
+          setLoggedIn(true)
+          const colRef = doc(db,"users",userData.uid)
           const docRef = await getDoc(colRef)
       
           if(docRef.exists){
@@ -36,13 +37,11 @@ const Navbar = () => {
           }
           }else{
             console.log("no-user")
-            setUser(false)
+            setLoggedIn(false)
           }
       }catch(error){
         console.log(error)
       }
-    
-    })
     }
     fetchUser()
   },[])
@@ -55,7 +54,7 @@ const Navbar = () => {
       </div>
       <div className="second-section">
         {
-          user ? (
+          LoggedIn ? (
             <div className="user-section">
               <div className="userName-box">
               <h3>{displayName}</h3>  

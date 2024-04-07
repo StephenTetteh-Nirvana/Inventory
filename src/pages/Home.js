@@ -1,17 +1,21 @@
 import "../css/Home.css"
-import noUser from "../images/no-user.png"
 import Navbar from "../components/Navbar.jsx";
+import { useState } from "react";
+import Sidebar from "../components/Sidebar.jsx";
 
 const Home = () => {
+    const [width,setWidth] = useState(false)
 
     return(
-        <div className="no-user-display">
-            <Navbar />
-            <div className="homePage-container">
-              <img src={noUser} alt="Logo"/>
-              <h2>Nothing To See Here...</h2>
+        <div>
+        <Navbar/>
+        <div className="main-container">
+            <Sidebar width={width} setWidth={setWidth}/>
+            <div className={`content ${width ? "add-width" : ""}`}>
+            <h1>Home</h1>
             </div>
         </div>
+    </div>
     )
 }
 
