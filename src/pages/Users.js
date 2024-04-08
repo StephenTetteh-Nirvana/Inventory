@@ -1,10 +1,9 @@
 import { useState,useEffect } from "react"
 import { Eye,Pencil,Trash } from "lucide-react"
 import { onSnapshot,collection, getDocs } from "firebase/firestore";
-import { auth,db } from "../firebase";
-import { deleteUser } from "firebase/auth";
+import { db } from "../firebase";
 import { Link } from "react-router-dom";
-import User from "../images\/no-user-Img.png"
+import User from "../images/no-user-Img.png"
 import Sidebar from "../components/Sidebar"
 import Navbar from "../components/Navbar"
 import UserImg from "../components/UserImg"
@@ -29,6 +28,7 @@ const Users = () => {
     const toggleUserEdit = (id)=>{
         const foundUser = data.find((p)=>p.id === id)
         setUserEdit(foundUser)
+        console.log(userEdit)
     }
 
     const fetchUsers = async () =>{

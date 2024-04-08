@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { db } from "../firebase"
 import {collection,onSnapshot,doc } from "firebase/firestore"
+import AllProducts from "./AllProducts"
 
 const ProductsTable = () => {
   const list = localStorage.getItem("products") !== null ? (JSON.parse(localStorage.getItem("products"))) : []
@@ -19,7 +20,6 @@ const ProductsTable = () => {
   const checkProductState = (value) =>{
     console.log(value)
     setProductState(value)
-
   }
   const fetchProducts = async() =>{
     const colRef = collection(db,"Products")
@@ -38,7 +38,6 @@ const ProductsTable = () => {
 
   useEffect(()=>{
     fetchProducts()
-    setData(list)
   },[])
   return (
     <div className="products-table">
@@ -64,19 +63,13 @@ const ProductsTable = () => {
             <li>Product</li>
             <li>Price</li>
             <li>Quantity</li>
-            <li>Total Value</li>
+            <li>Warehouse</li>
             <li>Actions</li>
           </ul>
          </div>
          {ProductState === "All" ? (
           <div>
-            { data.length > 0 ? (
-                data.map((product,index)=>(
-                  <div key={index}>
-                    <h3>{product.product}</h3>
-                  </div>
-                ))
-              ) : (
+            { data.length > 0 ? (<AllProducts data={data}/>) : (
                 <h1>No Products</h1>
               )
             }
