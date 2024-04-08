@@ -4,6 +4,7 @@ import { collection, doc , getDoc, updateDoc } from "firebase/firestore"
 import { db } from "../firebase.js"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
+import { Loader } from "lucide-react"
 
 const AddNewProduct = () => { 
   const [warehouse,setWarehouse] = useState("")
@@ -12,6 +13,7 @@ const AddNewProduct = () => {
   const [quantity,setQuantity] = useState("")
   const [errMsg,setErrMsg] = useState("")
   const [disabled,setdisabled] = useState(true)
+  const [loading,setLoading] = useState(false)
   const navigate = useNavigate()
 
     const closePopup = () =>{
@@ -22,6 +24,7 @@ const AddNewProduct = () => {
       if(product === "" || price === "" || quantity === "") {
        console.log("fill the form")
       }else{
+       setLoading(true)
        const colRef = collection(db,"Products")
        const productArrayReference = doc(colRef,"Product Arrays")
        const productArrays = await getDoc(productArrayReference)
@@ -30,6 +33,7 @@ const AddNewProduct = () => {
         const productArray = productArrays.data().products || []
           try{
             const newProduct = {
+              id:Math.round(Math.random()*1000),
               product:product,
               price:price,
               quantity:quantity
@@ -40,10 +44,12 @@ const AddNewProduct = () => {
               toast.success("New Product Added",{
                 autoClose:1500
               })
+              setLoading(false)
               setTimeout(()=>{
                 navigate(-1)
               },1000)
           }catch(error){
+            setLoading(false)
             setErrMsg("Bad Connection! Check Your Network")
             console.log("error")
           }
@@ -105,7 +111,9 @@ const AddNewProduct = () => {
           </div>
           <h3>{errMsg}</h3>
           <div className="new-product-buttons">
-            <button disabled={disabled} style={disabled ? {cursor:"not-allowed",opacity:"0.7" } : {}} className="save-product-btn" onClick={addNewProduct}>Save</button>
+            <button disabled={disabled} 
+            style={disabled ? {cursor:"not-allowed",opacity:"0.7" } : {}} 
+            className="save-product-btn" onClick={addNewProduct}>{loading ? <Loader size={18}/> : "Save" }</button>
             <button className="cancel-product-btn" onClick={closePopup}>Cancel</button>
           </div>
        </form>

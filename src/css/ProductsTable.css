@@ -55,3 +55,21 @@
     top:5px;
     padding-right:6px;
 }
+.products-header{
+    width:100%;
+    margin-top:20px;
+}
+.products-header ul{
+    display:grid;
+    grid-template-columns: repeat(6,1fr);
+    padding:10px;
+    border-top:2px solid black;
+    border-bottom:2px solid black;
+}
+.products-header ul li{
+    list-style: none;
+    font-weight:600;
+}
+.products-header ul li:first-child{
+    margin-left:20px;
+}
