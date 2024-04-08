@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import { serverTimestamp } from "firebase/firestore"
@@ -14,17 +14,13 @@ import "../css/AddNewUser.css"
 const AddNewUser = () => {
     const [file,setFile] = useState("")
     const [loading,setLoading] = useState(false)
-    const [required,setRequired] = useState("")
-    const [userNameRequired,setUserNameRequired] = useState("")
-    const [Emailrequired,setEmailRequired] = useState("")
-    const [Passwordrequired,setPasswordRequired] = useState("")
 
     const [username,setUsername] = useState("")
     const [email,setEmail] = useState("")
     const [role,setRole] = useState("Admin")
     const [password,setPassword] = useState("")
     const [errMsg,setErrMsg] = useState("")
-    const [disabled,setdisabled] = useState(null)
+    const [disabled,setdisabled] = useState(true)
     const [imageUrl,setImageUrl] = useState(null)
     const [Trackprogress,setTrackProgress] = useState(null)
 
@@ -39,6 +35,7 @@ const AddNewUser = () => {
             const selectedFile = e.target.files[0]
             setFile(selectedFile)
             uploadUserImg(selectedFile)
+            console.log(file)
         }catch(error){
             console.log("upload cancelled")
         }
@@ -71,7 +68,6 @@ const AddNewUser = () => {
         () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             setTrackProgress(null)
-            setdisabled(false)
             console.log('File available at', downloadURL);
             setImageUrl(downloadURL)
             });
@@ -81,11 +77,9 @@ const AddNewUser = () => {
     const RegiserNewUser = async() =>{
         try{
             if(email === "" && password === ""){
-                setRequired("Fill The Form")
-                setUserNameRequired("Fill The Form")
-                setEmailRequired("Fill The Form")
-                setPasswordRequired("Fill The Form")
+                setdisabled(true)
             }else{
+            setdisabled(true)
             setLoading(true)
             await createUserWithEmailAndPassword(auth,email,password)
             const user = auth.currentUser;
@@ -124,6 +118,14 @@ const AddNewUser = () => {
         } 
     }
 
+    useEffect(()=>{
+         if(password !== ""){
+            setdisabled(false)
+         }else{
+            setdisabled(true)
+         }
+    },[password])
+
     
 
   return (
@@ -149,11 +151,7 @@ const AddNewUser = () => {
              <label>Username</label><br/>
              <input type="text" 
              placeholder="Username" 
-             onChange={(e)=>{
-                setUsername(e.target.value)
-                username === "" ? setUserNameRequired("Fill The Form") : setUserNameRequired("")
-             }}
-             className={`${userNameRequired !== "" ? "required" : ""}`}
+             onChange={(e)=>setUsername(e.target.value)}
              required
              />
             </div> 
@@ -169,11 +167,7 @@ const AddNewUser = () => {
              <input type="text" 
              placeholder="Email"
              value={email}
-             onChange={(e)=>{
-                setEmail(e.target.value)
-                email === "" ? setEmailRequired("Fill The Form") : setEmailRequired("")
-             }}
-             className={`${Emailrequired !== ""  ? "required" : ""}`}
+             onChange={(e)=>setEmail(e.target.value)}
              required
              />
             </div> 
@@ -182,15 +176,10 @@ const AddNewUser = () => {
              <input type="password" 
              placeholder="Password"
              value={password}
-             onChange={(e)=>{
-                setPassword(e.target.value)
-                password === "" ? setPasswordRequired("Fill The Form") : setPasswordRequired("")
-             }}
-             className={`${Passwordrequired !== ""  ? "required" : ""}`}
+             onChange={(e)=>setPassword(e.target.value)}
              required
              />
-            </div>
-            {username === "" || email === "" || password === "" ? <p className="error-msg">{required}</p> : ""} 
+            </div> 
             {<p className="error-msg">{errMsg}</p>}
         </div>
         <div className="new-user-buttons">

@@ -1,13 +1,15 @@
 import { useState,useEffect } from "react"
 import { Eye,Pencil,Trash } from "lucide-react"
-import { onSnapshot,collection } from "firebase/firestore";
-import { db } from "../firebase";
-import "../css/Users.css"
+import { onSnapshot,collection, getDocs } from "firebase/firestore";
+import { auth,db } from "../firebase";
+import { deleteUser } from "firebase/auth";
+import { Link } from "react-router-dom";
 import User from "../images\/no-user-Img.png"
 import Sidebar from "../components/Sidebar"
 import Navbar from "../components/Navbar"
 import UserImg from "../components/UserImg"
-import { Link } from "react-router-dom";
+import "../css/Users.css"
+
 
 
 
@@ -43,6 +45,17 @@ const Users = () => {
             }
             return unsub;
         })
+    }
+
+    const deleteUserDoc = async(userId) => {
+         const colRef = collection(db,"users")
+         const docRef = await getDocs(colRef)
+
+         docRef.forEach((doc)=>{
+            if(doc.id === userId){
+                console.log(userId)
+            } 
+         })
     }
 
     useEffect(()=>{
@@ -102,7 +115,7 @@ const Users = () => {
                             style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
                           </Link>
                           
-                          <Trash size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}} />
+                          <Trash onClick={()=>deleteUserDoc(user.id)} size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}} />
                           </div>
                       </div>
                     ))
