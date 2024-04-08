@@ -5,10 +5,10 @@ import { Link } from "react-router-dom"
 import { db } from "../firebase"
 import {collection,onSnapshot,doc } from "firebase/firestore"
 import AllProducts from "./AllProducts"
+import OutOfStock from "./OutOfStock"
 
 const ProductsTable = () => {
-  const list = localStorage.getItem("products") !== null ? (JSON.parse(localStorage.getItem("products"))) : []
-
+  
   const [data,setData] = useState([])
   const [ProductState,setProductState] = useState("All")
   const [dropDown,setdropDown] = useState(false)
@@ -70,14 +70,15 @@ const ProductsTable = () => {
          {ProductState === "All" ? (
           <div>
             { data.length > 0 ? (<AllProducts data={data}/>) : (
-                <h1>No Products</h1>
+                <h3>No products yet!!!</h3>
               )
             }
             
           </div>
          ) 
          : 
-         ("Out Of Stock")}
+         (<OutOfStock/>)
+         }
     </div>
   )
 }

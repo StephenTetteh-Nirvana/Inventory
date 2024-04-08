@@ -96,6 +96,7 @@ const AddNewUser = () => {
           navigate("/users")
           }
           }catch(error){
+            setLoading(false)
             console.log(error)
             if (error.code === 'auth/invalid-email') {
             setErrMsg("Invalid Email")

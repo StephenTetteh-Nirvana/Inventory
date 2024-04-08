@@ -1,7 +1,19 @@
+import { useState } from "react"
 import { Eye,Pencil,Trash } from "lucide-react"
 import "../css/AllProducts.css"
+import ViewProduct from "./ViewProduct"
 
 const AllProducts = ({data}) => {
+    const [viewProduct,setViewProduct] = useState(false)
+    const [product,setProduct] = useState(null)
+
+    const toggleProductDetails = (id) =>{
+        const foundProduct = data.find((p)=>p.id === id)
+        if(foundProduct){
+            setViewProduct(true)
+            setProduct(foundProduct)
+        }
+    }
   return (
     <div>
         {data.map((product,index)=>(
@@ -27,13 +39,14 @@ const AllProducts = ({data}) => {
                     </div>
 
                     <div>
-                    <Eye size={20} style={{color:"green",cursor:"pointer"}}/>
+                    <Eye onClick={()=>toggleProductDetails(product.id)} size={20} style={{color:"green",cursor:"pointer"}}/>
                     <Pencil  size={20} style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
                     <Trash size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}} />
                     </div>
                   </div>
                 ))
         }
+        {viewProduct && <ViewProduct product={product} setViewProduct={setViewProduct}/>}
     </div>
   )
 }
