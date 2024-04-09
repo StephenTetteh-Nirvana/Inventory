@@ -43,7 +43,7 @@ const AddNewUser = () => {
     }
 
     const uploadUserImg = (file) =>{
-        const id = Math.round(Math.random * 100)
+        const id = String(Math.round(Math.random * 100))
         const storageRef = ref(storage, 'images/' + file.name + id);
         const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -76,10 +76,6 @@ const AddNewUser = () => {
 
     const RegiserNewUser = async() =>{
         try{
-            if(email === "" && password === ""){
-                setdisabled(true)
-            }else{
-            setdisabled(true)
             setLoading(true)
             await createUserWithEmailAndPassword(auth,email,password)
             const user = auth.currentUser;
@@ -94,7 +90,6 @@ const AddNewUser = () => {
                 createdAt:serverTimestamp()
           })
           navigate("/users")
-          }
           }catch(error){
             setLoading(false)
             console.log(error)
@@ -120,12 +115,12 @@ const AddNewUser = () => {
     }
 
     useEffect(()=>{
-         if(password !== ""){
+         if(username !== "" && email !== "" && password !== ""){
             setdisabled(false)
          }else{
             setdisabled(true)
          }
-    },[password])
+    },[username,email,password])
 
     
 
@@ -188,8 +183,8 @@ const AddNewUser = () => {
                 <Loader/>
             ) : (
                 <button disabled={disabled} 
-                className={`new-user-saveBtn ${disabled ? "disabled" : ""}`}
-                style={disabled ? {cursor:"not-allowed"} : {}} 
+                className="new-user-saveBtn"
+                style={disabled ? {cursor:"not-allowed",opacity:"0.7"} : {}} 
                 onClick={()=>RegiserNewUser()}>Save</button>
             )}
         </div>

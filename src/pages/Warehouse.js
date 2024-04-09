@@ -1,16 +1,11 @@
 import { useState } from "react";
 import Sidebar from "../components/Sidebar.jsx";
 import Navbar from "../components/Navbar.jsx";
-import AddNewWarehouse from "../components/AddNewWarehouse.jsx";
 import "../css/Warehouse.css"
+import { Link } from "react-router-dom";
 
 const Warehouse = () => {
     const [width,setWidth] = useState(false)
-    const [warehousePopup,setWarehousePopup] = useState(false)
-
-    const toggleWarehousePopup = () =>{
-        setWarehousePopup(true)
-    }
 
   return (
     <div>
@@ -19,7 +14,9 @@ const Warehouse = () => {
             <Sidebar width={width} setWidth={setWidth}/>
             <div className={`content ${width ? "add-width" : ""}`}>
                 <div className="warehouse-buttons">
-                <button onClick={toggleWarehousePopup} className="add-warehouse-btn">Add Warehouse</button>
+                  <Link to="/warehouse/add">
+                    <button className="add-warehouse-btn">Add Warehouse</button>  
+                  </Link>
                 <input type="text" placeholder="Search by name..."/> 
                 </div>
               <div className="warehouse-container">
@@ -40,7 +37,6 @@ const Warehouse = () => {
               </div>
             </div>
         </div>
-        {warehousePopup && <AddNewWarehouse warehousePopup={warehousePopup} setWarehousePopup={setWarehousePopup}/>}
     </div>
   )
 }

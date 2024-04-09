@@ -16,7 +16,6 @@ const EditProductDetails = () => {
   const [price,setPrice] = useState('')
   const [quantity,setQuantity] = useState('')
   const [loading,setLoading] = useState(false)
-  const {errMsg,setErrMsg} = useState("")
   const navigate = useNavigate()
 
    const closeuserPopup = () =>{
@@ -25,6 +24,7 @@ const EditProductDetails = () => {
 
   const editProduct = async() =>{
     try{
+    if(productName !== "" && price !== "" && quantity !== "") {
     setLoading(true)
     const colRef = collection(db,"Products")
     const productArrayReference = doc(colRef,"Product Arrays")
@@ -41,7 +41,6 @@ const EditProductDetails = () => {
             price:price,
             quantity:quantity
           }
-          console.log(updatedProduct)
           return updatedProduct;
         }else{
           return product;
@@ -55,6 +54,12 @@ const EditProductDetails = () => {
     })
     setLoading(false)
     navigate(-1)
+  }
+  }else{
+    toast.error("Fill The Form",{
+      autoClose:1000,
+      position:"top-center"
+    })
   }
     }catch(error){
       setLoading(false)
@@ -91,7 +96,6 @@ const EditProductDetails = () => {
           <label>Quantity</label><br/>
           <input type="text" value={quantity} onChange={(e)=>setQuantity(e.target.value)}/>
         </div>
-        {<p className="error-msg">{errMsg}</p>}
     </div>
     <div className="edit-product-buttons">
         { loading ? (

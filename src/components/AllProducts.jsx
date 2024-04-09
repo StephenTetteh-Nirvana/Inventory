@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Eye,Pencil,Trash } from "lucide-react"
 import { Link } from "react-router-dom"
 import { updateDoc,doc,collection,getDoc } from "firebase/firestore"
@@ -9,6 +9,7 @@ import ViewProduct from "./ViewProduct"
 
 const AllProducts = () => {
     const products = localStorage.getItem("products") !== null ? JSON.parse(localStorage.getItem("products")) : []
+    const [data,setData] = useState("")
     const [viewProduct,setViewProduct] = useState(false)
     const [product,setProduct] = useState(null)
 
@@ -29,6 +30,10 @@ const AllProducts = () => {
         products:foundProduct
       })
     }
+
+    
+    
+
   return (
     <div>
         {products.map((product,index)=>(

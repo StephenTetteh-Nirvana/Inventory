@@ -42,7 +42,7 @@ const AddNewProduct = () => {
   }
 
     const uploadProductImg = (file) =>{
-      const id = Math.round(Math.random * 100)
+      const id = String(Math.round(Math.random * 100))
       const storageRef = ref(storage, 'products/' + file.name + id);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -75,9 +75,6 @@ const AddNewProduct = () => {
   }
     
     const addNewProduct =  async() =>{
-      if(product === "" || price === "" || quantity === "") {
-       console.log("fill the form")
-      }else{
        try{
        setLoading(true)
        const colRef = collection(db,"Products")
@@ -105,22 +102,21 @@ const AddNewProduct = () => {
               })
               setLoading(false)
               navigate(-1)
-          }
+            }
        }catch(error){
         console.log("error")
         setLoading(false)
         setErrMsg("Bad Connection! Check Your Network")
       }
-      }
     }
 
     useEffect(()=>{
-       if(quantity !== "" ){
+       if(product !== "" && price !== "" && quantity !== ""){
         setdisabled(false)
        }else{
         setdisabled(true)
        }
-    },[quantity])
+    },[product,price,quantity])
 
 
   return (
