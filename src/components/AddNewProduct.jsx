@@ -89,7 +89,7 @@ const AddNewProduct = () => {
         const date = new Date().toDateString();
         const time = new Date().toLocaleTimeString()
             const newProduct = {
-              id:Math.round(Math.random()*1000),
+              id:String(Math.round(Math.random()*1000)),
               product:product,
               price:price,
               quantity:quantity,
@@ -104,9 +104,7 @@ const AddNewProduct = () => {
                 autoClose:1500
               })
               setLoading(false)
-              setTimeout(()=>{
-                navigate(-1)
-              },1000)
+              navigate(-1)
           }
        }catch(error){
         console.log("error")
@@ -119,7 +117,6 @@ const AddNewProduct = () => {
     useEffect(()=>{
        if(quantity !== "" ){
         setdisabled(false)
-        console.log("changed")
        }else{
         setdisabled(true)
        }
@@ -173,7 +170,7 @@ const AddNewProduct = () => {
                 <input type="number" 
                  value={quantity}
                  onChange={(e)=>{setQuantity(e.target.value)}}
-                placeholder="Quantity..."
+                 placeholder="Quantity..."
                 required
                 />
             </div>

@@ -15,7 +15,6 @@ const ProductsTable = () => {
 
   const toggleSelect = () =>{
     setdropDown(!dropDown)
-   
   }
   const checkProductState = (value) =>{
     console.log(value)
@@ -25,7 +24,7 @@ const ProductsTable = () => {
     const colRef = collection(db,"Products")
     const unsub = onSnapshot(doc(colRef,"Product Arrays"), (snapshot) => {
       try {
-        let list = null;
+        let list = [];
         list = snapshot.data().products;
         setData(list);
         localStorage.setItem("products",JSON.stringify(list))
@@ -69,7 +68,7 @@ const ProductsTable = () => {
          </div>
          {ProductState === "All" ? (
           <div>
-            { data.length > 0 ? (<AllProducts data={data}/>) : (
+            { data.length > 0 ? (<AllProducts/>) : (
                 <h3>No products yet!!!</h3>
               )
             }

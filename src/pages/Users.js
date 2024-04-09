@@ -16,19 +16,12 @@ const Users = () => {
     const [data,setData] = useState([])
     const [width,setWidth] = useState(false)
     const [fullImg,setFullImg] = useState(false)
-    const [userEdit,setUserEdit] = useState(null)
     const [FoundUser,setFoundUser] = useState(null)
 
     const toggleFullImage = (id) =>{
         setFullImg(true)
         const foundUser = data.find((p)=>p.id === id)
         setFoundUser(foundUser)
-    }
-
-    const toggleUserEdit = (id)=>{
-        const foundUser = data.find((p)=>p.id === id)
-        setUserEdit(foundUser)
-        console.log(userEdit)
     }
 
     const fetchUsers = async () =>{
@@ -107,14 +100,9 @@ const Users = () => {
                           size={20} 
                           onClick={()=>toggleFullImage(user.id)} 
                           style={{color:"green",cursor:"pointer"}}/>
-
                           <Link to={`/users/edit/${user.id}`}>
-                          <Pencil 
-                            onClick={()=>toggleUserEdit(user.id)} 
-                            size={20} 
-                            style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
+                          <Pencil style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
                           </Link>
-                          
                           <Trash onClick={()=>deleteUserDoc(user.id)} size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}} />
                           </div>
                       </div>

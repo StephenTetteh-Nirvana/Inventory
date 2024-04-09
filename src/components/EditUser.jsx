@@ -3,6 +3,7 @@ import {useNavigate,useParams} from "react-router-dom"
 import { ChevronLeft } from "lucide-react"
 import { collection,doc,getDoc, updateDoc } from "firebase/firestore"
 import { db } from "../firebase"
+import { toast } from "react-toastify"
 import Loader from "../components/Loader.jsx"
 import "../css/EditUser.css"
 
@@ -21,7 +22,7 @@ const EditUser = () => {
    const navigate = useNavigate()
 
    const closeuserPopup = () =>{
-      navigate("/users")
+      navigate(-1)
   }
 
   const editUser = async() =>{
@@ -36,7 +37,10 @@ const EditUser = () => {
             role:role
          })
          setLoading(false)
-         navigate("/users")
+         toast.success("User Updated",{
+            autoClose:1000
+          })
+         navigate(-1)
       }catch(error){
          setErrMsg("Bad Connection! Check Your Network")
          console.log(error)
@@ -58,10 +62,10 @@ const EditUser = () => {
     </div>
     
     <div className="edit-user-inputs">
-    <div className="edit-username">
-             <label>Username</label><br/>
-             <input type="text" disabled value={username}/>
-            </div>
+         <div className="edit-username">
+            <label>Username</label><br/>
+            <input type="text" disabled value={username}/>
+         </div>
 
         <div className="edit-role">
          <label>Role</label><br/>

@@ -11,6 +11,7 @@ import Login from "./pages/Login.js"
 import Register from "./pages/Register.js"
 import Dashboard from "./pages/Dashboard.js"
 import NewProduct from "./pages/NewProduct.js"
+import EditProduct from "./pages/EditProduct.js"
 import Warehouse from "./pages/Warehouse.js"
 import Users from "./pages/Users.js"
 import NotFound from "./pages/NotFound.js"
@@ -44,6 +45,7 @@ return(
 
         <Route path="/dashboard" element={<Dashboard/>}></Route>
         <Route path="/dashboard/add" element={<NewProduct/>}></Route>
+        <Route path="/dashboard/editProduct/:id" element={<EditProduct/>}></Route>
         <Route path="/warehouse" element={<Warehouse/>}></Route>
         <Route path="/users" element={<Users/>}></Route>
         <Route path="/users/new" element={<NewUser/>}></Route>

@@ -1,22 +1,37 @@
 import { useState } from "react"
 import { Eye,Pencil,Trash } from "lucide-react"
+import { Link } from "react-router-dom"
+import { updateDoc,doc,collection,getDoc } from "firebase/firestore"
+import { db } from "../firebase"
 import "../css/AllProducts.css"
 import ViewProduct from "./ViewProduct"
 
-const AllProducts = ({data}) => {
+
+const AllProducts = () => {
+    const products = localStorage.getItem("products") !== null ? JSON.parse(localStorage.getItem("products")) : []
     const [viewProduct,setViewProduct] = useState(false)
     const [product,setProduct] = useState(null)
 
     const toggleProductDetails = (id) =>{
-        const foundProduct = data.find((p)=>p.id === id)
+        const foundProduct = products.find((p)=>p.id === id)
         if(foundProduct){
             setViewProduct(true)
             setProduct(foundProduct)
         }
     }
+
+    const deleteProduct = async(Id) =>{
+      const colRef = collection(db,"Products")
+      const productArrayReference = doc(colRef,"Product Arrays")
+
+      const foundProduct = products.filter((p)=>p.id !== Id)
+      await updateDoc(productArrayReference,{
+        products:foundProduct
+      })
+    }
   return (
     <div>
-        {data.map((product,index)=>(
+        {products.map((product,index)=>(
                   <div className="product" key={index}>
                     <div>
                     <p>{product.id}</p>
@@ -40,8 +55,10 @@ const AllProducts = ({data}) => {
 
                     <div>
                     <Eye onClick={()=>toggleProductDetails(product.id)} size={20} style={{color:"green",cursor:"pointer"}}/>
-                    <Pencil  size={20} style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
-                    <Trash size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}} />
+                    <Link to={`/dashboard/editProduct/${product.id}`}>
+                    <Pencil size={20} style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
+                    </Link>
+                    <Trash onClick={()=>deleteProduct(product.id)} size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}} />
                     </div>
                   </div>
                 ))
