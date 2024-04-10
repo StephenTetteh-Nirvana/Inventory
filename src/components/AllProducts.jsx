@@ -25,6 +25,7 @@ const AllProducts = () => {
       const productArrayReference = doc(colRef,"Product Arrays")
 
       const foundProduct = products.filter((p)=>p.id !== Id)
+      localStorage.setItem("products",JSON.stringify(foundProduct))
       await updateDoc(productArrayReference,{
         products:foundProduct
       })

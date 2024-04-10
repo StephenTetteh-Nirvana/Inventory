@@ -1,7 +1,10 @@
 import { ShoppingBasket,Warehouse,CircleDollarSign,ShoppingCart } from "lucide-react"
 import "../css/InventoryStats.css"
+// import { useEffect, useState } from "react"
 
 const InventoryStats = () => {
+  //  const productData = localStorage.getItem("products") !== null ? JSON.parse(localStorage.getItem("products")) : []
+
   return (
     <div className="inventoryStats-container">
       <div className="all-stats-container">
@@ -9,7 +12,7 @@ const InventoryStats = () => {
             <ShoppingBasket size={50}/>
             <div>
              <h3>Products</h3>
-             <h2>150</h2>
+             <h2>90</h2>
             </div>
         </div>
         <div className="second-inventory-stat">

@@ -16,6 +16,7 @@ const EditProductDetails = () => {
   const [price,setPrice] = useState('')
   const [quantity,setQuantity] = useState('')
   const [loading,setLoading] = useState(false)
+  const [disabled,setdisabled] = useState(false)
   const navigate = useNavigate()
 
    const closeuserPopup = () =>{
@@ -66,7 +67,6 @@ const EditProductDetails = () => {
       console.log(error)
    }
 }
-  
 
   useEffect(()=>{
     setProductName(foundProduct.product)
@@ -83,13 +83,6 @@ const EditProductDetails = () => {
     </div>
     
     <div className="edit-product-inputs">
-    <div className="edit-product-warehouse">
-          <label>Select Warehouse</label><br/>
-          <select>
-            <option>WareHouse</option>
-          </select>
-        </div>
-
         <div className="edit-product-name">
           <label>Product</label><br/>
           <input type="text" value={productName} onChange={(e)=>setProductName(e.target.value)}/>
@@ -101,14 +94,18 @@ const EditProductDetails = () => {
         </div>
         <div className="edit-product-quantity">
           <label>Quantity</label><br/>
-          <input type="text" value={quantity} onChange={(e)=>setQuantity(e.target.value)}/>
+          <input type="text" value={quantity} onChange={(e)=>{
+            setQuantity(e.target.value)}
+            }/>
         </div>
     </div>
     <div className="edit-product-buttons">
         { loading ? (
             <Loader/>
         ) : (
-            <button className="edit-product-saveBtn" onClick={()=>editProduct()}>Save Changes</button>
+            <button disabled={disabled} 
+            style={disabled ? {cursor:"not-allowed",opacity:"0.7" } : {}} 
+            className="edit-product-saveBtn" onClick={()=>editProduct()}>Save Changes</button>
         )}
     </div>
     </form>

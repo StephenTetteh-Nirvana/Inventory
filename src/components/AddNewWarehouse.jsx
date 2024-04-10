@@ -57,7 +57,7 @@ const AddNewWarehouse = () => {
 
    const fetchLocalRegularUsers = () =>{
     try{
-      if(regularUsers !== null && manager === ""){
+      if(regularUsers.length > 0 && manager === ""){
         setManager(regularUsers[0].userName);
       }
     }catch(error){
@@ -82,9 +82,9 @@ const AddNewWarehouse = () => {
           <div className="warehouse-manager-section">
                 <label>Assign Manager</label><br/>
                 <select onChange={(e)=>setManager(e.target.value)}>
-                    {regularUsers !== null ? regularUsers.map((user)=>(
+                    {regularUsers.length > 0 ? regularUsers.map((user)=>(
                       <option key={user.email}>{user.userName}</option>
-                    )) : (<option>{manager}</option>)}
+                    )) : (<option>No Managers To Assign</option>)}
                 </select>
             </div>
             <div className="new-warehouse-name">

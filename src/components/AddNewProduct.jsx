@@ -15,7 +15,7 @@ const AddNewProduct = () => {
   const [imageUrl,setImageUrl] = useState(null)
   const [Trackprogress,setTrackProgress] = useState(null)
   
-  const [warehouses,setWarehouses] = useState("")
+  const [warehouse,setWarehouse] = useState("")
   const [product,setProduct] = useState("")
   const [price,setPrice] = useState("")
   const [quantity,setQuantity] = useState("")
@@ -93,7 +93,7 @@ const AddNewProduct = () => {
               price:price,
               quantity:quantity,
               Img:imageUrl,
-              warehouse:"Not Assigned",
+              warehouse:warehouse,
               createdAt:`${date} at ${time}`
            }
             await updateDoc(productArrayReference,{
@@ -115,10 +115,8 @@ const AddNewProduct = () => {
 
     const fetchWarehouses = () =>{
       try{
-        if(warehouseData !== null && warehouses === ""){
-          setWarehouses(warehouseData[0].name);
-        }else{
-          setWarehouses("No Warehouses Found!!!")
+        if(warehouseData.length > 0 && warehouse === ""){
+          setWarehouse(warehouseData[0].name);
         }
       }catch(error){
         console.log(error)
@@ -152,10 +150,10 @@ const AddNewProduct = () => {
           <div className="all-newProduct-inputs">
           <div className="warehouse-section">
                 <label>Select Warehouse</label><br/>
-                <select>
-                {warehouseData !== null ? warehouseData.map((warehouse)=>(
+                <select onChange={(e)=>setWarehouse(e.target.value)}>
+                {warehouseData.length > 0 ? warehouseData.map((warehouse)=>(
                       <option key={warehouse.id}>{warehouse.name}</option>
-                    )) : (<option>{manager}</option>)}
+                    )) : (<option>No warehouse has this product!!!</option>)}
                 </select>
             </div>
             <div className="new-product-name">
