@@ -10,10 +10,12 @@ import noUser from "../images/camera-off.png"
 
 
 const AddNewProduct = () => {
+  const warehouseData= localStorage.getItem("warehouses") !== null ? JSON.parse(localStorage.getItem("warehouses")) : []
   const [file,setFile] = useState("")
   const [imageUrl,setImageUrl] = useState(null)
   const [Trackprogress,setTrackProgress] = useState(null)
   
+  const [warehouses,setWarehouses] = useState("")
   const [product,setProduct] = useState("")
   const [price,setPrice] = useState("")
   const [quantity,setQuantity] = useState("")
@@ -111,7 +113,20 @@ const AddNewProduct = () => {
       }
     }
 
+    const fetchWarehouses = () =>{
+      try{
+        if(warehouseData !== null && warehouses === ""){
+          setWarehouses(warehouseData[0].name);
+        }else{
+          setWarehouses("No Warehouses Found!!!")
+        }
+      }catch(error){
+        console.log(error)
+      }
+    }
+
     useEffect(()=>{
+      fetchWarehouses()
        if(product !== "" && price !== "" && quantity !== ""){
         setdisabled(false)
        }else{
@@ -138,9 +153,9 @@ const AddNewProduct = () => {
           <div className="warehouse-section">
                 <label>Select Warehouse</label><br/>
                 <select>
-                    <option>Fruits Warehouse</option>
-                    <option>Electronics Warehouse</option>
-                    <option>Accessories Warehouse</option>
+                {warehouseData !== null ? warehouseData.map((warehouse)=>(
+                      <option key={warehouse.id}>{warehouse.name}</option>
+                    )) : (<option>{manager}</option>)}
                 </select>
             </div>
             <div className="new-product-name">
