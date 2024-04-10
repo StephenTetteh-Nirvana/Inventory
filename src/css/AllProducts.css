@@ -1,6 +1,6 @@
 .product{
     display: grid;
-    grid-template-columns: repeat(6,1fr);
+    grid-template-columns: repeat(5,1fr);
     padding:10px 0px;
     border-bottom:1px solid black;
 }
@@ -15,18 +15,4 @@
 }
 .product > div p{
     font-weight:500;
-}
-.warehouse-box button{
-    color:#2666CF;
-    border:2px solid #2666CF;
-    border-radius:6px;
-    padding:10px;
-    width:50%;
-    cursor: pointer;
-    background: transparent;
-}
-.warehouse-box button:hover{
-    background:#2666CF;
-    border:none;
-    color:white;
 }

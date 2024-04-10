@@ -83,6 +83,13 @@ const EditProductDetails = () => {
     </div>
     
     <div className="edit-product-inputs">
+    <div className="edit-product-warehouse">
+          <label>Select Warehouse</label><br/>
+          <select>
+            <option>WareHouse</option>
+          </select>
+        </div>
+
         <div className="edit-product-name">
           <label>Product</label><br/>
           <input type="text" value={productName} onChange={(e)=>setProductName(e.target.value)}/>

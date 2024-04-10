@@ -70,17 +70,27 @@ const AddNewWarehouse = () => {
      console.log(error)
     }
    }
+
+   const fetchRegularUsers = () =>{
+    try{
+      if(RegularUsers !== null && manager === ""){
+        setManager(RegularUsers[0].userName);
+      }else{
+        setManager("No Regular Users")
+      }
+    }catch(error){
+      console.log(error)
+    }
+  }
   
    useEffect(()=>{
      fetchUsers()
+     fetchRegularUsers()
      if (name !== "" && location !== "" && contact !== "" && capacity !== "") {
       setdisabled(false);
     } else {
       setdisabled(true);
     }
-    if(manager === "") {
-      setManager(RegularUsers[0].userName);
-  }
    },[name,location,contact,capacity,manager])
 
   return (
@@ -93,7 +103,7 @@ const AddNewWarehouse = () => {
                 <select onChange={(e)=>setManager(e.target.value)}>
                     {users ? users.map((user)=>(
                       <option key={user.email}>{user.userName}</option>
-                    )): (<option>Connect to the internet!!!</option>)}
+                    )) : (<option>Connect to the internet!!!</option>)}
                 </select>
             </div>
             <div className="new-warehouse-name">

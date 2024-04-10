@@ -68,7 +68,6 @@ const ProductsTable = () => {
             <li>Product</li>
             <li>Price</li>
             <li>Quantity</li>
-            <li>Warehouse</li>
             <li>Actions</li>
           </ul>
          </div>

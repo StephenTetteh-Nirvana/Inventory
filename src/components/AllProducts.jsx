@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Eye,Pencil,Trash } from "lucide-react"
 import { Link } from "react-router-dom"
 import { updateDoc,doc,collection,getDoc } from "firebase/firestore"
@@ -51,10 +51,6 @@ const AllProducts = () => {
 
                     <div>
                     <p>{product.quantity}</p>
-                    </div>
-
-                    <div className="warehouse-box">
-                    <button>Assign</button>
                     </div>
 
                     <div>

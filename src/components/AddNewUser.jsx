@@ -87,6 +87,7 @@ const AddNewUser = () => {
                 role:role,
                 password:password,
                 Img:imageUrl,
+                warehouse:"Not Assigned",
                 createdAt:serverTimestamp()
           })
           navigate("/users")

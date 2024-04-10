@@ -1,6 +1,6 @@
 import { useState,useEffect } from "react"
 import { Eye,Pencil,Trash } from "lucide-react"
-import { onSnapshot,collection, getDocs } from "firebase/firestore";
+import { onSnapshot,collection, getDocs, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { Link } from "react-router-dom";
 import User from "../images/no-user-Img.png"
@@ -8,6 +8,7 @@ import Sidebar from "../components/Sidebar"
 import Navbar from "../components/Navbar"
 import UserImg from "../components/UserImg"
 import "../css/Users.css"
+import { toast } from "react-toastify";
 
 
 
@@ -41,14 +42,15 @@ const Users = () => {
     }
 
     const deleteUserDoc = async(userId) => {
-         const colRef = collection(db,"users")
-         const docRef = await getDocs(colRef)
-
-         docRef.forEach((doc)=>{
-            if(doc.id === userId){
-                console.log(userId)
-            } 
-         })
+        try{
+            const colRef = collection(db,"users")
+            const docRef = doc(colRef,userId)
+            await deleteDoc(docRef)
+        }catch(error){
+            toast.error("Bad Internet Connection")
+            console.log(error)
+        }
+        
     }
 
     useEffect(()=>{

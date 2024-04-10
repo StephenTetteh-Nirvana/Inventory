@@ -6,6 +6,7 @@ import Sidebar from "../components/Sidebar.jsx";
 import Navbar from "../components/Navbar.jsx";
 import "../css/Warehouse.css"
 import { Eye, Trash } from "lucide-react";
+import { toast } from "react-toastify";
 
 const Warehouse = () => {
     const [width,setWidth] = useState(false)
@@ -28,9 +29,15 @@ const Warehouse = () => {
     }
 
     const deleteWarehouse = async(name) =>{
-      const colRef = collection(db,"Warehouses")
-      const allWarehouses = doc(colRef,name)
-      await deleteDoc(allWarehouses)
+      try{
+        const colRef = collection(db,"Warehouses")
+        const allWarehouses = doc(colRef,name)
+        await deleteDoc(allWarehouses)
+      }catch(error){
+        toast.error("Bad Internet Connection")
+        console.log(error)
+      }
+    
     }
 
     useEffect(()=>{

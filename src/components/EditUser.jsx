@@ -16,7 +16,6 @@ const EditUser = () => {
 
    const [username,setUsername] = useState("")
    const [role,setRole] = useState("")
-   const [warehouse,setWarehouse] = useState("Admin")
    const [errMsg,setErrMsg] = useState("")
 
    const navigate = useNavigate()
@@ -73,14 +72,6 @@ const EditUser = () => {
           onChange={(e)=>setRole(e.target.value)}>
             <option>Admin</option>
             <option>Regular</option>
-         </select>
-        </div> 
-        <div className="edit-warehouse">
-         <label>Assign WareHouse</label><br/>
-         <select value={warehouse}
-          onChange={(e)=>setWarehouse(e.target.value)}>
-            <option>WareHouse</option>
-            <option>WareHouse</option>
          </select>
         </div> 
         {<p className="error-msg">{errMsg}</p>}
