@@ -1,11 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { collection, onSnapshot } from "firebase/firestore";
+import { db } from "../firebase.js";
 import Sidebar from "../components/Sidebar.jsx";
 import Navbar from "../components/Navbar.jsx";
 import "../css/Warehouse.css"
-import { Link } from "react-router-dom";
+import { Eye, Trash } from "lucide-react";
 
 const Warehouse = () => {
     const [width,setWidth] = useState(false)
+    const [warehouse,setWarehouse] = useState([])
+
+    const fetchWarehouses = async()=>{
+      const unsub = onSnapshot(collection(db, "Warehouses"), (snapshot) => {
+        try {
+            let list = [];
+            snapshot.forEach((doc) => {
+                list.push(doc.data());
+            })
+            setWarehouse([...list]);
+            localStorage.setItem("warehouses",JSON.stringify(list))
+        } catch (error) {
+            console.error("Error fetching data: ", error);
+        }
+        return unsub;
+    })
+    }
+
+    const deleteWarehouse = (Id) =>{
+
+    }
+
+    useEffect(()=>{
+        fetchWarehouses()
+    },[])
 
   return (
     <div>
@@ -27,13 +55,24 @@ const Warehouse = () => {
                     <li>Capacity</li>
                     <li>Actions</li>
                 </ul>
-                <div className="warehouse">
-                    <div>Fruits Warehouse</div>
-                    <div>Tantra Hills</div>
-                    <div>0244642497</div>
-                    <div>400</div>
-                    <div>View/Delete</div>
-                </div>
+                  { warehouse.length > 0 ? (
+                    warehouse.map((warehouse,index)=>(
+                    <div key={index} className="warehouse">
+                    <div>{warehouse.name}</div>
+                    <div>{warehouse.location}</div>
+                    <div>{warehouse.contact}</div>
+                    <div>{warehouse.capacity}</div>
+                    <div>
+                      <Eye size={20} style={{color:"green",cursor:"pointer"}}/>
+                      <Trash size={20} onClick={deleteWarehouse()} style={{marginLeft:5,color:"red",cursor:"pointer"}}/>
+                    </div>
+                    </div>
+                    ))
+                  ) : (
+                    <div className="no-warehouses-box">
+                      <h3>No warehouses yet!!!</h3>
+                    </div>
+                  ) }
               </div>
             </div>
         </div>

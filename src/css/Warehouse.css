@@ -28,9 +28,17 @@
     list-style: none;
     font-weight:600;
 }
+.no-warehouses-box{
+    margin-top:20px;
+}
 .warehouse{
     display: grid;
     grid-template-columns: repeat(5,1fr);
     padding-top:10px;
     font-weight:500;
+}
+.warehouse > div{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }

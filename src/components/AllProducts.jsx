@@ -9,7 +9,6 @@ import ViewProduct from "./ViewProduct"
 
 const AllProducts = () => {
     const products = localStorage.getItem("products") !== null ? JSON.parse(localStorage.getItem("products")) : []
-    const [data,setData] = useState("")
     const [viewProduct,setViewProduct] = useState(false)
     const [product,setProduct] = useState(null)
 

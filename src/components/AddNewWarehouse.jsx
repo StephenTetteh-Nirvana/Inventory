@@ -17,9 +17,12 @@ const AddNewWarehouse = () => {
   const [location,setLocation] = useState("")
   const [contact,setContact] = useState("")
   const [capacity,setCapacity] = useState("")
+  const [manager,setManager] = useState("")
   const [errMsg,setErrMsg] = useState("")
   const [loading,setLoading] = useState(false)
   const [disabled,setdisabled] = useState(true)
+  const [cancel,setCancel] = useState(false)
+
 
     const closePopup = () =>{
        navigate(-1)
@@ -44,12 +47,16 @@ const AddNewWarehouse = () => {
    const addWarehouse = async() =>{
     try{
       setLoading(true)
+      setCancel(true)
         const colRef = doc(db,"Warehouses",name);
         await setDoc(colRef,{
+            id:String(Math.round(Math.random()*1000)),
             name:name,
             location:location,
             contact:contact,
-            capacity:capacity
+            capacity:capacity,
+            manager:manager,
+            products:[]
         })
         toast.success("WareHouse Added",{
           autoClose:1500
@@ -58,6 +65,7 @@ const AddNewWarehouse = () => {
         navigate(-1)
     }catch(error){
       setLoading(false)
+      setCancel(false)
      setErrMsg("Bad Connection! Check Your Network")
      console.log(error)
     }
@@ -70,7 +78,10 @@ const AddNewWarehouse = () => {
     } else {
       setdisabled(true);
     }
-   },[name,location,contact,capacity])
+    if(manager === "") {
+      setManager(RegularUsers[0].userName);
+  }
+   },[name,location,contact,capacity,manager])
 
   return (
     <div className="new-warehouse-container">
@@ -79,9 +90,9 @@ const AddNewWarehouse = () => {
           <div className="all-newWarehouse-inputs">
           <div className="warehouse-manager-section">
                 <label>Assign Manager</label><br/>
-                <select onChange={(e)=>console.log(e.target.value)}>
+                <select onChange={(e)=>setManager(e.target.value)}>
                     {users ? users.map((user)=>(
-                        <option key={user.email}>{user.userName}</option>
+                      <option key={user.email}>{user.userName}</option>
                     )): (<option>Connect to the internet!!!</option>)}
                 </select>
             </div>
@@ -114,11 +125,16 @@ const AddNewWarehouse = () => {
                 placeholder="Capacity"/>
             </div>
           </div>
-          {<p className="error-msg">{errMsg}</p>}
+          <p className="error-msg">{errMsg}</p>
           <div className="new-warehouse-buttons">
-            <button disabled={disabled} style={disabled ? {cursor:"not-allowed",opacity:"0.7"} : {}}
-             className="save-product-btn" onClick={addWarehouse}>{loading ? <Loader/> : "Save"}</button>
-            <button className="cancel-product-btn" onClick={closePopup}>Cancel</button>
+            <button 
+            disabled={disabled} 
+            style={disabled ? {cursor:"not-allowed",opacity:"0.7"} : {}}
+            className="save-product-btn" onClick={addWarehouse}>{loading ? <Loader/> : "Save"}
+            </button>
+            <button disabled={cancel} 
+            style={cancel ? {cursor:"not-allowed",opacity:"0.7"} : {}} 
+            className="cancel-product-btn" onClick={closePopup}>Cancel</button>
           </div>
        </form>
     </div>
