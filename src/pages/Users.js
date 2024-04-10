@@ -1,6 +1,6 @@
 import { useState,useEffect } from "react"
 import { Eye,Pencil,Trash } from "lucide-react"
-import { onSnapshot,collection, getDocs, deleteDoc } from "firebase/firestore";
+import { onSnapshot,collection, doc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { Link } from "react-router-dom";
 import User from "../images/no-user-Img.png"

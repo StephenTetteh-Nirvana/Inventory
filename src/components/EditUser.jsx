@@ -25,13 +25,13 @@ const EditUser = () => {
   }
 
   const editUser = async() =>{
+   try{
+     setLoading(true)
      const colRef = collection(db,"users")
      const docRef = doc(colRef,id)
      const userDocRef = await getDoc(docRef)
 
      if(userDocRef.exists()){
-      try{
-         setLoading(true)
          await updateDoc(docRef,{
             role:role
          })
@@ -40,11 +40,11 @@ const EditUser = () => {
             autoClose:1000
           })
          navigate(-1)
-      }catch(error){
-         setErrMsg("Bad Connection! Check Your Network")
-         console.log(error)
-      }
      }
+   }catch(error){
+      setErrMsg("Bad Connection! Check Your Network")
+      console.log(error)
+   }
   }
 
   useEffect(()=>{

@@ -59,6 +59,18 @@
     outline:none;
     font-weight:600;
 }
+.weak-password{
+    border:1px solid red;
+}
+.strong-password{
+    border:1px solid green;
+}
+.red{
+    color:red;
+}
+.green{
+    color:green;
+}
 .new-role select{
     width:103%;
 }

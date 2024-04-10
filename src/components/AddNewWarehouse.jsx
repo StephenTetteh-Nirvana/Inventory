@@ -9,10 +9,9 @@ import "../css/AddNewWarehouse.css"
 
 
 const AddNewWarehouse = () => {
-  const RegularUsers = localStorage.getItem("regularUsers") !== null ? JSON.parse(localStorage.getItem("regularUsers")) : []
+  const regularUsers = localStorage.getItem("regularUsers") !== null ? JSON.parse(localStorage.getItem("regularUsers")) : []
   const navigate = useNavigate()
 
-  const [users,setUsers] = useState(null)
   const [name,setName] = useState("")
   const [location,setLocation] = useState("")
   const [contact,setContact] = useState("")
@@ -28,21 +27,6 @@ const AddNewWarehouse = () => {
        navigate(-1)
     }
 
-    
-    const fetchUsers = async() => {
-      const colRef = collection(db,"users");
-      const getAllUsers = await getDocs(colRef)
-      let userList = []
-
-      getAllUsers.forEach((user)=>{
-       const role = user.data().role;
-        if(role === "Regular"){
-          userList.push(user.data())
-        }
-      })
-      localStorage.setItem("regularUsers",JSON.stringify(userList))
-      setUsers(RegularUsers)
-   }
 
    const addWarehouse = async() =>{
     try{
@@ -71,12 +55,10 @@ const AddNewWarehouse = () => {
     }
    }
 
-   const fetchRegularUsers = () =>{
+   const fetchLocalRegularUsers = () =>{
     try{
-      if(RegularUsers !== null && manager === ""){
-        setManager(RegularUsers[0].userName);
-      }else{
-        setManager("No Regular Users")
+      if(regularUsers !== null && manager === ""){
+        setManager(regularUsers[0].userName);
       }
     }catch(error){
       console.log(error)
@@ -84,14 +66,13 @@ const AddNewWarehouse = () => {
   }
   
    useEffect(()=>{
-     fetchUsers()
-     fetchRegularUsers()
+    fetchLocalRegularUsers()
      if (name !== "" && location !== "" && contact !== "" && capacity !== "") {
       setdisabled(false);
     } else {
       setdisabled(true);
     }
-   },[name,location,contact,capacity,manager])
+   },[name,location,contact,capacity])
 
   return (
     <div className="new-warehouse-container">
@@ -101,9 +82,9 @@ const AddNewWarehouse = () => {
           <div className="warehouse-manager-section">
                 <label>Assign Manager</label><br/>
                 <select onChange={(e)=>setManager(e.target.value)}>
-                    {users ? users.map((user)=>(
+                    {regularUsers !== null ? regularUsers.map((user)=>(
                       <option key={user.email}>{user.userName}</option>
-                    )) : (<option>Connect to the internet!!!</option>)}
+                    )) : (<option>{manager}</option>)}
                 </select>
             </div>
             <div className="new-warehouse-name">

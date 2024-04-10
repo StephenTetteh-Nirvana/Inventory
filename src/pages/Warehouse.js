@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { collection, deleteDoc, onSnapshot, doc } from "firebase/firestore";
+import { collection, getDocs, deleteDoc, onSnapshot, doc } from "firebase/firestore";
 import { db } from "../firebase.js";
 import Sidebar from "../components/Sidebar.jsx";
 import Navbar from "../components/Navbar.jsx";
@@ -28,6 +28,20 @@ const Warehouse = () => {
     })
     }
 
+    const fetchRegularUsers = async() => {
+      const colRef = collection(db,"users");
+      const getAllUsers = await getDocs(colRef)
+      let userList = []
+
+      getAllUsers.forEach((user)=>{
+       const role = user.data().role;
+        if(role === "Regular"){
+          userList.push(user.data())
+        }
+      })
+      localStorage.setItem("regularUsers",JSON.stringify(userList))
+   }
+
     const deleteWarehouse = async(name) =>{
       try{
         const colRef = collection(db,"Warehouses")
@@ -37,11 +51,11 @@ const Warehouse = () => {
         toast.error("Bad Internet Connection")
         console.log(error)
       }
-    
     }
 
     useEffect(()=>{
         fetchWarehouses()
+        fetchRegularUsers()
     },[])
 
   return (

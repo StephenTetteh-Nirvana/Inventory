@@ -19,6 +19,7 @@ const AddNewUser = () => {
     const [email,setEmail] = useState("")
     const [role,setRole] = useState("Admin")
     const [password,setPassword] = useState("")
+    const [passwordStrength,setPasswordStrength] = useState("")
     const [errMsg,setErrMsg] = useState("")
     const [disabled,setdisabled] = useState(true)
     const [imageUrl,setImageUrl] = useState(null)
@@ -41,6 +42,22 @@ const AddNewUser = () => {
         }
         
     }
+
+    const checkPasswordStrength = (value) => {
+        if (value === '') {
+          setPasswordStrength('');
+        } else if (value.length < 6 ) {
+          setPasswordStrength('Weak');
+        } else {
+          setPasswordStrength('Strong');
+        }
+      };
+
+      const handlePasswordChange = (e) => {
+        const value = e.target.value;
+        setPassword(value);
+        checkPasswordStrength(value);
+      };
 
     const uploadUserImg = (file) =>{
         const id = String(Math.round(Math.random * 100))
@@ -116,7 +133,7 @@ const AddNewUser = () => {
     }
 
     useEffect(()=>{
-         if(username !== "" && email !== "" && password !== ""){
+         if(username !== "" && email !== "" && password.length >= 6){
             setdisabled(false)
          }else{
             setdisabled(true)
@@ -170,12 +187,16 @@ const AddNewUser = () => {
             </div> 
             <div className="new-password">
              <label>Password</label><br/>
-             <input type="password" 
+             <input type="password" className={`${passwordStrength === "Weak" && "weak-password"}`}
              placeholder="Password"
              value={password}
-             onChange={(e)=>setPassword(e.target.value)}
+             onChange={handlePasswordChange}
              required
              />
+             {<span className={`${passwordStrength === "Weak" ? "red" : passwordStrength === "Strong" ? "green":""}`}>
+             {passwordStrength === "Weak" ? "Weak Password" : 
+             passwordStrength === "Strong" ? "Strong Password" :""}
+             </span>}
             </div> 
             {<p className="error-msg">{errMsg}</p>}
         </div>
