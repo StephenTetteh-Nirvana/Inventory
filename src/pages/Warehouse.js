@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, deleteDoc, onSnapshot, doc } from "firebase/firestore";
 import { db } from "../firebase.js";
 import Sidebar from "../components/Sidebar.jsx";
 import Navbar from "../components/Navbar.jsx";
@@ -27,8 +27,10 @@ const Warehouse = () => {
     })
     }
 
-    const deleteWarehouse = (Id) =>{
-
+    const deleteWarehouse = async(name) =>{
+      const colRef = collection(db,"Warehouses")
+      const allWarehouses = doc(colRef,name)
+      await deleteDoc(allWarehouses)
     }
 
     useEffect(()=>{
@@ -64,7 +66,7 @@ const Warehouse = () => {
                     <div>{warehouse.capacity}</div>
                     <div>
                       <Eye size={20} style={{color:"green",cursor:"pointer"}}/>
-                      <Trash size={20} onClick={deleteWarehouse()} style={{marginLeft:5,color:"red",cursor:"pointer"}}/>
+                      <Trash size={20} onClick={()=>deleteWarehouse(warehouse.name)} style={{marginLeft:5,color:"red",cursor:"pointer"}}/>
                     </div>
                     </div>
                     ))

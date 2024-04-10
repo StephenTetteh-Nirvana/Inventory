@@ -14,7 +14,6 @@ const AddNewProduct = () => {
   const [imageUrl,setImageUrl] = useState(null)
   const [Trackprogress,setTrackProgress] = useState(null)
   
-  const [warehouse,setWarehouse] = useState("")
   const [product,setProduct] = useState("")
   const [price,setPrice] = useState("")
   const [quantity,setQuantity] = useState("")
@@ -77,6 +76,7 @@ const AddNewProduct = () => {
     const addNewProduct =  async() =>{
        try{
        setLoading(true)
+       setCancel(true)
        const colRef = collection(db,"Products")
        const productArrayReference = doc(colRef,"Product Arrays")
        const productArrays = await getDoc(productArrayReference)
@@ -105,6 +105,7 @@ const AddNewProduct = () => {
             }
        }catch(error){
         console.log("error")
+        setCancel(false)
         setLoading(false)
         setErrMsg("Bad Connection! Check Your Network")
       }
