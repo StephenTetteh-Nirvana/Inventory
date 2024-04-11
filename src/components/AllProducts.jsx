@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Eye,Pencil,Trash } from "lucide-react"
 import { Link } from "react-router-dom"
-import { updateDoc,doc,collection,getDoc } from "firebase/firestore"
+import { updateDoc,doc,collection,getDocs } from "firebase/firestore"
 import { db } from "../firebase"
 import "../css/AllProducts.css"
 import ViewProduct from "./ViewProduct"
@@ -20,7 +20,7 @@ const AllProducts = () => {
         }
     }
 
-    const deleteProduct = async(Id) =>{
+    const deleteProduct = async(Id,warehouse) =>{
       const colRef = collection(db,"Products")
       const productArrayReference = doc(colRef,"Product Arrays")
 
@@ -29,10 +29,28 @@ const AllProducts = () => {
       await updateDoc(productArrayReference,{
         products:foundProduct
       })
+      await deleteProductFromWarehouse(Id,warehouse)
     }
 
-    
-    
+    const deleteProductFromWarehouse = async(Id,warehouse) => {
+      try{
+        const colRef = collection(db,"Warehouses")
+        const docRef = await getDocs(colRef)
+
+        docRef.forEach(async(document)=>{
+          if(warehouse === document.id){
+            const warehouseRef = doc(db,"Warehouses",document.id)
+            const productsArr = document.data().products
+            const productToDelete = productsArr.filter((p)=>p.id !== Id)
+            await updateDoc(warehouseRef,{
+             products:productToDelete
+           })
+          }
+        })
+      }catch(error){
+        console.log(error)
+      }  
+    }
 
   return (
     <div>
@@ -59,7 +77,7 @@ const AllProducts = () => {
                     <Link to={`/dashboard/editProduct/${product.id}`}>
                     <Pencil size={20} style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
                     </Link>
-                    <Trash onClick={()=>deleteProduct(product.id)} size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}} />
+                    <Trash onClick={()=>deleteProduct(product.id,product.warehouse)} size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}} />
                     </div>
                   </div>
                 ))

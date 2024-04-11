@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { ChevronLeft } from "lucide-react"
-import { collection,doc,updateDoc,getDoc} from "firebase/firestore"
+import { collection,doc,updateDoc,getDocs,getDoc} from "firebase/firestore"
 import { db } from "../firebase.js"
 import { toast } from "react-toastify"
 import Loader from "../components/Loader.jsx"
@@ -16,7 +16,7 @@ const EditProductDetails = () => {
   const [price,setPrice] = useState('')
   const [quantity,setQuantity] = useState('')
   const [loading,setLoading] = useState(false)
-  const [disabled,setdisabled] = useState(false)
+  const [disabled] = useState(false)
   const navigate = useNavigate()
 
    const closeuserPopup = () =>{
@@ -30,7 +30,6 @@ const EditProductDetails = () => {
     const colRef = collection(db,"Products")
     const productArrayReference = doc(colRef,"Product Arrays")
     const productArr = await getDoc(productArrayReference)
-
     if(productArr.exists){
       const productArray = productArr.data().products
 
@@ -50,6 +49,7 @@ const EditProductDetails = () => {
       await updateDoc(productArrayReference,{
         products:updatedProductArray
     })
+    await editProductInWarehouse(foundProduct,updatedProductArray)
     toast.success("Product Updated",{
       autoClose:1000
     })
@@ -66,6 +66,20 @@ const EditProductDetails = () => {
       setLoading(false)
       console.log(error)
    }
+}
+
+const editProductInWarehouse = async(foundProduct,updatedProductArray) =>{
+  const colRef = collection(db,"Warehouses")
+  const docRef = await getDocs(colRef)
+
+  docRef.forEach(async(document)=>{
+    if(foundProduct.warehouse === document.id){
+      const warehouseRef = doc(db,"Warehouses",document.id)
+      await updateDoc(warehouseRef,{
+       products:updatedProductArray
+     })
+    }
+  })
 }
 
   useEffect(()=>{

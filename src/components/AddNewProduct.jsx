@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import "../css/AddNewProduct.css"
-import { collection, doc , getDoc, updateDoc } from "firebase/firestore"
+import { collection, doc , getDoc, getDocs, updateDoc } from "firebase/firestore"
 import { db,storage } from "../firebase.js"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
@@ -10,7 +10,7 @@ import noUser from "../images/camera-off.png"
 
 
 const AddNewProduct = () => {
-  const warehouseData= localStorage.getItem("warehouses") !== null ? JSON.parse(localStorage.getItem("warehouses")) : []
+  const warehouseData = localStorage.getItem("warehouses") !== null ? JSON.parse(localStorage.getItem("warehouses")) : []
   const [file,setFile] = useState("")
   const [imageUrl,setImageUrl] = useState(null)
   const [Trackprogress,setTrackProgress] = useState(null)
@@ -99,6 +99,7 @@ const AddNewProduct = () => {
             await updateDoc(productArrayReference,{
               products: [...productArray,newProduct]
             })
+            await addProductToWarehouse(newProduct)
               toast.success("New Product Added",{
                 autoClose:1500
               })
@@ -112,6 +113,34 @@ const AddNewProduct = () => {
         setErrMsg("Bad Connection! Check Your Network")
       }
     }
+
+    const addProductToWarehouse = async(newProduct) => {
+      const updatedProduct = {
+        id:newProduct.id,
+        product:newProduct.product,
+        price:newProduct.price,
+        quantity:newProduct.quantity,
+        Img:newProduct.Img,
+        createdAt:newProduct.createdAt
+      }
+      try{
+        const colRef = collection(db,"Warehouses")
+        const docRef = await getDocs(colRef)
+
+        docRef.forEach(async(document)=>{
+          if(warehouse === document.id){
+            const warehouseRef = doc(db,"Warehouses",document.id)
+            const warehouseProductsArr = document.data().products
+            await updateDoc(warehouseRef,{
+             products:[...warehouseProductsArr,updatedProduct]
+           })
+          }
+        })
+      }catch(error){
+        console.log(error)
+      }  
+    }
+
 
     const fetchWarehouses = () =>{
       try{
@@ -130,7 +159,7 @@ const AddNewProduct = () => {
        }else{
         setdisabled(true)
        }
-    },[product,price,quantity])
+    },[warehouse,product,price,quantity])
 
 
   return (
