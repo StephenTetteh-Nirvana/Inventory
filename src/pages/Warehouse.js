@@ -7,10 +7,15 @@ import Navbar from "../components/Navbar.jsx";
 import "../css/Warehouse.css"
 import { Eye, Trash } from "lucide-react";
 import { toast } from "react-toastify";
+import WarehouseProducts from "../components/WarehouseProducts.jsx";
 
-const Warehouse = () => {
+const Warehouse = () =>{
+    const warehouses = localStorage.getItem("warehouses") !== null ? JSON.parse(localStorage.getItem("warehouses")) : []
     const [width,setWidth] = useState(false)
     const [warehouse,setWarehouse] = useState([])
+    const [products,setProducts] = useState([])
+    const [viewProducts,setViewProducts] = useState(false)
+
 
     const fetchWarehouses = async()=>{
       const unsub = onSnapshot(collection(db, "Warehouses"), (snapshot) => {
@@ -40,6 +45,14 @@ const Warehouse = () => {
         }
       })
       localStorage.setItem("regularUsers",JSON.stringify(userList))
+   }
+
+   const displayProducts = (id) =>{
+    const foundProduct = warehouses.find((p)=>p.id === id)
+        if(foundProduct){
+            setProducts(foundProduct)
+            setViewProducts(true)
+        }
    }
 
     const deleteWarehouse = async(name) =>{
@@ -86,7 +99,7 @@ const Warehouse = () => {
                     <div>{warehouse.contact}</div>
                     <div>{warehouse.capacity}</div>
                     <div>
-                      <Eye size={20} style={{color:"green",cursor:"pointer"}}/>
+                      <Eye onClick={()=>displayProducts(warehouse.id)} size={20} style={{color:"green",cursor:"pointer"}}/>
                       <Trash size={20} onClick={()=>deleteWarehouse(warehouse.name)} style={{marginLeft:5,color:"red",cursor:"pointer"}}/>
                     </div>
                     </div>
@@ -97,6 +110,7 @@ const Warehouse = () => {
                     </div>
                   ) }
               </div>
+              {viewProducts && <WarehouseProducts products={products} setViewProducts={setViewProducts}/>}
             </div>
         </div>
     </div>
