@@ -1,0 +1,39 @@
+.warehouse-products-container{
+    position:absolute;
+    top:0;
+    left:0;
+    background: linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.8));
+    width:100%;
+    min-height:100vh;
+}
+.warehouse-products{
+    background:white;
+    width:90%;
+    border:2px solid white;
+    padding:10px;
+    min-height:30vh;
+    overflow:auto;
+    margin-top:60px;
+    margin-left:50px;
+}
+.warehouse-products ul{
+    margin-top:20px;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    border-bottom:2px solid black;
+}
+.warehouse-product{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    font-weight:600;
+    margin-top:10px;
+    border-bottom:2px solid grey;
+}
+.warehouse-products ul li{
+    list-style: none;
+    font-weight:600;
+}
+.warehouse-product .ImageBox img{
+  width:60px;
+  height:60px;
+} 

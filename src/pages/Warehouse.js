@@ -50,7 +50,7 @@ const Warehouse = () =>{
    const displayProducts = (id) =>{
     const foundProduct = warehouses.find((p)=>p.id === id)
         if(foundProduct){
-            setProducts(foundProduct)
+            setProducts(foundProduct.products)
             setViewProducts(true)
         }
    }
@@ -107,7 +107,7 @@ const Warehouse = () =>{
                     <li>Warehouse Name</li>
                     <li>Location</li>
                     <li>Contact Info</li>
-                    <li>Capacity</li>
+                    <li>Manager</li>
                     <li>Actions</li>
                 </ul>
                   { warehouse.length > 0 ? (
@@ -116,7 +116,7 @@ const Warehouse = () =>{
                     <div>{warehouse.name}</div>
                     <div>{warehouse.location}</div>
                     <div>{warehouse.contact}</div>
-                    <div>{warehouse.capacity}</div>
+                    <div>{warehouse.manager ? warehouse.manager : "No Manager"}</div>
                     <div>
                       <Eye onClick={()=>displayProducts(warehouse.id)} size={20} style={{color:"green",cursor:"pointer"}}/>
                       <Trash size={20} onClick={()=>deleteWarehouse(warehouse.name)} style={{marginLeft:5,color:"red",cursor:"pointer"}}/>
