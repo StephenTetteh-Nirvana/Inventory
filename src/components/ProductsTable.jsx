@@ -1,15 +1,12 @@
 import { Plus,Search,ChevronUp,ChevronDown } from "lucide-react"
 import "../css/ProductsTable.css"
-import { useEffect, useState } from "react"
+import {  useState } from "react"
 import { Link } from "react-router-dom"
-import { db } from "../firebase"
-import {collection,onSnapshot,doc } from "firebase/firestore"
 import AllProducts from "./AllProducts"
 import OutOfStock from "./OutOfStock"
 
-const ProductsTable = () => {
+const ProductsTable = ({data}) => {
   const productData = localStorage.getItem("products") !== null ? JSON.parse(localStorage.getItem("products")) : []
-  const [data,setData] = useState([])
   const [ProductState,setProductState] = useState("All")
   const [dropDown,setdropDown] = useState(false)
 
@@ -20,29 +17,12 @@ const ProductsTable = () => {
     console.log(value)
     setProductState(value)
   }
-  const fetchProducts = async() =>{
-    const colRef = collection(db,"Products")
-    const unsub = onSnapshot(doc(colRef,"Product Arrays"), (snapshot) => {
-      try {
-        let list = [];
-        list = snapshot.data().products;
-        setData(list);
-        localStorage.setItem("products",JSON.stringify(list))
-    } catch (error) {
-        console.error("Error fetching data: ", error);
-    }
-  });
-  return unsub;
-  }
 
   const filterProducts = (value) => {
      const filteredProducts = productData.filter((p)=>p.product.includes(value))
      localStorage.setItem("products",JSON.stringify(filteredProducts))
   }
 
-  useEffect(()=>{
-    fetchProducts()
-  },[])
   return (
     <div className="products-table">
          <div className="search-and-add-section">

@@ -38,7 +38,6 @@ const AddNewWarehouse = () => {
             name:name,
             location:location,
             contact:contact,
-            capacity:capacity,
             manager:manager,
             products:[]
         })
@@ -83,12 +82,12 @@ const AddNewWarehouse = () => {
   
    useEffect(()=>{
     fetchLocalRegularUsers()
-     if (name !== "" && location !== "" && contact !== "" && capacity !== "") {
+     if (name !== "" && location !== "" && contact !== "") {
       setdisabled(false);
     } else {
       setdisabled(true);
     }
-   },[name,location,contact,capacity,manager])
+   },[name,location,contact,manager])
 
   return (
     <div className="new-warehouse-container">
@@ -123,13 +122,6 @@ const AddNewWarehouse = () => {
                 value={contact}
                 onChange={(e)=>{setContact(e.target.value)}} 
                 placeholder="Contact Details"/>
-            </div>
-            <div className="new-warehouse-capacity">
-                <label>Capacity</label><br/>
-                <input type="number" 
-                value={capacity}
-                onChange={(e)=>{setCapacity(e.target.value)}}
-                placeholder="Capacity"/>
             </div>
           </div>
           <p className="error-msg">{errMsg}</p>

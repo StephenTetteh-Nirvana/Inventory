@@ -89,7 +89,7 @@ const editProductInWarehouse = async(foundProduct,updatedProductArray) =>{
   },[])
 
   return(
-    <div className="edit-user-container">
+    <div className="edit-product-container">
     <form onSubmit={(e)=>e.preventDefault()}>
     <div className="form-title">
        <span><ChevronLeft onClick={closeuserPopup} style={{cursor:"pointer"}} size={30}/></span>
