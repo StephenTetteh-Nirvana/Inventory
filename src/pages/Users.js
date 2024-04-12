@@ -1,6 +1,6 @@
 import { useState,useEffect } from "react"
 import { Eye,Pencil,Trash } from "lucide-react"
-import { onSnapshot,collection, doc, deleteDoc } from "firebase/firestore";
+import { onSnapshot,collection, doc, deleteDoc, getDocs,updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { Link } from "react-router-dom";
 import User from "../images/no-user-Img.png"
@@ -26,10 +26,11 @@ const Users = () => {
     }
 
     const fetchUsers = async () =>{
-        const unsub = onSnapshot(collection(db, "users"), (snapshot) => {
+        const unsub =  onSnapshot(collection(db, "users"),(snapshot) => {
             try {
                 let list = [];
                 snapshot.forEach((doc) => {
+                    checkAdminState()
                     list.push({id:doc.id, ...doc.data()});
                 })
                 setData([...list]);
@@ -40,6 +41,21 @@ const Users = () => {
             return unsub;
         })
     }
+
+    const checkAdminState = async() =>{
+        const colRef = collection(db,"users")
+        const docRef = await getDocs(colRef)
+
+        docRef.forEach(async(document)=>{
+            if(document.data().role === "Admin"){
+                const warehouseRef = doc(db,"users",document.id)
+                await updateDoc(warehouseRef,{
+                    warehouse:"Can't Assign Admin"
+                })
+            }
+        }) 
+    }
+
 
     const deleteUserDoc = async(userId) => {
         try{
@@ -75,7 +91,7 @@ const Users = () => {
                         <li>Name</li>
                         <li>Email</li>
                         <li>Role</li>
-                        <li>Assigned To</li>
+                        <li>Warehouse</li>
                         <li>Actions</li>
                     </ul>
                     { 
@@ -102,9 +118,6 @@ const Users = () => {
                           size={20} 
                           onClick={()=>toggleFullImage(user.id)} 
                           style={{color:"green",cursor:"pointer"}}/>
-                          <Link to={`/users/edit/${user.id}`}>
-                          <Pencil style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
-                          </Link>
                           <Trash onClick={()=>deleteUserDoc(user.id)} size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}} />
                           </div>
                       </div>

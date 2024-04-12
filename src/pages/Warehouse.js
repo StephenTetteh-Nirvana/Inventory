@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { collection, getDocs, deleteDoc, onSnapshot, doc } from "firebase/firestore";
+import { collection, getDocs, deleteDoc, onSnapshot, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase.js";
 import Sidebar from "../components/Sidebar.jsx";
 import Navbar from "../components/Navbar.jsx";
@@ -60,15 +60,34 @@ const Warehouse = () =>{
         const colRef = collection(db,"Warehouses")
         const allWarehouses = doc(colRef,name)
         await deleteDoc(allWarehouses)
+        await deleteWarehouseFromUser(name)
       }catch(error){
         toast.error("Bad Internet Connection")
         console.log(error)
       }
     }
 
+    const deleteWarehouseFromUser = async(name) =>{
+      const UsercolRef = collection(db,"users")
+      const UserdocRef = await getDocs(UsercolRef)
+
+      UserdocRef.forEach(async(userDoc)=>{
+       const warehouseField = userDoc.data().warehouse;
+       const UserRole = userDoc.data().role;
+ 
+        if(UserRole === "Regular" && warehouseField === name ){
+           const userRef = doc(db,"users",userDoc.id)
+           await updateDoc(userRef,{
+            warehouse:"Not Assigned"
+           })
+        }
+        })
+  }
+
     useEffect(()=>{
         fetchWarehouses()
         fetchRegularUsers()
+        deleteWarehouseFromUser()
     },[])
 
   return (
@@ -81,7 +100,7 @@ const Warehouse = () =>{
                   <Link to="/warehouse/add">
                     <button className="add-warehouse-btn">Add Warehouse</button>  
                   </Link>
-                <input type="text" placeholder="Search by name..."/> 
+
                 </div>
               <div className="warehouse-container">
                 <ul>

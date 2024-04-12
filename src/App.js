@@ -17,7 +17,6 @@ import AddNewWarehouse from "./components/AddNewWarehouse.jsx"
 import Users from "./pages/Users.js"
 import NotFound from "./pages/NotFound.js"
 import NewUser from "./pages/NewUser.js"
-import EditUserPage from "./pages/EditUserPage.js"
 import "./App.css"
 
 function App() {
@@ -47,11 +46,10 @@ return(
         <Route path="/dashboard" element={<Dashboard/>}></Route>
         <Route path="/dashboard/add" element={<NewProduct/>}></Route>
         <Route path="/dashboard/editProduct/:id" element={<EditProduct/>}></Route>
-        <Route path="/warehouse" element={<Warehouse/>}>        </Route>
+        <Route path="/warehouse" element={<Warehouse/>}></Route>
         <Route path="/warehouse/add" element={<AddNewWarehouse/>}></Route>
         <Route path="/users" element={<Users/>}></Route>
         <Route path="/users/new" element={<NewUser/>}></Route>
-        <Route path="/users/edit/:id" element={<EditUserPage/>}></Route>
       </Routes>
   </div>
 )

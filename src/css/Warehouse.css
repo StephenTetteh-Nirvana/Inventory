@@ -8,14 +8,8 @@
     padding:10px 20px;
     cursor: pointer;
 }
-.warehouse-buttons input{
-    margin-left:10px;
-    padding:8px 30px;
-    border:2px solid black;
-    border-radius:3px;
-}
 .warehouse-container{
-    width: 98%;
+    width: 95%;
     border:1px solid grey;
     margin-top:10px;
     padding:10px;

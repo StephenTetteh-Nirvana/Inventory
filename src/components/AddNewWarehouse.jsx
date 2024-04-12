@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { collection, doc, getDocs, setDoc } from "firebase/firestore"
+import { collection, doc, getDocs, setDoc, updateDoc } from "firebase/firestore"
 import { db } from "../firebase"
 import { Loader } from "lucide-react"
 import { toast } from "react-toastify"
@@ -42,6 +42,7 @@ const AddNewWarehouse = () => {
             manager:manager,
             products:[]
         })
+        await assignWarehouseToUser()
         toast.success("WareHouse Added",{
           autoClose:1500
         })
@@ -64,6 +65,21 @@ const AddNewWarehouse = () => {
       console.log(error)
     }
   }
+
+  const assignWarehouseToUser = async() =>{
+      const colRef = collection(db,"users")
+      const usersRef = await getDocs(colRef)
+
+      usersRef.forEach(async(user)=>{
+        const userName = user.data().userName;
+        if(manager === userName){
+          const userDocRef = doc(db,"users",user.id)
+          await updateDoc(userDocRef,{
+            warehouse:name
+          })
+        }
+      })
+  }
   
    useEffect(()=>{
     fetchLocalRegularUsers()
@@ -72,7 +88,7 @@ const AddNewWarehouse = () => {
     } else {
       setdisabled(true);
     }
-   },[name,location,contact,capacity])
+   },[name,location,contact,capacity,manager])
 
   return (
     <div className="new-warehouse-container">
