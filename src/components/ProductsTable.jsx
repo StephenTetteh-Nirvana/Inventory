@@ -16,6 +16,7 @@ const ProductsTable = ({data}) => {
   const checkProductState = (value) =>{
     console.log(value)
     setProductState(value)
+    filterProducts(value)
   }
 
   const filterProducts = (value) => {
