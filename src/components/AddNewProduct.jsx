@@ -93,7 +93,7 @@ const AddNewProduct = () => {
               price:price,
               quantity:quantity,
               Img:imageUrl,
-              warehouse:warehouse,
+              warehouse:warehouse === "" ? "Not Assigned" : warehouse,
               createdAt:`${date} at ${time}`
            }
             await updateDoc(productArrayReference,{

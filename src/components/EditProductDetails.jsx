@@ -108,18 +108,14 @@ const editProductInWarehouse = async(foundProduct,updatedProductArray) =>{
         </div>
         <div className="edit-product-quantity">
           <label>Quantity</label><br/>
-          <input type="text" value={quantity} onChange={(e)=>{
-            setQuantity(e.target.value)}
-            }/>
+          <input type="text" value={quantity} onChange={(e)=>setQuantity(e.target.value)}/>
         </div>
     </div>
     <div className="edit-product-buttons">
         { loading ? (
             <Loader/>
         ) : (
-            <button disabled={disabled} 
-            style={disabled ? {cursor:"not-allowed",opacity:"0.7" } : {}} 
-            className="edit-product-saveBtn" onClick={()=>editProduct()}>Save Changes</button>
+            <button className="edit-product-saveBtn" onClick={()=>editProduct()}>Save Changes</button>
         )}
     </div>
     </form>

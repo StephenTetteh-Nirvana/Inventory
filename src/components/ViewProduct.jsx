@@ -13,7 +13,6 @@ const ViewProduct = ({product,setViewProduct}) => {
             <div className="product-displayImg">
                 <img src={product.Img}/>
             </div>
-            <h2>Product Availability : Available</h2>
             <div className="product-displayDetails">
               <p>Product : {product.product}</p>
               <p>Price : {product.price}</p>

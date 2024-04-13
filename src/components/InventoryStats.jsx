@@ -4,6 +4,7 @@ import "../css/InventoryStats.css"
 const InventoryStats = () => {
    const productData = localStorage.getItem("products") !== null ? JSON.parse(localStorage.getItem("products")) : []
    const totalAmount = localStorage.getItem("totalAmount") !== null ? JSON.parse(localStorage.getItem("totalAmount")) : []
+   const OutOfStock = localStorage.getItem("OutOfStock") !== null ? JSON.parse(localStorage.getItem("OutOfStock")) : []
    const warehouses = localStorage.getItem("warehouses") !== null ? JSON.parse(localStorage.getItem("warehouses")) : []
 
 
@@ -29,7 +30,7 @@ const InventoryStats = () => {
             <ShoppingCart size={50}/>
             <div>
              <h3>Out Of Stock</h3>
-             <h2>10</h2>
+             <h2>{OutOfStock.length}</h2>
             </div>
         </div>
         <div className="fourth-inventory-stat">

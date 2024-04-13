@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { collection, getDocs, deleteDoc, onSnapshot, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase.js";
+import { Eye, Trash, Pencil } from "lucide-react";
+import { toast } from "react-toastify";
 import Sidebar from "../components/Sidebar.jsx";
 import Navbar from "../components/Navbar.jsx";
 import "../css/Warehouse.css"
-import { Eye, Trash } from "lucide-react";
-import { toast } from "react-toastify";
 import WarehouseProducts from "../components/WarehouseProducts.jsx";
 
 const Warehouse = () =>{
@@ -36,11 +36,13 @@ const Warehouse = () =>{
     const fetchRegularUsers = async() => {
       const colRef = collection(db,"users");
       const getAllUsers = await getDocs(colRef)
+
       let userList = []
 
-      getAllUsers.forEach((user)=>{
+      getAllUsers.forEach(async(user)=>{
        const role = user.data().role;
-        if(role === "Regular"){
+       const userWarehouse = user.data().warehouse;
+        if(role === "Regular" && userWarehouse === "Not Assigned"){
           userList.push(user.data())
         }
       })
@@ -118,8 +120,15 @@ const Warehouse = () =>{
                     <div>{warehouse.contact}</div>
                     <div>{warehouse.manager ? warehouse.manager : "No Manager"}</div>
                     <div>
-                      <Eye onClick={()=>displayProducts(warehouse.id)} size={20} style={{color:"green",cursor:"pointer"}}/>
-                      <Trash size={20} onClick={()=>deleteWarehouse(warehouse.name)} style={{marginLeft:5,color:"red",cursor:"pointer"}}/>
+                      <Eye 
+                      onClick={()=>displayProducts(warehouse.id)} 
+                      size={20} 
+                      style={{color:"green",cursor:"pointer"}}/>
+
+                      <Trash 
+                      size={20} 
+                      onClick={()=>deleteWarehouse(warehouse.name)} 
+                      style={{marginLeft:5,color:"red",cursor:"pointer"}}/>
                     </div>
                     </div>
                     ))

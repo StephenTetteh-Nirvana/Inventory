@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { db } from "../firebase"
-import {collection,onSnapshot,doc } from "firebase/firestore"
+import {collection,onSnapshot,doc, updateDoc, getDoc } from "firebase/firestore"
 import Sidebar from "../components/Sidebar.jsx";
 import Navbar from "../components/Navbar.jsx";
 import InventoryStats from "../components/InventoryStats.jsx";
@@ -19,6 +19,8 @@ const Dashboard = () => {
             list = snapshot.data().products;
             setData(list);
             localStorage.setItem("products",JSON.stringify(list))
+            const newList = list.filter((p)=>p.quantity === "0")
+            localStorage.setItem("OutOfStock",JSON.stringify(newList))
         } catch (error) {
             console.error("Error fetching data: ", error);
         }
@@ -56,7 +58,7 @@ const Dashboard = () => {
             <Sidebar width={width} setWidth={setWidth}/>
             <div className={`content ${width ? "add-width" : ""}`}>
             <InventoryStats />
-            <ProductsTable data={data}/>
+            <ProductsTable data={data} fetchProducts={fetchProducts}/>
             </div>
         </div>
     </div>

@@ -41,10 +41,6 @@ const Sidebar = ({width,setWidth}) => {
           {isOpen && <p>Warehouse</p>}
         </li>
         </Link>
-        <li className={`${location.pathname === "/orders" ? "active" : ''}`}>
-          <ListOrdered />
-          {isOpen && <p>Orders</p>}
-        </li>
         <Link style={{color:"white",textDecoration:"none"}} to="/users">
         <li className={`${location.pathname === "/users" ? "active" : ''}`}>
           <UsersRound />

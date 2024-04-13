@@ -5,6 +5,7 @@ import { updateDoc,doc,collection,getDocs } from "firebase/firestore"
 import { db } from "../firebase"
 import "../css/AllProducts.css"
 import ViewProduct from "./ViewProduct"
+import { toast } from "react-toastify"
 
 
 const AllProducts = () => {
@@ -21,15 +22,20 @@ const AllProducts = () => {
     }
 
     const deleteProduct = async(Id,warehouse) =>{
-      const colRef = collection(db,"Products")
-      const productArrayReference = doc(colRef,"Product Arrays")
-
-      const foundProduct = products.filter((p)=>p.id !== Id)
-      localStorage.setItem("products",JSON.stringify(foundProduct))
-      await updateDoc(productArrayReference,{
-        products:foundProduct
-      })
-      await deleteProductFromWarehouse(Id,warehouse)
+      try{
+        const colRef = collection(db,"Products")
+        const productArrayReference = doc(colRef,"Product Arrays")
+  
+        const foundProduct = products.filter((p)=>p.id !== Id)
+        localStorage.setItem("products",JSON.stringify(foundProduct))
+        await updateDoc(productArrayReference,{
+          products:foundProduct
+        })
+        await deleteProductFromWarehouse(Id,warehouse)
+      }catch(error){
+         console.log(error)
+      }
+      
     }
 
     const deleteProductFromWarehouse = async(Id,warehouse) => {
@@ -46,6 +52,9 @@ const AllProducts = () => {
              products:productToDelete
            })
           }
+        })
+        toast.error("Product Deleted",{
+          autoClose:1000
         })
       }catch(error){
         console.log(error)
@@ -69,7 +78,9 @@ const AllProducts = () => {
                     </div>
 
                     <div>
-                    <p>{product.quantity}</p>
+                    <p>{product.quantity}
+                    {product.quantity === "0" && <span className="low-stock-span">Out Of Stock</span>}
+                    </p>
                     </div>
 
                     <div>

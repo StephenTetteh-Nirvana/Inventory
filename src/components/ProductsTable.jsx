@@ -1,11 +1,11 @@
 import { Plus,Search,ChevronUp,ChevronDown } from "lucide-react"
 import "../css/ProductsTable.css"
-import {  useState } from "react"
+import {  useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import AllProducts from "./AllProducts"
 import OutOfStock from "./OutOfStock"
 
-const ProductsTable = ({data}) => {
+const ProductsTable = ({data,fetchProducts}) => {
   const productData = localStorage.getItem("products") !== null ? JSON.parse(localStorage.getItem("products")) : []
   const [ProductState,setProductState] = useState("All")
   const [dropDown,setdropDown] = useState(false)
@@ -23,6 +23,10 @@ const ProductsTable = ({data}) => {
      const filteredProducts = productData.filter((p)=>p.product.includes(value))
      localStorage.setItem("products",JSON.stringify(filteredProducts))
   }
+
+  useEffect(()=>{
+    fetchProducts()
+  })
 
   return (
     <div className="products-table">
