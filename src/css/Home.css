@@ -1,13 +1,27 @@
-.homePage-container{
+.text-container{
     position:absolute;
     top: 50%;
     left:50%;
     transform:translate(-50%,-50%);
 }
-.homePage-container img{
-    margin-left:120px;
+.text-container img{
+    margin-left:40%;
 }
-.homePage-container h2{
+.text-container button{
     margin-top:10px;
-    font-size:30px;
+    padding:10px 30px;
+    background:#2666CF;
+    color:white;
+    border:none;
+    cursor:pointer;
+}
+.getStarted-btnBox{
+    widtH:100%;
+    text-align: center;
+}
+.text-container p{
+    line-height: 1.7rem;
+    margin-top:20px;
+    font-weight:600;
+    padding:5px 20px;
 }

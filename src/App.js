@@ -18,6 +18,7 @@ import Users from "./pages/Users.js"
 import NotFound from "./pages/NotFound.js"
 import NewUser from "./pages/NewUser.js"
 import "./App.css"
+import Inventory from "./pages/Inventory.js"
 
 function App() {
   const location = useLocation()
@@ -50,6 +51,7 @@ return(
         <Route path="/warehouse/add" element={<AddNewWarehouse/>}></Route>
         <Route path="/users" element={<Users/>}></Route>
         <Route path="/users/new" element={<NewUser/>}></Route>
+        <Route path="/inventory" element={<Inventory/>}></Route>
       </Routes>
   </div>
 )

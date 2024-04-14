@@ -15,7 +15,6 @@ const AddNewWarehouse = () => {
   const [name,setName] = useState("")
   const [location,setLocation] = useState("")
   const [contact,setContact] = useState("")
-  const [capacity,setCapacity] = useState("")
   const [manager,setManager] = useState("")
   const [errMsg,setErrMsg] = useState("")
   const [loading,setLoading] = useState(false)

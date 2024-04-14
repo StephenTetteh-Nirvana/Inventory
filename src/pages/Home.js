@@ -1,19 +1,46 @@
 import "../css/Home.css"
 import Navbar from "../components/Navbar.jsx";
-import { useState } from "react";
-import Sidebar from "../components/Sidebar.jsx";
+import Logo from "../images/logo.png"
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Home = () => {
-    const [width,setWidth] = useState(false)
+  const userData = localStorage.getItem("user") !== null ? JSON.parse(localStorage.getItem("user")) : []
+  const userRole = localStorage.getItem("userRole") !== null ? JSON.parse(localStorage.getItem("userRole")) : []
+  const [user,setUser] = useState(null)
+
+
+
+  useEffect(()=>{
+    if(userData){
+      setUser(true)
+    }
+    console.log(userRole)
+  },[user])
 
     return(
-        <div>
+     <div>
         <Navbar/>
-        <div className="main-container">
-            <Sidebar width={width} setWidth={setWidth}/>
-            <div className={`content ${width ? "add-width" : ""}`}>
-            <h1>Home</h1>
-            </div>
+        <div className="text-container">
+           <img src={Logo} alt="Logo"/>
+           <p>Welcome To Our Inventory Management System.The inventory system is a comprehensive solution designed to efficiently 
+             manage and track all aspects of your inventory. Whether you're a small business or a large enterprise, 
+             the inventory system offers scalability and flexibility to meet your unique inventory management needs.
+             </p>
+             { user ? (
+                <div className="getStarted-btnBox">
+                <Link to={`${userRole === "Regular" ? "/inventory" : userRole === "Admin" ?  "/dashboard" : ""}`}>
+                <button>Manage inventory</button> 
+                </Link>
+               </div>
+             ) : (
+                <div className="getStarted-btnBox">
+                <Link to="/login">
+                <button>Get Started</button>
+                </Link>
+                </div>
+             )
+             }
         </div>
     </div>
     )

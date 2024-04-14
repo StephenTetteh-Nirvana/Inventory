@@ -1,0 +1,11 @@
+.notAssigned-container{
+   padding:30px;
+}
+.notAssigned-container button{
+    padding:8px 30px;
+    margin-top:10px;
+    background-color: #2666CF;
+    color:white;
+    cursor:pointer;
+    border:none;
+}

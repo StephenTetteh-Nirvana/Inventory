@@ -1,11 +1,12 @@
 import { signInWithEmailAndPassword } from "firebase/auth"
-import {auth} from "../firebase"
+import {auth,db} from "../firebase"
 import { useState  } from "react"
 import { useNavigate  } from "react-router-dom"
 import { Link } from "react-router-dom"
 import "../css/Login.css"
 import  Loader  from "../components/Loader.jsx"
 import Logo from "../images/logo.png"
+import { collection, doc, getDoc } from "firebase/firestore"
 
 const Login = () => {
   const [email,setEmail] = useState("")
@@ -20,8 +21,21 @@ const Login = () => {
       await signInWithEmailAndPassword(auth,email,password);
       const user = auth.currentUser;
       localStorage.setItem("user",JSON.stringify(user))
-      console.log(user.uid)
-      navigate("/dashboard")
+      const colRef = collection(db,"users")
+      const userDocRef = doc(colRef,user.uid)
+      const retrieveDoc = await getDoc(userDocRef)
+      if(retrieveDoc.exists()){
+       const role = retrieveDoc.data().role;
+       if(role === "Regular"){
+        localStorage.setItem("userRole",JSON.stringify(role))
+        navigate("/")
+       }else{
+        localStorage.setItem("userRole",JSON.stringify(role))
+        navigate("/dashboard")
+       }
+      }else{
+        console.log("user not Found")
+      }
     }catch(error){
       setLoading(false)
       console.log(error)
@@ -38,6 +52,7 @@ const Login = () => {
       }
       else {
       setErrMsg("Bad Connection! Check Your Network")
+      console.log(error)
       }
     }
   }

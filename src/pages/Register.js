@@ -31,9 +31,9 @@ const Register = () => {
             warehouse:"Not Assigned",
             role:role,
             password:password,
-            createdAt:serverTimestamp()
+            createdAt:serverTimestamp(),
+            messages:[]
           })
-          localStorage.setItem("user",JSON.stringify(user))
           navigate("/login")
       }
       }catch(error){

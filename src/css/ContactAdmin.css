@@ -1,0 +1,42 @@
+.adminContact-container{
+    position: absolute;
+    top:0px;
+    left:0px;
+    width:100%;
+    height:100vh;
+    background:linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.8));
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.adminContact-popUp{
+     width:350px;
+     height:300px;
+     background-color: #FFFFFF;
+     padding:20px;
+}
+.allAdmins-inputBox  select{
+    width:101%;
+    padding:10px 6px;
+   margin-top:6px;
+   font-weight:600;
+}
+.allAdmins-inputBox input{
+   width:97%;
+   padding:15px 5px;
+   cursor:not-allowed;
+   margin-top:6px;
+}
+.admin-select-section,.message-section{
+    margin-top:15px;
+}
+.adminContact-popUp button{
+    padding:8px;
+    background-color:#2666CF;
+    color:white;
+    margin:auto;
+    border:none;
+    width:102%;
+    margin-top:20px;
+    font-size:17px;
+}

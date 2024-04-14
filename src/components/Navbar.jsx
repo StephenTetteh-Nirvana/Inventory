@@ -1,52 +1,60 @@
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link,useNavigate } from "react-router-dom"
 import { User,Settings,LogOut  } from "lucide-react"
-import Logo from "../images/logo.png"
-import "../css/Navbar.css"
 import { auth, db } from "../firebase"
 import { doc,getDoc } from "firebase/firestore"
-import { signOut } from "firebase/auth"
+import { onAuthStateChanged, signOut } from "firebase/auth"
+import { toast } from "react-toastify"
+import Logo from "../images/logo.png"
+import "../css/Navbar.css"
 
 
 const Navbar = () => {
+  const userData = localStorage.getItem("user") !== null ? JSON.parse(localStorage.getItem("user")) : []
   const [displayName,setDisplayName] = useState("")
-  const [LoggedIn,setLoggedIn] = useState(null)
+  const [LoggedIn,setLoggedIn] = useState(false)
   const [userImg,setUserImg] = useState(null)
+  const navigate = useNavigate()
 
   const logOut = async() =>{
     await signOut(auth)
     .then(()=>{
-      alert("You Logged Out")
+      navigate("/login")
       setLoggedIn(false)
     }).catch((error)=>{
-      alert(error)
+      toast.error("Network Error")
+      console.log(error)
     })
+  }
+  const fetchUser = async() =>{
+    try{
+        const colRef = doc(db,"users",userData.uid)
+        const docRef = await getDoc(colRef)
+    
+        if(docRef.exists){
+        setDisplayName(docRef.data().userName[0])
+        setUserImg(docRef.data().Img)
+        }
+    }catch(error){
+      console.log(error)
+    }
   }
 
 
   useEffect(()=>{
-    const fetchUser = async() =>{
-      try{
-        const userData = localStorage.getItem("user") !== null ? JSON.parse(localStorage.getItem("user")) : []
-        if(userData){
-          console.log("logged in")
-          setLoggedIn(true)
-          const colRef = doc(db,"users",userData.uid)
-          const docRef = await getDoc(colRef)
-      
-          if(docRef.exists){
-          setDisplayName(docRef.data().userName[0])
-          setUserImg(docRef.data().Img)
-          }
-          }else{
-            console.log("no-user")
-            setLoggedIn(false)
-          }
-      }catch(error){
-        console.log(error)
+     onAuthStateChanged(auth,(user)=>{
+      if(user){
+        fetchUser()
+      }else{
+        console.log("no User")
+        localStorage.clear()
       }
-    }
-    fetchUser()
+     })
+     if(userData){
+      setLoggedIn(true)
+     }else{
+      setLoggedIn(false)
+     }
   },[])
   
   return (
@@ -67,10 +75,7 @@ const Navbar = () => {
                 <div className="userName-box">
                 <h3>{displayName}</h3>  
                 </div>
-               ) 
-
-               }
-             
+               )}
               
               <div className="user-popup">
                 <ul>
@@ -88,7 +93,6 @@ const Navbar = () => {
                   </li>
                 </ul>
               </div>
-
             </div>
           ) : (
             <div className="no-user-buttons">

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { db } from "../firebase"
-import {collection,onSnapshot,doc, updateDoc, getDoc } from "firebase/firestore"
+import {collection,onSnapshot,doc } from "firebase/firestore"
 import Sidebar from "../components/Sidebar.jsx";
 import Navbar from "../components/Navbar.jsx";
 import InventoryStats from "../components/InventoryStats.jsx";
@@ -31,9 +31,10 @@ const Dashboard = () => {
       const totalAmount = async() =>{
         const colRef = collection(db,"Products")
         const unsub = onSnapshot(doc(colRef,"Product Arrays"), (snapshot) => {
+        try {
         const products = snapshot.data().products;
         let sum = 0;
-          try {
+          
               products.forEach((product)=>{
                 const total = product.price*product.quantity;
                 sum += total;
