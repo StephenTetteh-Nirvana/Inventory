@@ -22,7 +22,6 @@ const Register = () => {
         setLoading(true)
          await createUserWithEmailAndPassword(auth,email,password)
          const user = auth.currentUser;
-         if(user){
           const colRef = collection(db,"users")
           const userDoc = doc(colRef,user.uid)
           await setDoc(userDoc,{
@@ -31,11 +30,9 @@ const Register = () => {
             warehouse:"Not Assigned",
             role:role,
             password:password,
-            createdAt:serverTimestamp(),
-            messages:[]
+            createdAt:serverTimestamp()
           })
           navigate("/login")
-      }
       }catch(error){
         setLoading(false)
         console.log(error)

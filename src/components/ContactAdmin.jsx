@@ -1,15 +1,65 @@
 import { useState,useEffect } from "react"
 import { SendHorizontal,ChevronLeft } from "lucide-react"
+import { auth, db } from "../firebase"
+import { collection, getDocs, getDoc, updateDoc,doc } from "firebase/firestore"
+import Loader from "../components/Loader.jsx"
 import "../css/ContactAdmin.css"
+import { toast } from "react-toastify"
+
 
 const ContactAdmin = ({setShowPopUp}) => {
     const admins = localStorage.getItem("Admins") !== null ? JSON.parse(localStorage.getItem("Admins")) : []
     const [disabled] = useState(true)
-    const [message] = useState("Hi Admin,please assign me to a warehouse !!!")
     const [admin,setAdmin] = useState("")
+    const [errMsg,setErrMsg] = useState("")
+    const [loading,setLoading] = useState(false)
+
+    const message = "Hi Admin,please assign me to a warehouse !!!"
 
     const closePopup = () =>{
         setShowPopUp(false)
+    }
+
+    const SendMsg = async() =>{
+        try{
+            setLoading(true)
+            const colRef = collection(db,"users")
+            const docRef = await getDocs(colRef)
+
+            docRef.forEach(async(document)=>{
+             const role = document.data().role;
+             const username = document.data().userName;
+             if(role === "Admin" && username === admin){
+                const adminDocRef = doc(db,"users",document.id)
+                await updateDoc(adminDocRef,{
+                    messages:[]
+                })
+                await addMsg(document,adminDocRef)
+                setShowPopUp(false) 
+                localStorage.setItem("Sent",JSON.stringify(true))
+             }
+            })
+        }catch(error){
+            setErrMsg("Bad Connection! Check Your Network")
+            setLoading(false)
+            console.log(error)
+        } 
+    }
+
+    const addMsg = async(document,adminDocRef) =>{
+        const user = auth.currentUser;
+        const userDocRef = doc(db,"users",user.uid)
+        const userDocData = await getDoc(userDocRef)
+        const messageObj = {
+            name:userDocData.data().userName,
+            email:userDocData.data().email,
+            message:message
+        }
+        const existingMessages = document.data().messages || [];
+        const updatedMessages = [...existingMessages, messageObj];
+        await updateDoc(adminDocRef,{
+            messages:updatedMessages
+        })
     }
 
     const fetchLocalAdmins = () =>{
@@ -23,8 +73,8 @@ const ContactAdmin = ({setShowPopUp}) => {
       }
 
       useEffect(()=>{
-        fetchLocalAdmins
-      },[])
+        fetchLocalAdmins()
+      },[admin])
 
   return (
     <div className="adminContact-container">
@@ -48,7 +98,17 @@ const ContactAdmin = ({setShowPopUp}) => {
                     <input type="text" disabled={disabled} value={message}/>
                 </div>
             </div>
-            <button>Send Message <SendHorizontal size={18} style={{marginLeft:"7px",transform:"translateY(5px)"}} /></button>
+            {<p className="error-msg">{errMsg}</p>}
+            { loading ? (
+               <Loader/>
+            ) : (
+                <button 
+                onClick={SendMsg}>Send Message<SendHorizontal size={18} 
+                style={{marginLeft:"7px",transform:"translateY(5px)"}} />
+                </button>
+            )
+            }
+           
         </div>
       
     </div>

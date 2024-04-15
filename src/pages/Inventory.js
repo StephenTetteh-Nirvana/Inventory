@@ -2,13 +2,16 @@ import { useEffect, useState } from "react"
 import Navbar from "../components/Navbar"
 import { collection, doc, getDoc, getDocs } from "firebase/firestore"
 import { db } from "../firebase"
+import { CheckCheck } from "lucide-react"
 import "../css/Inventory.css" 
 import ContactAdmin from "../components/ContactAdmin"
 
 const Inventory = () => {
     const userData = localStorage.getItem("user") !== null ? JSON.parse(localStorage.getItem("user")) : []
+    const sent = localStorage.getItem("Sent") !== null ? JSON.parse(localStorage.getItem("Sent")) : []
     const [assigned,setAssigned] = useState(null)
     const [showPopUp,setShowPopUp] = useState(false)
+    const [msgSent,setMsgSent] = useState("")
 
     const openPopup = () =>{
         setShowPopUp(true)
@@ -47,7 +50,9 @@ const Inventory = () => {
     useEffect(()=>{
         checkUserState()
         fetchAdmins()
-    },[])
+        setMsgSent(sent)
+        console.log(msgSent)
+    },[msgSent])
 
   return (
     <div>
@@ -57,7 +62,13 @@ const Inventory = () => {
        ):(
         <div className="notAssigned-container">
         <h3>Dear User,you have not been assigned a warehouse yet.Contact an admin to assign you to a warehouse.</h3>
-        <button className="notAssigned-btn"onClick={openPopup} >Contact Admin</button>
+        { msgSent ? (
+          <button className="messageSent-btn">Your message was sent.
+          <span><CheckCheck size={20}  style={{marginLeft:"7px",transform:"translateY(5px)"}} /></span>
+          </button>
+        ) : (
+          <button className="notAssigned-btn"onClick={openPopup} >Contact Admin</button>
+        )}
     </div>
        )}
        {showPopUp && <ContactAdmin setShowPopUp={setShowPopUp}/>}
