@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { db } from "../firebase"
-import {collection,onSnapshot,doc } from "firebase/firestore"
+import { auth, db } from "../firebase"
+import {collection,onSnapshot,doc,getDoc } from "firebase/firestore"
 import Sidebar from "../components/Sidebar.jsx";
 import Navbar from "../components/Navbar.jsx";
 import InventoryStats from "../components/InventoryStats.jsx";
@@ -8,6 +8,7 @@ import ProductsTable from "../components/ProductsTable.jsx";
 
 
 const Dashboard = () => {
+    const userData = localStorage.getItem("user") !== null ? JSON.parse(localStorage.getItem("user")) : []
     const [width,setWidth] = useState(false)
     const [data,setData] = useState([])
 
@@ -46,6 +47,7 @@ const Dashboard = () => {
       });
       return unsub;
       }
+
 
       useEffect(()=>{
          fetchProducts()

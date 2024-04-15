@@ -3,19 +3,21 @@ import Navbar from "../components/Navbar.jsx";
 import Logo from "../images/logo.png"
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase.js";
 
 const Home = () => {
-  const userData = localStorage.getItem("user") !== null ? JSON.parse(localStorage.getItem("user")) : []
   const userRole = localStorage.getItem("userRole") !== null ? JSON.parse(localStorage.getItem("userRole")) : []
   const [user,setUser] = useState(null)
 
-
-
   useEffect(()=>{
-    if(userData){
-      setUser(true)
-    }
-    console.log(userRole)
+    onAuthStateChanged(auth,(user)=>{
+      if(user){
+        setUser(true)
+      }else{
+        setUser(false)
+      }
+    })
   },[user])
 
     return(

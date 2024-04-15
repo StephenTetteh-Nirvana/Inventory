@@ -17,6 +17,22 @@
     margin-left:15px;
     margin-top:20px;
 }
+.messages-icon-box{
+    margin-right:20px;
+    padding:5px;
+    margin-top:20px;
+    cursor:pointer;
+}
+.messages-icon-box span{
+    padding:5px 8px;
+    background-color:red;
+    color:white;
+    border-radius:50%;
+    font-weight:600;
+}
+.second-section{
+    display:flex;
+}
 .user-section{
     height:100%;
 }
@@ -26,6 +42,7 @@
     border-radius: 50%;
     margin-right: 20px;
     margin-top:10px;
+    cursor: pointer;
 }
 .userName-box{
     width:50px;

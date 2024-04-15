@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link,useNavigate } from "react-router-dom"
-import { User,Settings,LogOut  } from "lucide-react"
+import { User,Settings,LogOut, Bell  } from "lucide-react"
 import { auth, db } from "../firebase"
 import { doc,getDoc } from "firebase/firestore"
 import { onAuthStateChanged, signOut } from "firebase/auth"
@@ -11,9 +11,13 @@ import "../css/Navbar.css"
 
 const Navbar = () => {
   const userData = localStorage.getItem("user") !== null ? JSON.parse(localStorage.getItem("user")) : []
+  const userRole =  localStorage.getItem("userRole") !== null ? JSON.parse(localStorage.getItem("userRole")) : []
+  
   const [displayName,setDisplayName] = useState("")
-  const [LoggedIn,setLoggedIn] = useState(false)
+  const [LoggedIn,setLoggedIn] = useState(userData)
   const [userImg,setUserImg] = useState(null)
+  const [messages,setMessages] = useState([])
+
   const navigate = useNavigate()
 
   const logOut = async() =>{
@@ -21,6 +25,7 @@ const Navbar = () => {
     .then(()=>{
       navigate("/login")
       setLoggedIn(false)
+      localStorage.clear()
     }).catch((error)=>{
       toast.error("Network Error")
       console.log(error)
@@ -35,6 +40,20 @@ const Navbar = () => {
         setDisplayName(docRef.data().userName[0])
         setUserImg(docRef.data().Img)
         }
+        setLoggedIn(true)
+    }catch(error){
+      console.log(error)
+    }
+  }
+
+  const fetchMessages = async() =>{
+    try{
+    const userDocRef = doc(db,"users",userData.uid)
+    const userDocData = await getDoc(userDocRef)
+    if(userDocData.exists()){
+      const messages = userDocData.data().messages;
+      setMessages(messages)
+    }
     }catch(error){
       console.log(error)
     }
@@ -45,17 +64,14 @@ const Navbar = () => {
      onAuthStateChanged(auth,(user)=>{
       if(user){
         fetchUser()
+        fetchMessages()
+        setLoggedIn(true)
       }else{
         console.log("no User")
-        localStorage.clear()
+        setLoggedIn(false)
       }
      })
-     if(userData){
-      setLoggedIn(true)
-     }else{
-      setLoggedIn(false)
-     }
-  },[])
+  },[messages])
   
   return (
     <div className="navbar-container">
@@ -64,8 +80,13 @@ const Navbar = () => {
         <h3>INVENTORY</h3>
       </div>
       <div className="second-section">
-        {
-          LoggedIn ? (
+        { userRole === "Admin" &&
+          <div className="messages-icon-box">
+          <Bell/>
+          <span>{ messages && messages.length > 0 ? messages.length : 0}</span>
+        </div>
+        }
+        { LoggedIn ? (
             <div className="user-section">
                {userImg ? (
                   <div className="userImgProfile">
