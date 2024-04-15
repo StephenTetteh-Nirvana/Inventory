@@ -9,7 +9,9 @@ import ContactAdmin from "../components/ContactAdmin"
 const Inventory = () => {
     const userData = localStorage.getItem("user") !== null ? JSON.parse(localStorage.getItem("user")) : []
     const sent = localStorage.getItem("Sent") !== null ? JSON.parse(localStorage.getItem("Sent")) : []
-    const [assigned,setAssigned] = useState(null)
+    const userAssigned = localStorage.getItem("Assigned") !== null ? JSON.parse(localStorage.getItem("Assigned")) : []
+
+    const [assigned,setAssigned] = useState("")
     const [showPopUp,setShowPopUp] = useState(false)
     const [msgSent,setMsgSent] = useState("")
 
@@ -25,8 +27,10 @@ const Inventory = () => {
             const assignedWarehouse = docData.data().warehouse;
             if(assignedWarehouse === "Not Assigned"){
                 setAssigned(false)
+                localStorage.setItem("Assigned",JSON.stringify(false))
             }else{
                 setAssigned(true)
+                localStorage.setItem("Assigned",JSON.stringify(true))
             }
         }catch(error){
             console.log(error)
@@ -39,7 +43,7 @@ const Inventory = () => {
       let list = []
 
       allDocs.forEach((document)=>{
-        const role = document.data().role
+        const role = document.data().role;
         if(role === "Admin"){
            list.push(document.data())
            localStorage.setItem("Admins",JSON.stringify(list))
@@ -51,13 +55,12 @@ const Inventory = () => {
         checkUserState()
         fetchAdmins()
         setMsgSent(sent)
-        console.log(msgSent)
-    },[msgSent])
+    },[assigned,msgSent])
 
   return (
     <div>
       <Navbar/>
-       {assigned ? (
+       {userAssigned ? (
               <h1>You have a warehouse</h1>
        ):(
         <div className="notAssigned-container">
