@@ -1,12 +1,4 @@
-import { LayoutDashboard,
-  ShoppingBasket,
-  Warehouse,
-  UsersRound,
-  FileText,
-  MessageCircleWarning,
-  ArrowLeft,
-  ArrowRight, 
-  ListOrdered} from "lucide-react"
+import { LayoutDashboard,Warehouse,UsersRound,ArrowLeft,ArrowRight} from "lucide-react"
 import { useState } from "react"
 import { Link, useLocation } from "react-router-dom"
 import "../css/Sidebar.css"
@@ -47,10 +39,6 @@ const Sidebar = ({width,setWidth}) => {
           {isOpen && <p>Users</p>}
         </li>
         </Link>
-        <li className={`${location.pathname === "/report" ? "active" : ''}`}>
-          <MessageCircleWarning />
-          {isOpen && <p>Report</p>}
-        </li>
       </ul>
     </div>
      )

@@ -6,19 +6,25 @@ import { doc,getDoc } from "firebase/firestore"
 import { onAuthStateChanged, signOut } from "firebase/auth"
 import { toast } from "react-toastify"
 import Logo from "../images/logo.png"
+import Messages from "./Messages"
 import "../css/Navbar.css"
 
 
 const Navbar = () => {
   const userData = localStorage.getItem("user") !== null ? JSON.parse(localStorage.getItem("user")) : []
   const userRole =  localStorage.getItem("userRole") !== null ? JSON.parse(localStorage.getItem("userRole")) : []
-  
+
   const [displayName,setDisplayName] = useState("")
   const [LoggedIn,setLoggedIn] = useState(userData)
   const [userImg,setUserImg] = useState(null)
   const [messages,setMessages] = useState([])
+  const [showMessages,setShowMessages] = useState(false)
 
   const navigate = useNavigate()
+
+  const displayMessages = () =>{
+    setShowMessages(true)
+  }
 
   const logOut = async() =>{
     await signOut(auth)
@@ -31,6 +37,7 @@ const Navbar = () => {
       console.log(error)
     })
   }
+
   const fetchUser = async() =>{
     try{
         const colRef = doc(db,"users",userData.uid)
@@ -81,7 +88,7 @@ const Navbar = () => {
       </div>
       <div className="second-section">
         { userRole === "Admin" &&
-          <div className="messages-icon-box">
+          <div className="messages-icon-box" onClick={displayMessages}>
           <Bell/>
           <span>{ messages && messages.length > 0 ? messages.length : 0}</span>
         </div>
@@ -127,8 +134,8 @@ const Navbar = () => {
             </div>
           )
         }
-       
       </div>
+      {showMessages && <Messages setShowMessages={setShowMessages} messages={messages}/>}
     </div>
   )
 }

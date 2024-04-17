@@ -34,6 +34,7 @@ const AllProducts = () => {
         await deleteProductFromWarehouse(Id,warehouse)
       }catch(error){
          console.log(error)
+         toast.error("Network Error")
       }
       
     }

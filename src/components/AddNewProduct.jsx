@@ -49,6 +49,7 @@ const AddNewProduct = () => {
 
       uploadTask.on('state_changed', 
       (snapshot) => {
+        setdisabled(true)
         setCancel(true)
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           setTrackProgress(progress)
@@ -78,6 +79,7 @@ const AddNewProduct = () => {
     const addNewProduct =  async() =>{
        try{
        setLoading(true)
+       setdisabled(true)
        setCancel(true)
        const colRef = collection(db,"Products")
        const productArrayReference = doc(colRef,"Product Arrays")
@@ -107,7 +109,8 @@ const AddNewProduct = () => {
               navigate(-1)
             }
        }catch(error){
-        console.log("error")
+        console.log(error)
+        setdisabled(false)
         setCancel(false)
         setLoading(false)
         setErrMsg("Bad Connection! Check Your Network")

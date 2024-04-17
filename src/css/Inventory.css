@@ -18,3 +18,31 @@
     border:none;
     font-size:15px;
 }
+.userWarehouse-products-container{
+    width:95%;
+    padding:10px;
+    margin-left:30px;
+    margin-top:10px;
+    background-color: #FFFFFF;
+}
+.userWarehouse-products-container ul{
+    margin-top:20px;
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    border-bottom:2px solid black;
+}
+.userWarehouse-products-container ul li{
+    list-style: none;
+    font-weight:600;
+}
+.item-imageBox img{
+    height:45px;
+    width:45px;
+}
+.item{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    font-weight:600;
+    margin-top:10px;
+    border-bottom:2px solid grey;
+}

@@ -30,10 +30,10 @@ const AddNewWarehouse = () => {
    const addWarehouse = async() =>{
     try{
       setLoading(true)
+      setdisabled(true)
       setCancel(true)
         const colRef = doc(db,"Warehouses",name);
         await setDoc(colRef,{
-            id:String(Math.round(Math.random()*1000)),
             name:name,
             location:location,
             contact:contact,
@@ -47,6 +47,7 @@ const AddNewWarehouse = () => {
         setLoading(false)
         navigate(-1)
     }catch(error){
+      setdisabled(false)
       setLoading(false)
       setCancel(false)
      setErrMsg("Bad Connection! Check Your Network")

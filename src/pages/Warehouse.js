@@ -63,6 +63,7 @@ const Warehouse = () =>{
         const allWarehouses = doc(colRef,name)
         await deleteDoc(allWarehouses)
         await deleteWarehouseFromUser(name)
+        await fetchRegularUsers()
       }catch(error){
         toast.error("Bad Internet Connection")
         console.log(error)
@@ -89,7 +90,6 @@ const Warehouse = () =>{
     useEffect(()=>{
         fetchWarehouses()
         fetchRegularUsers()
-        deleteWarehouseFromUser()
     },[])
 
   return (
@@ -124,7 +124,9 @@ const Warehouse = () =>{
                       onClick={()=>displayProducts(warehouse.id)} 
                       size={20} 
                       style={{color:"green",cursor:"pointer"}}/>
-
+                      <Link to={`/warehouse/edit/${warehouse.name}`}>
+                      <Pencil size={20} style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
+                      </Link>
                       <Trash 
                       size={20} 
                       onClick={()=>deleteWarehouse(warehouse.name)} 

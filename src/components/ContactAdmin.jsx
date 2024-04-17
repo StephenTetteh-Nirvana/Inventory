@@ -4,17 +4,16 @@ import { auth, db } from "../firebase"
 import { collection, getDocs, getDoc, updateDoc,doc } from "firebase/firestore"
 import Loader from "../components/Loader.jsx"
 import "../css/ContactAdmin.css"
-import { toast } from "react-toastify"
 
 
-const ContactAdmin = ({setShowPopUp}) => {
+const ContactAdmin = ({setShowPopUp,setMsgSent}) => {
     const admins = localStorage.getItem("Admins") !== null ? JSON.parse(localStorage.getItem("Admins")) : []
     const [disabled] = useState(true)
     const [admin,setAdmin] = useState("")
     const [errMsg,setErrMsg] = useState("")
     const [loading,setLoading] = useState(false)
 
-    const message = "Hi Admin,please assign me to a warehouse !!!"
+    const message = "Hi Admin,please assign me to a warehouse."
 
     const closePopup = () =>{
         setShowPopUp(false)
@@ -37,6 +36,7 @@ const ContactAdmin = ({setShowPopUp}) => {
                 await addMsg(document,adminDocRef)
                 setShowPopUp(false) 
                 localStorage.setItem("Sent",JSON.stringify(true))
+                setMsgSent(true)
              }
             })
         }catch(error){
@@ -51,10 +51,14 @@ const ContactAdmin = ({setShowPopUp}) => {
         const userDocRef = doc(db,"users",user.uid)
         const userDocData = await getDoc(userDocRef)
         const messageObj = {
+            Img:userDocData.data().Img,
             name:userDocData.data().userName,
             email:userDocData.data().email,
             message:message
         }
+        await updateDoc(userDocRef,{
+            sent:true
+        })
         const existingMessages = document.data().messages || [];
         const updatedMessages = [...existingMessages, messageObj];
         await updateDoc(adminDocRef,{
