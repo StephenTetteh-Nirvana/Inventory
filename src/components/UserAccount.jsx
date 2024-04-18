@@ -1,4 +1,4 @@
-import { ChevronLeft } from "lucide-react"
+import {Images, ChevronLeft } from "lucide-react"
 import noUser from "../images/no-user-Img.png"
 import "../css/UserAccount.css"
 import { useEffect, useState } from "react"
@@ -15,11 +15,17 @@ const UserAccount = ({setViewUser}) => {
     const [role,setRole] = useState("")
     const [warehouse,setWarehouse] = useState("")
     const [date,setDate] = useState("")
+    const [disabled,setdisabled] = useState(true)
     const [editing,setEditing] = useState(false)
     const [loading,setLoading] = useState(false)
     
     const closeUser = () =>{
         setViewUser(false)
+    }
+
+    const allowEditing = () =>{
+         setEditing(true)
+         setdisabled(false)
     }
 
     const editUserInfo = async() =>{
@@ -41,8 +47,6 @@ const UserAccount = ({setViewUser}) => {
                 autoClose:1500
             })
             setViewUser(false)
-            setLoading(false)
-            setEditing(false)
         }
         }catch(error){
             console.log(error)
@@ -67,11 +71,14 @@ const UserAccount = ({setViewUser}) => {
             </div>
             <div className="user-first-section">
                <img src={userData.Img ? userData.Img : noUser} alt="user"/>
+               <span>{!disabled && <Images />}</span>
             </div>
             <div className="user-second-section">
                 <div>
                     <label>Username</label>
-                    <input type="text" value={username} onChange={(e)=>setUserName(e.target.value)} />
+                    <input type="text" disabled={disabled} 
+                    style={disabled ? {cursor:"not-allowed"}:{}}
+                    value={username} onChange={(e)=>setUserName(e.target.value)} />
                 </div>
                 <div>
                     <label>Role</label>
@@ -92,7 +99,7 @@ const UserAccount = ({setViewUser}) => {
             { editing ? (
                loading ? (<Loader/>):(<button onClick={editUserInfo}>Save</button>)
             ) : (
-                <button onClick={()=>setEditing(true)}>Edit</button>
+                <button onClick={allowEditing}>Edit</button>
             )}
         </div>
     </div>
