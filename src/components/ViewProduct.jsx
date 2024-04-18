@@ -1,4 +1,5 @@
 import { X } from "lucide-react"
+import noImg from "../images/camera-off.png"
 import "../css/ViewProduct.css"
 
 
@@ -11,7 +12,7 @@ const ViewProduct = ({product,setViewProduct}) => {
         <div className="product-displayBox">
             <X onClick={hideProductDetails} style={{color:"white",marginLeft:"100%",cursor:"pointer"}}/>
             <div className="product-displayImg">
-                <img src={product.Img}/>
+                <img src={product.Img ? product.Img : noImg}/>
             </div>
             <div className="product-displayDetails">
               <p>Product : {product.product}</p>

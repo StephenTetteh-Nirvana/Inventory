@@ -1,5 +1,5 @@
 import { useState,useEffect } from "react"
-import { Eye,Pencil,Trash } from "lucide-react"
+import { Eye,Trash } from "lucide-react"
 import { onSnapshot,collection, doc, deleteDoc, getDocs,updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { Link } from "react-router-dom";

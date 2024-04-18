@@ -24,13 +24,14 @@ const Register = () => {
          const user = auth.currentUser;
           const colRef = collection(db,"users")
           const userDoc = doc(colRef,user.uid)
+          const date = new Date().toDateString();
+          const time = new Date().toLocaleTimeString()
           await setDoc(userDoc,{
             userName:userName,
             email:email,
-            warehouse:"Not Assigned",
             role:role,
-            password:password,
-            createdAt:serverTimestamp()
+            warehouse:`${role === "Admin" ? "Can't Assign Admin" : "Not Assigned"}`,
+            createdAt:`${date} at ${time}`
           })
           navigate("/login")
       }catch(error){

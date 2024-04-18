@@ -18,9 +18,9 @@ import EditWarehouse from "./pages/EditWarehouse.js"
 import Users from "./pages/Users.js"
 import NotFound from "./pages/NotFound.js"
 import NewUser from "./pages/NewUser.js"
-import "./App.css"
 import Inventory from "./pages/Inventory.js"
 import NewInventoryPage from "./pages/NewInventoryPage.js"
+import "./App.css"
 
 
 function App() {

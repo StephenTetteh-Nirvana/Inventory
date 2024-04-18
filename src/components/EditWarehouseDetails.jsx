@@ -39,8 +39,12 @@ const EditWarehouseDetails = () => {
                    contact:contact,
                    manager:`${NewManager === "" ? manager : NewManager }`
                 })
-                await unAssignManager()
-                await assignWarehouseToUser()
+                if(NewManager !== ""){
+                    await unAssignManager()
+                    await assignWarehouseToUser() 
+                }else{
+                    await assignWarehouseToUser() 
+                }
                 toast.success("Warehouse Updated",{
                     autoClose:1000
                 })

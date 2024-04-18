@@ -8,6 +8,7 @@ import { toast } from "react-toastify"
 import Logo from "../images/logo.png"
 import Messages from "./Messages"
 import "../css/Navbar.css"
+import UserAccount from "./UserAccount"
 
 
 const Navbar = () => {
@@ -19,11 +20,16 @@ const Navbar = () => {
   const [userImg,setUserImg] = useState(null)
   const [messages,setMessages] = useState([])
   const [showMessages,setShowMessages] = useState(false)
+  const [viewUser,setViewUser] = useState(false)
 
   const navigate = useNavigate()
 
   const displayMessages = () =>{
     setShowMessages(true)
+  }
+
+  const viewProfile = () =>{
+    setViewUser(true)
   }
 
   const logOut = async() =>{
@@ -42,10 +48,12 @@ const Navbar = () => {
     try{
         const colRef = doc(db,"users",userData.uid)
         const docRef = await getDoc(colRef)
+        const docData = docRef.data()
     
         if(docRef.exists){
         setDisplayName(docRef.data().userName[0])
         setUserImg(docRef.data().Img)
+        localStorage.setItem("userData",JSON.stringify(docData))
         }
         setLoggedIn(true)
     }catch(error){
@@ -78,7 +86,7 @@ const Navbar = () => {
         setLoggedIn(false)
       }
      })
-  },[messages])
+  },[])
   
   return (
     <div className="navbar-container">
@@ -107,7 +115,7 @@ const Navbar = () => {
               
               <div className="user-popup">
                 <ul>
-                  <li>
+                  <li onClick={viewProfile}>
                     <User/>
                     <p>Account</p>
                   </li>
@@ -136,6 +144,7 @@ const Navbar = () => {
         }
       </div>
       {showMessages && <Messages setShowMessages={setShowMessages} messages={messages}/>}
+      {viewUser && <UserAccount setViewUser={setViewUser}/>}
     </div>
   )
 }

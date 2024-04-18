@@ -62,6 +62,7 @@ const AllProducts = () => {
       }  
     }
 
+
   return (
     <div>
         {products.map((product,index)=>(

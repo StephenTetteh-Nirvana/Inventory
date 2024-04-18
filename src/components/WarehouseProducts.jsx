@@ -25,8 +25,7 @@ const WarehouseProducts = ({products,setViewProducts}) => {
           <li>Date Created</li>
          </ul>
          <div>
-          {
-            products.length > 0 ? (
+          {products && products.length > 0 ? (
               products.map((product,index)=>(
                 <div className="warehouse-product" key={index}>
                    <div className="ImageBox">
