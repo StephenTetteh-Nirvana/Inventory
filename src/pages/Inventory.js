@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import {Link} from "react-router-dom"
 import Navbar from "../components/Navbar"
-import { collection, doc, getDoc, getDocs } from "firebase/firestore"
+import { collection, doc, getDoc, getDocs,onSnapshot } from "firebase/firestore"
 import { db } from "../firebase"
-import { CheckCheck,Pencil,Trash } from "lucide-react"
+import { CheckCheck,Pencil } from "lucide-react"
 import "../css/Inventory.css" 
 import ContactAdmin from "../components/ContactAdmin"
 import noImg from "../images/camera-off.png"
@@ -22,6 +22,20 @@ const Inventory = () => {
         setShowPopUp(true)
     }
 
+    const fetchProducts = async() =>{
+      const colRef = collection(db,"Products")
+      const unsub = onSnapshot(doc(colRef,"Product Arrays"), (snapshot) => {
+        try {
+          let list = [];
+          list = snapshot.data().products;
+          localStorage.setItem("products",JSON.stringify(list))
+      } catch (error) {
+          console.error("Error fetching data: ", error);
+      }
+    });
+    return unsub;
+    }
+
     const checkUserState = async() =>{
       try{
           const colRef = collection(db,"users")
@@ -36,6 +50,7 @@ const Inventory = () => {
               localStorage.setItem("Assigned",JSON.stringify(true))
               const foundWarehouse = doc(db,"Warehouses",assignedWarehouse)
               const docRef =  await getDoc(foundWarehouse)
+              localStorage.setItem("userWarehouse",JSON.stringify(assignedWarehouse))
               setWarehouseProducts(docRef.data().products)
           }
       }catch(error){
@@ -58,8 +73,9 @@ const Inventory = () => {
     }
 
     useEffect(()=>{
-        checkUserState()
-        fetchAdmins()
+      fetchProducts()
+      checkUserState()
+      fetchAdmins()
     },[])
 
   return (
@@ -68,6 +84,9 @@ const Inventory = () => {
        {assigned ? (
         <div className="userWarehouse-products-container">
           <h1>Products List</h1>
+          <Link to="/inventory/add">
+          <button>Add New Product</button>
+          </Link>
           <ul>
           <li>Product</li>
           <li>Name</li>
@@ -85,10 +104,9 @@ const Inventory = () => {
                    <div>{item.price}</div>
                    <div>{item.quantity}</div>
                    <div>
-                    <Link to="">
+                    <Link to={`/dashboard/editProduct/${item.id}`}>
                     <Pencil size={20} style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
                     </Link>
-                    <Trash size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}} />
                     </div>
                    <div>{item.createdAt}</div>
                 </div>

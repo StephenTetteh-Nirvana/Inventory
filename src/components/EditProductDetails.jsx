@@ -16,7 +16,6 @@ const EditProductDetails = () => {
   const [price,setPrice] = useState('')
   const [quantity,setQuantity] = useState('')
   const [loading,setLoading] = useState(false)
-  const [disabled] = useState(false)
   const navigate = useNavigate()
 
    const closeuserPopup = () =>{

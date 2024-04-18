@@ -1,0 +1,65 @@
+.new-product-container{
+    position: absolute;
+    left:0;
+    top:0;
+    background:linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.8));
+    width:100%;
+    min-height:100vh;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    z-index:999;
+}
+.new-product-form{
+    width:350px;
+    padding:20px;
+    background-color: #FFFFFF;
+}
+.all-newProduct-inputs{
+    width:100%;
+    margin-top:10px;
+}
+.all-newProduct-inputs > div{
+    margin-top:10px;
+}
+.warehouse-section select{
+    width:101%;
+    padding:10px;
+    margin-top:6px;
+    font-weight:600;
+}
+.new-product-name input,.new-product-price input,.new-product-quantity input{
+  width:95%;
+  padding:10px;
+  margin-top:6px;
+  font-weight:600;
+}
+.required-h3{
+    text-align:center;
+    margin-top:20px;
+    color:red;
+}
+.new-product-buttons{
+    width:100%;
+    margin-top:20px;
+    margin-left:62%;
+}
+.save-product-btn{
+    background-color:#2666CF;
+    color:white;
+    border:none;
+    cursor:pointer;
+    padding:8px;
+    width:60px;
+    border-radius:3px;
+}
+.cancel-product-btn{
+    background-color:red;
+    color:white;
+    border:none;
+    cursor:pointer;
+    padding:8px;
+    width:70px;
+    margin-left:10px;
+    border-radius:3px;
+}

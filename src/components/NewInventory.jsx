@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react"
-import "../css/AddNewProduct.css"
 import { collection, doc , getDoc, getDocs, updateDoc } from "firebase/firestore"
 import { db,storage } from "../firebase.js"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import { Loader,Images } from "lucide-react"
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
+import "../css/NewInventory.css"
 import noUser from "../images/camera-off.png"
 
 
 const AddNewProduct = () => {
-  const warehouseData = localStorage.getItem("warehouses") !== null ? JSON.parse(localStorage.getItem("warehouses")) : []
+  const warehouseData = localStorage.getItem("userWarehouse") !== null ? JSON.parse(localStorage.getItem("userWarehouse")) : []
   const [file,setFile] = useState("")
   const [imageUrl,setImageUrl] = useState(null)
   const [Trackprogress,setTrackProgress] = useState(null)
   
-  const [warehouse,setWarehouse] = useState("")
   const [product,setProduct] = useState("")
   const [price,setPrice] = useState("")
   const [quantity,setQuantity] = useState("")
@@ -27,7 +26,7 @@ const AddNewProduct = () => {
 
   const navigate = useNavigate()
     const closePopup = () =>{
-        navigate("/dashboard")
+        navigate(-1)
     }
 
     const handleProductImg = (e) =>{
@@ -95,7 +94,7 @@ const AddNewProduct = () => {
               price:price,
               quantity:quantity,
               Img:imageUrl,
-              warehouse:warehouse === "" ? "Not Assigned" : warehouse,
+              warehouse:warehouseData,
               createdAt:`${date} at ${time}`
            }
             await updateDoc(productArrayReference,{
@@ -127,17 +126,11 @@ const AddNewProduct = () => {
         createdAt:newProduct.createdAt
       }
       try{
-        const colRef = collection(db,"Warehouses")
-        const docRef = await getDocs(colRef)
-     
-        docRef.forEach(async(document)=>{
-          if(warehouse === document.id){
-            const warehouseRef = doc(db,"Warehouses",document.id)
-            const warehouseProductsArr = document.data().products
-            await updateDoc(warehouseRef,{
-             products:[...warehouseProductsArr,updatedProduct]
-           })
-          }
+        const docRef = doc(db,"Warehouses",warehouseData)
+        const docData = await getDoc(docRef)
+        const warehouseProductsArr = docData.data().products
+        await updateDoc(docRef,{
+            products:[...warehouseProductsArr,updatedProduct]
         })
       }catch(error){
         console.log(error)
@@ -145,24 +138,14 @@ const AddNewProduct = () => {
     }
 
 
-    const fetchWarehouses = () =>{
-      try{
-        if(warehouseData.length > 0 && warehouse === ""){
-          setWarehouse(warehouseData[0].name);
-        }
-      }catch(error){
-        console.log(error)
-      }
-    }
 
     useEffect(()=>{
-      fetchWarehouses()
        if(product !== "" && price !== "" && quantity !== ""){
         setdisabled(false)
        }else{
         setdisabled(true)
        }
-    },[warehouse,product,price,quantity])
+    },[product,price,quantity])
 
 
   return (
@@ -181,12 +164,8 @@ const AddNewProduct = () => {
         }
           <div className="all-newProduct-inputs">
           <div className="warehouse-section">
-                <label>Select Warehouse</label><br/>
-                <select onChange={(e)=>setWarehouse(e.target.value)}>
-                {warehouseData.length > 0 ? warehouseData.map((warehouse)=>(
-                      <option key={warehouse.id}>{warehouse.name}</option>
-                    )) : (<option>No warehouse to add product!!</option>)}
-                </select>
+              <label>Warehouse Name</label><br/>
+              <input type="text" value={warehouseData} readOnly/>
             </div>
             <div className="new-product-name">
                 <label>Product Name</label><br/>

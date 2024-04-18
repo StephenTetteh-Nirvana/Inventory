@@ -20,6 +20,8 @@ import NotFound from "./pages/NotFound.js"
 import NewUser from "./pages/NewUser.js"
 import "./App.css"
 import Inventory from "./pages/Inventory.js"
+import NewInventoryPage from "./pages/NewInventoryPage.js"
+
 
 function App() {
   const location = useLocation()
@@ -54,6 +56,7 @@ return(
         <Route path="/users" element={<Users/>}></Route>
         <Route path="/users/new" element={<NewUser/>}></Route>
         <Route path="/inventory" element={<Inventory/>}></Route>
+        <Route path="/inventory/add" element={<NewInventoryPage/>}></Route>
       </Routes>
   </div>
 )
