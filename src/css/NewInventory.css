@@ -22,13 +22,7 @@
 .all-newProduct-inputs > div{
     margin-top:10px;
 }
-.warehouse-section select{
-    width:101%;
-    padding:10px;
-    margin-top:6px;
-    font-weight:600;
-}
-.new-product-name input,.new-product-price input,.new-product-quantity input{
+.warehouse-section input,.new-product-name input,.new-product-price input,.new-product-quantity input{
   width:95%;
   padding:10px;
   margin-top:6px;

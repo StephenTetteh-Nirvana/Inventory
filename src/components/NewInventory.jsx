@@ -67,6 +67,7 @@ const AddNewProduct = () => {
       }, 
       () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setdisabled(false)
           setCancel(false)
           setTrackProgress(null)
           console.log('File available at', downloadURL);
@@ -164,7 +165,7 @@ const AddNewProduct = () => {
         }
           <div className="all-newProduct-inputs">
           <div className="warehouse-section">
-              <label>Warehouse Name</label><br/>
+              <label>Assigned Warehouse</label><br/>
               <input type="text" value={warehouseData} readOnly/>
             </div>
             <div className="new-product-name">

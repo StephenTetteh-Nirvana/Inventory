@@ -68,6 +68,7 @@ const AddNewProduct = () => {
       }, 
       () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setdisabled(false)
           setCancel(false)
           setTrackProgress(null)
           console.log('File available at', downloadURL);

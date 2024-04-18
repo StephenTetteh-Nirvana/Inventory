@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react"
 import {Link} from "react-router-dom"
 import Navbar from "../components/Navbar"
-import { collection, doc, getDoc, getDocs,onSnapshot } from "firebase/firestore"
+import { collection, doc, getDoc, getDocs,onSnapshot,updateDoc } from "firebase/firestore"
 import { db } from "../firebase"
-import { CheckCheck,Pencil } from "lucide-react"
+import { CheckCheck,Pencil, Trash } from "lucide-react"
+import { toast } from "react-toastify"
 import "../css/Inventory.css" 
 import ContactAdmin from "../components/ContactAdmin"
 import noImg from "../images/camera-off.png"
 
 const Inventory = () => {
     const userData = localStorage.getItem("user") !== null ? JSON.parse(localStorage.getItem("user")) : []
+    const products = localStorage.getItem("products") !== null ? JSON.parse(localStorage.getItem("products")) : []
     const sent = localStorage.getItem("Sent") !== null ? JSON.parse(localStorage.getItem("Sent")) : []
     const userAssigned = localStorage.getItem("Assigned") !== null ? JSON.parse(localStorage.getItem("Assigned")) : []
 
@@ -49,9 +51,13 @@ const Inventory = () => {
               setAssigned(true)
               localStorage.setItem("Assigned",JSON.stringify(true))
               const foundWarehouse = doc(db,"Warehouses",assignedWarehouse)
-              const docRef =  await getDoc(foundWarehouse)
-              localStorage.setItem("userWarehouse",JSON.stringify(assignedWarehouse))
-              setWarehouseProducts(docRef.data().products)
+              const unsub = onSnapshot(foundWarehouse, (snapshot) => {
+                  let list = [];
+                  list = snapshot.data().products;
+                  setWarehouseProducts(list)
+                  localStorage.setItem("warehouseProducts",JSON.stringify(list))
+              })
+              return unsub;
           }
       }catch(error){
           console.log(error)
@@ -72,6 +78,42 @@ const Inventory = () => {
       })
     }
 
+    const deleteProduct = async(Id,warehouse) =>{
+      try{
+        const colRef = collection(db,"Products")
+        const productArrayReference = doc(colRef,"Product Arrays")
+  
+        const foundProduct = products.filter((p)=>p.id !== Id)
+        localStorage.setItem("products",JSON.stringify(foundProduct))
+        await updateDoc(productArrayReference,{
+          products:foundProduct
+        })
+        await deleteProductFromWarehouse(Id,warehouse)
+      }catch(error){
+         console.log(error)
+         toast.error("Network Error")
+      }
+      
+    }
+
+    const deleteProductFromWarehouse = async(Id,warehouse) => {
+      try{
+        const colRef = collection(db,"Warehouses")
+        const docRef = doc(colRef,warehouse)
+        const docData = await getDoc(docRef)
+        const productsArr = docData.data().products
+        const productToDelete = productsArr.filter((p)=>p.id !== Id)
+        await updateDoc(docRef,{
+          products:productToDelete
+        })
+        toast.error("Product Deleted",{
+          autoClose:1000
+        })
+      }catch(error){
+        console.log(error)
+      }  
+    }
+
     useEffect(()=>{
       fetchProducts()
       checkUserState()
@@ -83,10 +125,12 @@ const Inventory = () => {
       <Navbar/>
        {assigned ? (
         <div className="userWarehouse-products-container">
+          <div className="header-section">
           <h1>Products List</h1>
           <Link to="/inventory/add">
           <button>Add New Product</button>
           </Link>
+          </div>
           <ul>
           <li>Product</li>
           <li>Name</li>
@@ -107,6 +151,7 @@ const Inventory = () => {
                     <Link to={`/dashboard/editProduct/${item.id}`}>
                     <Pencil size={20} style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
                     </Link>
+                    <Trash onClick={()=>deleteProduct(item.id,item.warehouse)} size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}}/>
                     </div>
                    <div>{item.createdAt}</div>
                 </div>

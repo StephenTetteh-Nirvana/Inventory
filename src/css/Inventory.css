@@ -35,6 +35,17 @@
     list-style: none;
     font-weight:600;
 }
+.header-section{
+    display:flex;
+    justify-content: space-between;
+}
+.header-section button{
+    padding:8px 50px;
+    color:white;
+    background-color: #2666CF;
+    border:none;
+    cursor: pointer;
+}
 .item-imageBox img{
     height:45px;
     width:45px;
