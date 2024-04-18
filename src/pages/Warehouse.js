@@ -49,8 +49,8 @@ const Warehouse = () =>{
       localStorage.setItem("regularUsers",JSON.stringify(userList))
    }
 
-   const displayProducts = (id) =>{
-    const foundProduct = warehouses.find((p)=>p.id === id)
+   const displayProducts = (name) =>{
+    const foundProduct = warehouses.find((w)=>w.name === name)
         if(foundProduct){
             setProducts(foundProduct.products)
             setViewProducts(true)
@@ -121,7 +121,7 @@ const Warehouse = () =>{
                     <div>{warehouse.manager ? warehouse.manager : "No Manager"}</div>
                     <div>
                       <Eye 
-                      onClick={()=>displayProducts(warehouse.id)} 
+                      onClick={()=>displayProducts(warehouse.name)} 
                       size={20} 
                       style={{color:"green",cursor:"pointer"}}/>
                       <Link to={`/warehouse/edit/${warehouse.name}`}>

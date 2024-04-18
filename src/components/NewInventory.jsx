@@ -67,7 +67,7 @@ const AddNewProduct = () => {
       }, 
       () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setdisabled(false)
+          setdisabled(false)
           setCancel(false)
           setTrackProgress(null)
           console.log('File available at', downloadURL);
@@ -124,6 +124,7 @@ const AddNewProduct = () => {
         price:newProduct.price,
         quantity:newProduct.quantity,
         Img:newProduct.Img,
+        warehouse:newProduct.warehouse,
         createdAt:newProduct.createdAt
       }
       try{

@@ -56,6 +56,7 @@ const Inventory = () => {
                   list = snapshot.data().products;
                   setWarehouseProducts(list)
                   localStorage.setItem("warehouseProducts",JSON.stringify(list))
+                  localStorage.setItem("userWarehouse",JSON.stringify(snapshot.data().name))
               })
               return unsub;
           }
