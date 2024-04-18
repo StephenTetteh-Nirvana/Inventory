@@ -125,6 +125,7 @@ const AddNewProduct = () => {
         price:newProduct.price,
         quantity:newProduct.quantity,
         Img:newProduct.Img,
+        warehouse:newProduct.warehouse,
         createdAt:newProduct.createdAt
       }
       try{

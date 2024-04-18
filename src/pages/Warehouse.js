@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { collection, getDocs, deleteDoc, onSnapshot, doc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, getDoc, deleteDoc, onSnapshot, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase.js";
 import { Eye, Trash, Pencil } from "lucide-react";
 import { toast } from "react-toastify";
@@ -63,6 +63,7 @@ const Warehouse = () =>{
         const allWarehouses = doc(colRef,name)
         await deleteDoc(allWarehouses)
         await deleteWarehouseFromUser(name)
+        unAssignProductsFromWarehouse(name)
         await fetchRegularUsers()
       }catch(error){
         toast.error("Bad Internet Connection")
@@ -85,6 +86,28 @@ const Warehouse = () =>{
            })
         }
         })
+  }
+
+  const unAssignProductsFromWarehouse = async(name) =>{
+    const colRef = collection(db,"Products")
+    const docRef = doc(colRef,"Product Arrays")
+    const docData = await getDoc(docRef)
+    const productsArr = docData.data().products
+    
+      const updatedProductArray = productsArr.map((product)=>{
+        if(product.warehouse === name){
+          const updatedProduct = {
+            ...product,
+            warehouse:"Not Assigned"
+          }
+          return updatedProduct;
+        }else{
+          return product;
+        }
+      })
+      await updateDoc(docRef,{
+        products:updatedProductArray
+    })
   }
 
     useEffect(()=>{
