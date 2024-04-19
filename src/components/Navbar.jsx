@@ -119,10 +119,6 @@ const Navbar = () => {
                     <User/>
                     <p>Account</p>
                   </li>
-                  <li>
-                    <Settings />
-                    <p>Settings</p>
-                  </li>
                   <li onClick={logOut}>
                     <LogOut />
                     <p>LogOut</p>

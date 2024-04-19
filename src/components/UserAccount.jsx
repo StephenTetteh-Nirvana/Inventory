@@ -15,6 +15,7 @@ const UserAccount = ({setViewUser}) => {
     const [role,setRole] = useState("")
     const [warehouse,setWarehouse] = useState("")
     const [date,setDate] = useState("")
+    const [NameDisabled,setNameDisabled] = useState(true)
     const [disabled,setdisabled] = useState(true)
     const [editing,setEditing] = useState(false)
     const [loading,setLoading] = useState(false)
@@ -25,7 +26,7 @@ const UserAccount = ({setViewUser}) => {
 
     const allowEditing = () =>{
          setEditing(true)
-         setdisabled(false)
+         setNameDisabled(false)
     }
 
     const editUserInfo = async() =>{
@@ -71,28 +72,28 @@ const UserAccount = ({setViewUser}) => {
             </div>
             <div className="user-first-section">
                <img src={userData.Img ? userData.Img : noUser} alt="user"/>
-               <span>{!disabled && <Images />}</span>
+               <span>{!NameDisabled && <Images />}</span>
             </div>
             <div className="user-second-section">
                 <div>
                     <label>Username</label>
-                    <input type="text" disabled={disabled} 
-                    style={disabled ? {cursor:"not-allowed"}:{}}
+                    <input type="text" disabled={NameDisabled} 
+                    style={NameDisabled ? {cursor:"not-allowed"}:{}}
                     value={username} onChange={(e)=>setUserName(e.target.value)} />
                 </div>
                 <div>
                     <label>Role</label>
-                    <input style={{outline:"none"}}
+                    <input style={disabled ? {cursor:"not-allowed"}:{}} disabled={disabled} 
                     type="text" value={role} readOnly />
                 </div>
                 <div>
                     <label>Warehouse</label>
-                    <input style={{outline:"none"}}
+                    <input style={disabled ? {cursor:"not-allowed"}:{}} disabled={disabled} 
                      type="text" value={warehouse} readOnly/>
                 </div>
                 <div>
                     <label>Account Created On</label>
-                    <input style={{outline:"none"}}
+                    <input style={disabled ? {cursor:"not-allowed"}:{}} disabled={disabled} 
                      type="text" value={date} readOnly/>
                 </div>
             </div>
