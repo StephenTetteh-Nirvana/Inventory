@@ -1,7 +1,6 @@
 import {Routes,Route, useNavigate} from "react-router-dom"
-import { auth } from "./firebase.js"
-import { onAuthStateChanged } from "firebase/auth"
 import { useEffect } from "react"
+import { auth } from "./firebase.js";
 import { useLocation } from "react-router-dom"
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -24,16 +23,16 @@ import "./App.css"
 
 
 function App() {
+  const userRole = localStorage.getItem("userRole") !== null ? JSON.parse(localStorage.getItem("userRole")) : []
   const location = useLocation()
   const navigate = useNavigate()
 
   useEffect(()=>{
-    onAuthStateChanged(auth,(user)=>{
-      if(!user && (location.pathname === "/dashboard" || location.pathname === "/warehouse")){
-        console.log("no-user")
-        navigate("/login")
-      }
-    })
+    if(userRole === "Regular" && 
+    (location.pathname === "/dashboard" || location.pathname === "/warehouse" || location.pathname === "/users")){
+      console.log("no-user",)
+      navigate("/")
+    }
   },[])
   
  

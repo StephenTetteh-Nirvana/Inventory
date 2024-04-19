@@ -140,7 +140,7 @@ const Inventory = () => {
           <li>Actions</li>
           <li>Date Created</li>
           </ul>
-            {warehouseProducts.length > 0 ? (warehouseProducts.map((item,index)=>(
+            {warehouseProducts && warehouseProducts.length > 0 ? (warehouseProducts.map((item,index)=>(
                 <div key={index} className="item">
                    <div className="item-imageBox">
                     <img src={item.Img ? item.Img : noImg } alt="Product"/>

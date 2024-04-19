@@ -82,6 +82,7 @@ const Warehouse = () =>{
         if(UserRole === "Regular" && warehouseField === name ){
            const userRef = doc(db,"users",userDoc.id)
            await updateDoc(userRef,{
+            sent:false,
             warehouse:"Not Assigned"
            })
         }

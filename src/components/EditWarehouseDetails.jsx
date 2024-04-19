@@ -30,15 +30,30 @@ const EditWarehouseDetails = () => {
             if(name !== "" && location !== "" && contact !== ""){
                 setLoading(true)
                 const docRef = doc(db,"Warehouses",warehouseName)
-                await deleteDoc(docRef)
-    
+                const docData = await getDoc(docRef)
+                const productArr = docData.data().products
                 const newDocRef = doc(db,"Warehouses",name)
                 await setDoc(newDocRef,{
                    name:name,
                    location:location,
                    contact:contact,
-                   manager:`${NewManager === "" ? manager : NewManager }`
+                   manager:`${NewManager === "" ? manager : NewManager }`,
+                   products:productArr
                 })
+                const newDocData = await getDoc(newDocRef)
+                const products = newDocData.data().products
+                const updatedProductArray = products.map((product)=>{
+                      const updatedProduct = {
+                        ...product,
+                        warehouse:name
+                }
+                return updatedProduct;
+                })
+                await updateDoc(newDocRef,{
+                    products:updatedProductArray
+                })
+                await ReAssignProductWarehouse(warehouseName)
+                await deleteDoc(docRef)
                 if(NewManager !== ""){
                     await unAssignManager()
                     await assignWarehouseToUser() 
@@ -60,6 +75,24 @@ const EditWarehouseDetails = () => {
             setLoading(false)
             toast.error("Network Error")
         }
+    }
+
+    const ReAssignProductWarehouse = async(warehouseName) =>{
+       const colRef = collection(db,"Products")
+       const docRef = doc(colRef,"Product Arrays")
+       const docData = await getDoc(docRef)
+
+       const allProducts = docData.data().products;
+       const updatedProducts = allProducts.map((product) => {
+        if (product.warehouse === warehouseName) {
+            return { ...product, warehouse: name };
+        } else {
+            return product;
+        }
+        });
+        await updateDoc(docRef,{
+            products:updatedProducts
+        })
     }
 
     

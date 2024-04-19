@@ -4,7 +4,7 @@ import { auth,db } from "../firebase"
 import { Link,useNavigate } from "react-router-dom"
 import "../css/Register.css"
 import Logo from "../images/logo.png"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import  Loader  from "../components/Loader.jsx"
 
 const Register = () => {
@@ -13,6 +13,7 @@ const Register = () => {
   const [email,setEmail] = useState("")
   const [password,setPassword] = useState("")
   const [loading,setLoading] = useState(false)
+  const [disabled,setdisabled] = useState(false)
   const [errMsg,setErrMsg] = useState("")
   const navigate = useNavigate()
 
@@ -38,7 +39,7 @@ const Register = () => {
         setLoading(false)
         console.log(error)
         if (error.code === 'auth/invalid-email') {
-        setErrMsg("Invalid Email")
+        setErrMsg("Invalid Email(eg.stephen@gmail.com)")
         }else if (error.code === 'auth/invalid-credential') {
         setErrMsg("Invalid Credentials")
         }else if (error.code === 'auth/email-already-in-use') {
@@ -50,13 +51,21 @@ const Register = () => {
         else if (error.code === 'auth/email-already-exists') {
         setErrMsg("Email Already Exists")
         }else if (error.code === 'auth/weak-password') {
-          setErrMsg("Weak Password(6 characters or more")
+          setErrMsg("Weak Password(6 characters or more)")
         }
         else{
           setErrMsg("Bad Connection! Check Your Network")
         }
     } 
   }
+
+  useEffect(()=>{
+    if(userName !== "" && role !== "" && email !== "" && password !== ""){
+      setdisabled(false)
+    }else{
+      setdisabled(true)
+    }
+  },[userName,role,email,password,])
 
 
   return (
@@ -103,7 +112,9 @@ const Register = () => {
         { loading ? (
           <Loader/>
         ) : (
-          <button onClick={RegisterUser}>Sign Up</button>
+          <button disabled={disabled}
+           style={disabled ? {cursor:"not-allowed",opacity:"0.7"}:{}}
+           onClick={RegisterUser}>Sign Up</button>
         )}
         {<h3 className="error-msg">{errMsg}</h3>}
         <p>Already Have An Account?<Link to="/login">Login</Link></p>

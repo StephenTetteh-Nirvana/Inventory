@@ -1,6 +1,6 @@
 import { signInWithEmailAndPassword } from "firebase/auth"
 import {auth,db} from "../firebase"
-import { useState  } from "react"
+import { useEffect, useState  } from "react"
 import { useNavigate  } from "react-router-dom"
 import { Link } from "react-router-dom"
 import "../css/Login.css"
@@ -12,6 +12,7 @@ const Login = () => {
   const [email,setEmail] = useState("")
   const [password,setPassword] = useState("")
   const [errMsg,setErrMsg] = useState("")
+  const [disabled,setdisabled] = useState(false)
   const [loading,setLoading] = useState(false)
   const navigate = useNavigate()
 
@@ -40,15 +41,15 @@ const Login = () => {
       setLoading(false)
       console.log(error)
       if (error.code === 'auth/invalid-email') {
-      setErrMsg("Invalid Email")
+      setErrMsg("Invalid Email(eg.stephen@gmail.com)")
       }else if (error.code === 'auth/invalid-credential') {
-      setErrMsg("Invalid Credential")
+      setErrMsg("Wrong Email/Password")
       } else if (error.code === 'auth/wrong-password') {
       setErrMsg("Wrong Password")
       } else if (error.code === 'auth/user-not-found') {
       setErrMsg("User Not Found")
       }else if (error.code === 'auth/weak-password') {
-      setErrMsg("Weak Password")
+      setErrMsg("Weak Password(6 characters or more)")
       }
       else {
       setErrMsg("Bad Connection! Check Your Network")
@@ -56,6 +57,14 @@ const Login = () => {
       }
     }
   }
+
+  useEffect(()=>{
+      if(email !== "" && password !== ""){
+        setdisabled(false)
+      }else{
+        setdisabled(true)
+      }
+  },[email,password])
 
   return (
     <div className="login-container">
@@ -84,7 +93,9 @@ const Login = () => {
         { loading ? (
           <Loader/>
         ) : (
-          <button onClick={LoginUser}>Login</button>
+          <button disabled={disabled}
+          style={disabled ? {cursor:"not-allowed",opacity:"0.7"}:{}}
+          onClick={LoginUser}>Login</button>
         )}
         {<h3 className="error-msg">{errMsg}</h3>}
         <p>Don't Have An Account?<Link to="/register">Register</Link></p>
