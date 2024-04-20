@@ -9,8 +9,6 @@ import { toast } from "react-toastify"
 import "../css/UserAccount.css"
 import Swal  from "sweetalert2"
 import Loader from "./Loader"
-import LoadingDelete from "./LoadingDelete"
-
 
 
 const UserAccount = ({setViewUser}) => {
@@ -64,7 +62,6 @@ const UserAccount = ({setViewUser}) => {
     }
 
     const showPopup = () =>{
-        setdeleteLoader(true)
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -150,7 +147,6 @@ const UserAccount = ({setViewUser}) => {
             )}
             <button onClick={showPopup} style={{background:"red"}}>Delete Account</button>
         </div>
-        {deleteLoader && <loadingDelete/>}
     </div>
   )
 }
