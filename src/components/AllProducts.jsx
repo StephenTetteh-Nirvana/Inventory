@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Eye,Pencil,Trash } from "lucide-react"
+import { Eye,Pencil,Trash,Loader } from "lucide-react"
 import { Link } from "react-router-dom"
 import { updateDoc,doc,collection,getDocs } from "firebase/firestore"
 import { db } from "../firebase"
@@ -7,11 +7,11 @@ import "../css/AllProducts.css"
 import ViewProduct from "./ViewProduct"
 import { toast } from "react-toastify"
 
-
 const AllProducts = () => {
     const products = localStorage.getItem("products") !== null ? JSON.parse(localStorage.getItem("products")) : []
     const [viewProduct,setViewProduct] = useState(false)
     const [product,setProduct] = useState(null)
+    const [loading,setLoading] = useState(false)
 
     const toggleProductDetails = (id) =>{
         const foundProduct = products.find((p)=>p.id === id)
@@ -23,6 +23,7 @@ const AllProducts = () => {
 
     const deleteProduct = async(Id,warehouse) =>{
       try{
+        setLoading(true)
         const colRef = collection(db,"Products")
         const productArrayReference = doc(colRef,"Product Arrays")
   
@@ -32,7 +33,12 @@ const AllProducts = () => {
           products:foundProduct
         })
         await deleteProductFromWarehouse(Id,warehouse)
+        setLoading(false)
+        toast.error("Product Deleted",{
+          autoClose:1000
+        })
       }catch(error){
+        setLoading(false)
          console.log(error)
          toast.error("Network Error")
       }
@@ -54,9 +60,7 @@ const AllProducts = () => {
            })
           }
         })
-        toast.error("Product Deleted",{
-          autoClose:1000
-        })
+     
       }catch(error){
         console.log(error)
       }  
@@ -86,11 +90,23 @@ const AllProducts = () => {
                     </div>
 
                     <div>
-                    <Eye onClick={()=>toggleProductDetails(product.id)} size={20} style={{color:"green",cursor:"pointer"}}/>
-                    <Link to={`/dashboard/editProduct/${product.id}`}>
-                    <Pencil size={20} style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
-                    </Link>
-                    <Trash onClick={()=>deleteProduct(product.id,product.warehouse)} size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}} />
+                      { loading ? (
+                        <button className="delete-loader"><Loader size={17} style={{color:"white"}} /></button>
+                      ) : (
+                        <div>
+                        <Eye onClick={()=>toggleProductDetails(product.id)} 
+                        size={20} style={{color:"green",cursor:"pointer"}}
+                        />
+                        <Link to={`/dashboard/editProduct/${product.id}`}>
+                        <Pencil size={20} style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
+                        </Link>
+                        <Trash 
+                        onClick={()=>deleteProduct(product.id,product.warehouse)} 
+                        size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}}
+                        />
+                        </div>
+                      )
+                      }
                     </div>
                   </div>
                 ))

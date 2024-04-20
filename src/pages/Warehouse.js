@@ -63,10 +63,13 @@ const Warehouse = () =>{
         const allWarehouses = doc(colRef,name)
         await deleteDoc(allWarehouses)
         await deleteWarehouseFromUser(name)
-        unAssignProductsFromWarehouse(name)
+        await unAssignProductsFromWarehouse(name)
         await fetchRegularUsers()
+        toast.success("Warehouse Deleted",{
+          autoClose:1500
+        })
       }catch(error){
-        toast.error("Bad Internet Connection")
+        toast.error("Network Error")
         console.log(error)
       }
     }

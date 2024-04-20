@@ -52,8 +52,11 @@ const EditWarehouseDetails = () => {
                 await updateDoc(newDocRef,{
                     products:updatedProductArray
                 })
+                if(name !== warehouseName){
+                    await deleteDoc(docRef)
+                }
                 await ReAssignProductWarehouse(warehouseName)
-                await deleteDoc(docRef)
+                await editWarehouseInUser(warehouseName)
                 if(NewManager !== ""){
                     await unAssignManager()
                     await assignWarehouseToUser() 
@@ -92,6 +95,20 @@ const EditWarehouseDetails = () => {
         });
         await updateDoc(docRef,{
             products:updatedProducts
+        })
+    }
+
+    const editWarehouseInUser = async(warehouseName) =>{
+        const colRef = collection(db,"users")
+        const docRef = await getDocs(colRef)
+
+        docRef.forEach(async(user)=>{
+            if(user.data().warehouse === warehouseName){
+                const userRef = doc(db,"users",user.id)
+                await updateDoc(userRef,{
+                    warehouse:name
+                })
+            }
         })
     }
 

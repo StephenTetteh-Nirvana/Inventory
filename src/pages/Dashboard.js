@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { db } from "../firebase"
-import {collection,onSnapshot,doc,getDocs } from "firebase/firestore"
+import {collection,onSnapshot,doc } from "firebase/firestore"
 import Sidebar from "../components/Sidebar.jsx";
 import Navbar from "../components/Navbar.jsx";
 import InventoryStats from "../components/InventoryStats.jsx";

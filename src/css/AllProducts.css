@@ -16,6 +16,12 @@
 .product > div p{
     font-weight:500;
 }
+.delete-loader{
+    padding:5px 20px;
+    background-color: #2666CF;
+    border:none;
+    border-radius:5px;
+}
 .low-stock-span{
     margin-left:5px;
     padding:5px;

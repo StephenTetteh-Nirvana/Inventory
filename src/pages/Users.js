@@ -57,18 +57,6 @@ const Users = () => {
     }
 
 
-    const deleteUserDoc = async(userId) => {
-        try{
-            const colRef = collection(db,"users")
-            const docRef = doc(colRef,userId)
-            await deleteDoc(docRef)
-        }catch(error){
-            toast.error("Bad Internet Connection")
-            console.log(error)
-        }
-        
-    }
-
     useEffect(()=>{
         fetchUsers()
     },[])
@@ -118,7 +106,6 @@ const Users = () => {
                           size={20} 
                           onClick={()=>toggleFullImage(user.id)} 
                           style={{color:"green",cursor:"pointer"}}/>
-                          <Trash onClick={()=>deleteUserDoc(user.id)} size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}} />
                           </div>
                       </div>
                     ))
