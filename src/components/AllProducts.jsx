@@ -32,11 +32,11 @@ const AllProducts = () => {
         await updateDoc(productArrayReference,{
           products:foundProduct
         })
-        await deleteProductFromWarehouse(Id,warehouse)
-        setLoading(false)
         toast.error("Product Deleted",{
           autoClose:1000
         })
+        await deleteProductFromWarehouse(Id,warehouse)
+        setLoading(false)
       }catch(error){
         setLoading(false)
          console.log(error)
