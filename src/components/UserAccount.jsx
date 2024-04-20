@@ -1,11 +1,16 @@
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import {Images, ChevronLeft } from "lucide-react"
 import noUser from "../images/no-user-Img.png"
-import "../css/UserAccount.css"
-import { useEffect, useState } from "react"
 import { auth, db } from "../firebase"
-import { doc, updateDoc } from "firebase/firestore"
+import { doc, updateDoc,deleteDoc } from "firebase/firestore"
+import { deleteUser } from "firebase/auth";
 import { toast } from "react-toastify"
+import "../css/UserAccount.css"
+import Swal  from "sweetalert2"
 import Loader from "./Loader"
+import LoadingDelete from "./LoadingDelete"
+
 
 
 const UserAccount = ({setViewUser}) => {
@@ -19,6 +24,8 @@ const UserAccount = ({setViewUser}) => {
     const [disabled,setdisabled] = useState(true)
     const [editing,setEditing] = useState(false)
     const [loading,setLoading] = useState(false)
+    const [deleteLoader,setdeleteLoader] = useState(false)
+    const navigate = useNavigate()
     
     const closeUser = () =>{
         setViewUser(false)
@@ -54,6 +61,45 @@ const UserAccount = ({setViewUser}) => {
             toast.error("Network Error")
             setLoading(false)
         }   
+    }
+
+    const showPopup = () =>{
+        setdeleteLoader(true)
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+          }).then(async(result) => {
+            if (result.isConfirmed) {
+                await deleteAccount()
+            }
+          });
+    }
+
+    const deleteAccount = () => {
+        const user = auth.currentUser;
+        deleteUser(user).then(async() => {
+            const userDoc = doc(db,"users",user.uid) 
+            await deleteDoc(userDoc)
+            Swal.fire({
+                title: "Deleted!",
+                text: "Your account has been deleted.",
+                icon: "success"
+              });
+            navigate("/login")
+            console.log("deletion succesful")
+          }).catch((error) => {
+            console.log(error)
+            Swal.fire({
+                title: "An error occured!",
+                text: "Check Your Network Connection",
+                icon: "error"
+              });
+          });
     }
 
     useEffect(()=>{
@@ -102,7 +148,9 @@ const UserAccount = ({setViewUser}) => {
             ) : (
                 <button onClick={allowEditing}>Edit</button>
             )}
+            <button onClick={showPopup} style={{background:"red"}}>Delete Account</button>
         </div>
+        {deleteLoader && <loadingDelete/>}
     </div>
   )
 }
