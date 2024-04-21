@@ -38,8 +38,7 @@ const AddNewProduct = () => {
           console.log(file)
       }catch(error){
           console.log("upload cancelled")
-      }
-      
+      } 
   }
 
     const uploadProductImg = (file) =>{
@@ -65,6 +64,7 @@ const AddNewProduct = () => {
       (error) => {
           console.log(error)
           console.log("upload failed")
+          toast.error("Image Upload Failed")
       }, 
       () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -159,7 +159,7 @@ const AddNewProduct = () => {
 
     useEffect(()=>{
       fetchWarehouses()
-       if(product !== "" && price !== "" && quantity !== ""){
+       if(warehouse !=="" && product !== "" && price !== "" && quantity !== ""){
         setdisabled(false)
        }else{
         setdisabled(true)
@@ -220,6 +220,7 @@ const AddNewProduct = () => {
             </div>
           </div>
           <p className="error-msg">{errMsg}</p>
+          {warehouseData && warehouseData.length === 0 ? (<p className="error-msg">Create a warehouse before adding product</p>):""}
           <div className="new-product-buttons">
             <button disabled={disabled} 
             style={disabled ? {cursor:"not-allowed",opacity:"0.7" } : {}} 

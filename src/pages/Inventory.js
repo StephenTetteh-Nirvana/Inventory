@@ -3,7 +3,7 @@ import {Link} from "react-router-dom"
 import Navbar from "../components/Navbar"
 import { collection, doc, getDoc, getDocs,onSnapshot,updateDoc } from "firebase/firestore"
 import { db } from "../firebase"
-import { CheckCheck,Pencil, Trash } from "lucide-react"
+import { CheckCheck,Pencil, Trash,Loader } from "lucide-react"
 import { toast } from "react-toastify"
 import "../css/Inventory.css" 
 import ContactAdmin from "../components/ContactAdmin"
@@ -17,7 +17,7 @@ const Inventory = () => {
 
     const [assigned,setAssigned] = useState(userAssigned)
     const [showPopUp,setShowPopUp] = useState(false)
-    const [msgSent,setMsgSent] = useState(sent)
+    const [deleting,setDeleting] = useState(false)
     const [warehouseProducts,setWarehouseProducts] = useState([])
 
     const openPopup = () =>{
@@ -36,6 +36,18 @@ const Inventory = () => {
       }
     });
     return unsub;
+    }
+
+    const checkMessageSent = async() =>{
+      try{
+        const colRef = collection(db,"users")
+        const docRef = doc(colRef,userData.uid)
+        const docData = await getDoc(docRef)
+        const sent = docData.data().sent
+        localStorage.setItem("Sent",JSON.stringify(sent))
+      }catch(error){
+        console.log(error)
+      }
     }
 
     const checkUserState = async() =>{
@@ -81,6 +93,7 @@ const Inventory = () => {
 
     const deleteProduct = async(Id,warehouse) =>{
       try{
+        setDeleting(true)
         const colRef = collection(db,"Products")
         const productArrayReference = doc(colRef,"Product Arrays")
   
@@ -90,7 +103,12 @@ const Inventory = () => {
           products:foundProduct
         })
         await deleteProductFromWarehouse(Id,warehouse)
+        toast.error("Product Deleted",{
+          autoClose:1000
+        })
+        setDeleting(false)
       }catch(error){
+        setDeleting(false)
          console.log(error)
          toast.error("Network Error")
       }
@@ -107,9 +125,6 @@ const Inventory = () => {
         await updateDoc(docRef,{
           products:productToDelete
         })
-        toast.error("Product Deleted",{
-          autoClose:1000
-        })
       }catch(error){
         console.log(error)
       }  
@@ -117,6 +132,7 @@ const Inventory = () => {
 
     useEffect(()=>{
       fetchProducts()
+      checkMessageSent()
       checkUserState()
       fetchAdmins()
     },[])
@@ -149,10 +165,17 @@ const Inventory = () => {
                    <div>{item.price}</div>
                    <div>{item.quantity}</div>
                    <div>
-                    <Link to={`/dashboard/editProduct/${item.id}`}>
-                    <Pencil size={20} style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
-                    </Link>
-                    <Trash onClick={()=>deleteProduct(item.id,item.warehouse)} size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}}/>
+                    { deleting ? (
+                      <button className="delete-loader"><Loader size={17} style={{color:"white"}} /></button>
+                    ):(
+                      <>
+                      <Link to={`/dashboard/editProduct/${item.id}`}>
+                      <Pencil size={20} style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
+                      </Link>
+                      <Trash onClick={()=>deleteProduct(item.id,item.warehouse)} size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}}/>
+                      </>
+                    )
+                    }
                     </div>
                    <div>{item.createdAt}</div>
                 </div>
@@ -165,7 +188,7 @@ const Inventory = () => {
        ):(
         <div className="notAssigned-container">
         <h3>Dear User,you have not been assigned a warehouse yet.Contact an admin to assign you to a warehouse.</h3>
-        { msgSent ? (
+        { sent ? (
           <button className="messageSent-btn">Your message was sent.
           <span><CheckCheck size={20}  style={{marginLeft:"7px",transform:"translateY(5px)"}} /></span>
           </button>
@@ -174,7 +197,7 @@ const Inventory = () => {
         )}
     </div>
        )}
-       {showPopUp && <ContactAdmin setShowPopUp={setShowPopUp} setMsgSent={setMsgSent}/>}
+       {showPopUp && <ContactAdmin setShowPopUp={setShowPopUp}/>}
     </div>
   )
 }

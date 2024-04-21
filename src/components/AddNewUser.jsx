@@ -1,11 +1,11 @@
 import { useState,useEffect } from "react"
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
 import { createUserWithEmailAndPassword } from "firebase/auth"
-import { serverTimestamp } from "firebase/firestore"
 import { setDoc, collection,doc } from "firebase/firestore"
 import { storage,db, auth } from "../firebase"
 import {ChevronLeft, Images } from "lucide-react"
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 import noUser from "../images/no-user-Img.png"
 import Loader from "../components/Loader"
 import "../css/AddNewUser.css"
@@ -81,6 +81,7 @@ const AddNewUser = () => {
         (error) => {
             console.log(error)
             console.log("upload failed")
+            toast.error("Image Upload Failed")
         }, 
         () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -105,6 +106,7 @@ const AddNewUser = () => {
                 email:email,
                 role:role,
                 Img:imageUrl,
+                sent: role === "Regular" && false,
                 warehouse:`${role === "Admin" ? "Can't Assign Admin" : "Not Assigned"}`,
                 createdAt:`${date} at ${time}`
           })

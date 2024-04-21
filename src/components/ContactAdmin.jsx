@@ -6,7 +6,7 @@ import Loader from "../components/Loader.jsx"
 import "../css/ContactAdmin.css"
 
 
-const ContactAdmin = ({setShowPopUp,setMsgSent}) => {
+const ContactAdmin = ({setShowPopUp}) => {
     const admins = localStorage.getItem("Admins") !== null ? JSON.parse(localStorage.getItem("Admins")) : []
     const [disabled] = useState(true)
     const [admin,setAdmin] = useState("")
@@ -36,7 +36,6 @@ const ContactAdmin = ({setShowPopUp,setMsgSent}) => {
                 await addMsg(document,adminDocRef)
                 setShowPopUp(false) 
                 localStorage.setItem("Sent",JSON.stringify(true))
-                setMsgSent(true)
              }
             })
         }catch(error){

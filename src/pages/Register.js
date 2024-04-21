@@ -31,6 +31,7 @@ const Register = () => {
             userName:userName,
             email:email,
             role:role,
+            sent: role === "Regular" && false,
             warehouse:`${role === "Admin" ? "Can't Assign Admin" : "Not Assigned"}`,
             createdAt:`${date} at ${time}`
           })

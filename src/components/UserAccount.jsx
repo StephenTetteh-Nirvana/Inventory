@@ -2,10 +2,11 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import {Images, ChevronLeft } from "lucide-react"
 import noUser from "../images/no-user-Img.png"
-import { auth, db } from "../firebase"
+import { auth, db, storage } from "../firebase"
 import { doc, updateDoc,deleteDoc } from "firebase/firestore"
 import { deleteUser } from "firebase/auth";
 import { toast } from "react-toastify"
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
 import "../css/UserAccount.css"
 import Swal  from "sweetalert2"
 import Loader from "./Loader"
@@ -18,10 +19,15 @@ const UserAccount = ({setViewUser}) => {
     const [role,setRole] = useState("")
     const [warehouse,setWarehouse] = useState("")
     const [date,setDate] = useState("")
+    const [imageUrl,setImageUrl] = useState("")
+    const [file,setFile] = useState("")
+    const [Trackprogress,setTrackProgress] = useState(null)
     const [NameDisabled,setNameDisabled] = useState(true)
-    const [disabled,setdisabled] = useState(true)
+    const [disabled] = useState(true)
+    const [btnDisabled,setbtnDisabled] = useState(false)
     const [editing,setEditing] = useState(false)
     const [loading,setLoading] = useState(false)
+    const [errMsg,setErrMsg] = useState("")
     const [deleteLoader,setdeleteLoader] = useState(false)
     const navigate = useNavigate()
     
@@ -32,6 +38,52 @@ const UserAccount = ({setViewUser}) => {
     const allowEditing = () =>{
          setEditing(true)
          setNameDisabled(false)
+    }
+
+    const handleProductImg = (e) =>{
+        try{
+            const selectedFile = e.target.files[0]
+            setFile(selectedFile)
+            uploadProductImg(selectedFile)
+            console.log(file)
+        }catch(error){
+            console.log("upload cancelled")
+        } 
+    }
+  
+
+    const uploadProductImg = (file) =>{
+        const id = String(Math.round(Math.random * 100))
+        const storageRef = ref(storage, 'images/' + file.name + id);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+  
+        uploadTask.on('state_changed', 
+        (snapshot) => {
+           setbtnDisabled(true)
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            setTrackProgress(progress)
+            switch (snapshot.state) {
+            case 'paused':
+                console.log('Upload is paused');
+                break;
+            case 'running':
+                console.log('Upload is running');
+                break;
+            }
+        },
+        (error) => {
+            console.log(error)
+            console.log("upload failed")
+            toast.error("Image Upload Failed")
+        }, 
+        () => {
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            console.log('File available at', downloadURL);
+            setImageUrl(downloadURL)
+            setbtnDisabled(false)
+            setTrackProgress(null)
+            });
+        })
     }
 
     const editUserInfo = async() =>{
@@ -47,6 +99,7 @@ const UserAccount = ({setViewUser}) => {
             const docRef = doc(db,"users",user.uid)
     
             await updateDoc(docRef,{
+                Img:imageUrl,
                 userName:username
             })
             toast.success("User Profile Updated",{
@@ -82,20 +135,36 @@ const UserAccount = ({setViewUser}) => {
         deleteUser(user).then(async() => {
             const userDoc = doc(db,"users",user.uid) 
             await deleteDoc(userDoc)
+            navigate("/login")
             Swal.fire({
                 title: "Deleted!",
                 text: "Your account has been deleted.",
                 icon: "success"
               });
-            navigate("/login")
             console.log("deletion succesful")
           }).catch((error) => {
             console.log(error)
-            Swal.fire({
-                title: "An error occured!",
-                text: "Check Your Network Connection",
-                icon: "error"
-              });
+              switch (error.code) {
+                case "auth/invalid-user-token":
+                 setErrMsg("Invalid user token");
+                  break;
+                case "auth/user-not-found":
+                 setErrMsg("User not found");
+                  break;
+                case "auth/requires-recent-login":
+                 setErrMsg("Session Expired! Login again to delete account");
+                  break;
+                case "auth/insufficient-permission":
+                 setErrMsg("Insufficient permission");
+                  break;
+                default:
+                    Swal.fire({
+                        title: "An error occured!",
+                        text: "Check Your Network Connection",
+                        icon: "error"
+                      });
+                  break;
+              }
           });
     }
 
@@ -114,9 +183,18 @@ const UserAccount = ({setViewUser}) => {
             <h3>Account Information</h3>
             </div>
             <div className="user-first-section">
-               <img src={userData.Img ? userData.Img : noUser} alt="user"/>
-               <span>{!NameDisabled && <Images />}</span>
+               <img src={imageUrl ? imageUrl : noUser} alt="noUser" />
+               {!NameDisabled && <span>
+                <label htmlFor="file-upload"><Images style={{cursor:"pointer"}} /></label>
+                <input id="file-upload" type="file" onChange={handleProductImg} style={{display:"none"}}/>
+               </span>
+               }
             </div>
+            {Trackprogress !== null && 
+                <div className="Imgupload-track">
+                <p className="progress">{`Image upload is ${Math.round(Trackprogress)}% done`}</p>
+                </div>
+            }
             <div className="user-second-section">
                 <div>
                     <label>Username</label>
@@ -139,13 +217,19 @@ const UserAccount = ({setViewUser}) => {
                     <input style={disabled ? {cursor:"not-allowed"}:{}} disabled={disabled} 
                      type="text" value={date} readOnly/>
                 </div>
+                {<p className="error-msg">{errMsg}</p>}
             </div>
             { editing ? (
-               loading ? (<Loader/>):(<button onClick={editUserInfo}>Save</button>)
+               loading ? (<Loader/>):(<button 
+                style={btnDisabled ? {cursor:"not-allowed",opacity:"0.7"}:{}} 
+                disabled={btnDisabled}  onClick={editUserInfo}>Save</button>
+            )
             ) : (
                 <button onClick={allowEditing}>Edit</button>
             )}
-            <button onClick={showPopup} style={{background:"red"}}>Delete Account</button>
+            <button onClick={showPopup} 
+            style={btnDisabled ? {background:"red",cursor:"not-allowed",opacity:"0.7"}:{background:"red"}} 
+            disabled={btnDisabled}>Delete Account</button>
         </div>
     </div>
   )

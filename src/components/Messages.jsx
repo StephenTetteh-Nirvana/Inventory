@@ -1,26 +1,33 @@
-import { ChevronLeft, Trash } from "lucide-react"
+import { ChevronLeft, Trash, Loader } from "lucide-react"
 import noUser from "../images/no-user-Img.png"
 import "../css/Messages.css"
 import { Link } from "react-router-dom"
 import { doc,updateDoc } from "firebase/firestore"
 import { db } from "../firebase"
 import { toast } from "react-toastify"
+import { useState } from "react"
 
 const Messages = ({setShowMessages,messages}) =>{
   const userData = localStorage.getItem("user") !== null ? JSON.parse(localStorage.getItem("user")) : []
+  const [deleting,setDeleting] = useState(false)
 
     const hideMessages = () =>{
          setShowMessages(false)
     }
 
-    const deleteMessage = async(Id) =>{
+    const deleteMessage = async(email) =>{
         try{
-            const filteredMessages = messages.filter((m)=>m.email !== Id)
+            setDeleting(true)
+            const filteredMessages = messages.filter((m)=>m.email !== email)
             const userDocRef = doc(db,"users",userData.uid)
             await updateDoc(userDocRef,{
                messages:filteredMessages
             })
             setShowMessages(filteredMessages)
+            toast.success("Message Deleted",{
+                autoClose:1000
+            })
+            setDeleting(false)
         }catch(error){
             console.log(error)
             toast.error("Network Error")
@@ -48,9 +55,14 @@ const Messages = ({setShowMessages,messages}) =>{
                                 <Link to="/warehouse">
                                 <button>Assign</button>
                                 </Link>
-                                <Trash onClick={()=>deleteMessage(message.email)}
-                                size={20}
-                                style={{color:"red",marginTop:"6px",marginLeft:"20px",cursor:"pointer"}} />
+                                { deleting ? (
+                                   <button className="delete-loader"><Loader size={17} style={{color:"white"}} /></button>
+                                ):(
+                                    <Trash onClick={()=>deleteMessage(message.email)}
+                                    size={20}
+                                    style={{color:"red",marginTop:"6px",marginLeft:"20px",cursor:"pointer"}} />
+                                )
+                                }
                             </div>
                        </div>
                     ))

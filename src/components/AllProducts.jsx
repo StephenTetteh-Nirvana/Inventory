@@ -32,7 +32,7 @@ const AllProducts = () => {
         await updateDoc(productArrayReference,{
           products:foundProduct
         })
-        toast.error("Product Deleted",{
+        toast.success("Product Deleted",{
           autoClose:1000
         })
         await deleteProductFromWarehouse(Id,warehouse)
@@ -63,6 +63,7 @@ const AllProducts = () => {
      
       }catch(error){
         console.log(error)
+        toast.error("Network Error")
       }  
     }
 

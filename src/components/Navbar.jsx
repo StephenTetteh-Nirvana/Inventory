@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { Link,useNavigate } from "react-router-dom"
-import { User,Settings,LogOut, Bell  } from "lucide-react"
+import { User,LogOut, Bell  } from "lucide-react"
 import { auth, db } from "../firebase"
-import { doc,getDoc } from "firebase/firestore"
+import { doc,getDoc,onSnapshot } from "firebase/firestore"
 import { onAuthStateChanged, signOut } from "firebase/auth"
 import { toast } from "react-toastify"
 import Logo from "../images/logo.png"
@@ -62,16 +62,17 @@ const Navbar = () => {
   }
 
   const fetchMessages = async() =>{
-    try{
     const userDocRef = doc(db,"users",userData.uid)
-    const userDocData = await getDoc(userDocRef)
-    if(userDocData.exists()){
-      const messages = userDocData.data().messages;
-      setMessages(messages)
-    }
+    const unsub = onSnapshot(userDocRef, (snapshot) => {
+    try{
+      let msgList = []
+      msgList = snapshot.data().messages
+      setMessages(msgList)
     }catch(error){
       console.log(error)
     }
+  })
+  return unsub;
   }
 
 

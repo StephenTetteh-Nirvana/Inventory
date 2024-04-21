@@ -1,10 +1,10 @@
-import "../css/Home.css"
-import Navbar from "../components/Navbar.jsx";
-import Logo from "../images/logo.png"
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase.js";
+import "../css/Home.css"
+import Navbar from "../components/Navbar.jsx";
+import Logo from "../images/logo.png"
 
 const Home = () => {
   const userRole = localStorage.getItem("userRole") !== null ? JSON.parse(localStorage.getItem("userRole")) : []
@@ -20,6 +20,7 @@ const Home = () => {
         setUser(false)
       }
     })
+    
   },[user])
 
     return(
