@@ -41,7 +41,7 @@ const Messages = ({setShowMessages,messages}) =>{
                     <ChevronLeft size={30} style={{cursor:"pointer"}} onClick={hideMessages}/>
                     <h3>Messages</h3>
                 </div>
-                {messages.length > 0 ? (
+                {messages && messages.length > 0 ? (
                     messages.map((message,index)=>(
                         <div key={index} className="message">
                            <div className="image-box">
