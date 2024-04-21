@@ -101,7 +101,7 @@ const Inventory = () => {
           products:filteredProductsArr
         })
         await deleteProductFromWarehouse(Id,warehouse)
-        toast.error("Product Deleted",{
+        toast.success("Product Deleted",{
           autoClose:1000
         })
         setDeleting(false)

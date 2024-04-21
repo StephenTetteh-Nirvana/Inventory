@@ -2,11 +2,11 @@ import "../css/DeleteLoader.css"
 
 const DeleteLoader = () => {
   return (
-    <div className="cart-loader-wrapper">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
+    <div className="loader-wrapper">
+      <div>
+      <div className="loader"></div>
+      <h3>Deleting...</h3>
+      </div>
     </div>
   )
 }

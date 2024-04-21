@@ -8,6 +8,7 @@ import { deleteUser } from "firebase/auth";
 import { toast } from "react-toastify"
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
 import "../css/UserAccount.css"
+import DeleteLoader from "./DeleteLoader"
 import Swal  from "sweetalert2"
 import Loader from "./Loader"
 
@@ -28,7 +29,7 @@ const UserAccount = ({setViewUser}) => {
     const [editing,setEditing] = useState(false)
     const [loading,setLoading] = useState(false)
     const [errMsg,setErrMsg] = useState("")
-    // const [deleteLoader,setdeleteLoader] = useState(false)
+    const [deleteLoader,setdeleteLoader] = useState(false)
     const navigate = useNavigate()
     
     const closeUser = () =>{
@@ -135,6 +136,7 @@ const UserAccount = ({setViewUser}) => {
 
     const deleteAccount = () => {
         const user = auth.currentUser;
+        setdeleteLoader(true)
         deleteUser(user).then(async() => {
             const userDoc = doc(db,"users",user.uid) 
             await deleteDoc(userDoc)
@@ -144,9 +146,9 @@ const UserAccount = ({setViewUser}) => {
                 text: "Your account has been deleted.",
                 icon: "success"
               });
-            console.log("deletion succesful")
           }).catch((error) => {
             console.log(error)
+            setdeleteLoader(false)
               switch (error.code) {
                 case "auth/invalid-user-token":
                  setErrMsg("Invalid user token");
@@ -235,6 +237,7 @@ const UserAccount = ({setViewUser}) => {
             style={btnDisabled ? {background:"red",cursor:"not-allowed",opacity:"0.7"}:{background:"red"}} 
             disabled={btnDisabled}>Delete Account</button>
         </div>
+        {deleteLoader && <DeleteLoader/>}
     </div>
   )
 }

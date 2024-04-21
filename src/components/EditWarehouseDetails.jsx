@@ -121,6 +121,7 @@ const EditWarehouseDetails = () => {
                 if(document.data().userName === manager){
                     const foundUser = doc(db,"users",document.id)
                      await updateDoc(foundUser,{
+                        sent:false,
                         warehouse:"Not Assigned"
                      })
                 }
@@ -139,6 +140,7 @@ const EditWarehouseDetails = () => {
                 if(NewManager !== "" && document.data().userName === NewManager){
                   const foundUser = doc(db,"users",document.id)
                   await updateDoc(foundUser,{
+                      sent:true,
                       warehouse:name
                   })
                 }
