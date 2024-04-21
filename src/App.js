@@ -20,6 +20,7 @@ import NewUser from "./pages/NewUser.js"
 import Inventory from "./pages/Inventory.js"
 import NewInventoryPage from "./pages/NewInventoryPage.js"
 import "./App.css"
+import { onAuthStateChanged } from "firebase/auth/cordova";
 
 
 function App() {
@@ -33,6 +34,11 @@ function App() {
       console.log("no-user",)
       navigate("/")
     }
+    onAuthStateChanged(auth,(user)=>{
+      if(!user && location.pathname === "/dashboard" || location.pathname === "/warehouse" || location.pathname === "/users"){
+        navigate("/login")
+      }
+    })
   },[])
   
  

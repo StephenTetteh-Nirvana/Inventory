@@ -186,7 +186,7 @@ const AddNewProduct = () => {
                 <label>Select Warehouse</label><br/>
                 <select onChange={(e)=>setWarehouse(e.target.value)}>
                 {warehouseData.length > 0 ? warehouseData.map((warehouse)=>(
-                      <option key={warehouse.id}>{warehouse.name}</option>
+                      <option key={warehouse.name}>{warehouse.name}</option>
                     )) : (<option>No warehouse to add product!!</option>)}
                 </select>
             </div>

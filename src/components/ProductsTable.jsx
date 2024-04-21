@@ -16,6 +16,11 @@ const ProductsTable = ({data,fetchProducts}) => {
   const checkProductState = (value) =>{
     console.log(value)
     setProductState(value)
+  }
+
+  const handleFilter = (e)=> {
+    const value = e.target.value;
+    console.log(value)
     filterProducts(value)
   }
 
@@ -32,8 +37,8 @@ const ProductsTable = ({data,fetchProducts}) => {
     <div className="products-table">
          <div className="search-and-add-section">
             <div className="products-search-section">
-              <span className="search-span"><Search /></span>
-              <input type="text" placeholder="Search by name..." onChange={(e) => filterProducts(e.target.value)}/>
+              {/* <span className="search-span"><Search /></span>
+              <input type="text" placeholder="Search by name..." onChange={handleFilter}/> */}
               <select onClick={toggleSelect} onChange={(e) => checkProductState(e.target.value)}>
                 <option>All</option>
                 <option>Out of Stock</option>

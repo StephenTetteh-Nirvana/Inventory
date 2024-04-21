@@ -35,14 +35,13 @@ const AllProducts = () => {
         toast.success("Product Deleted",{
           autoClose:1000
         })
-        await deleteProductFromWarehouse(Id,warehouse)
         setLoading(false)
+        await deleteProductFromWarehouse(Id,warehouse)
       }catch(error){
         setLoading(false)
          console.log(error)
          toast.error("Network Error")
       }
-      
     }
 
     const deleteProductFromWarehouse = async(Id,warehouse) => {
@@ -70,7 +69,7 @@ const AllProducts = () => {
 
   return (
     <div>
-        {products.map((product,index)=>(
+        {products && products.map((product,index)=>(
                   <div className="product" key={index}>
                     <div>
                     <p>{product.id}</p>
