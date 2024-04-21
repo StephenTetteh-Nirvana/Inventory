@@ -20,13 +20,13 @@ const Messages = ({setShowMessages,messages}) =>{
             setDeleting(true)
             const filteredMessages = messages.filter((m)=>m.email !== email)
             const userDocRef = doc(db,"users",userData.uid)
+            toast.success("Message Deleted",{
+                autoClose:1000
+            })
             await updateDoc(userDocRef,{
                messages:filteredMessages
             })
             setShowMessages(filteredMessages)
-            toast.success("Message Deleted",{
-                autoClose:1000
-            })
             setDeleting(false)
         }catch(error){
             console.log(error)

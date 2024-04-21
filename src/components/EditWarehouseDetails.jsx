@@ -177,7 +177,7 @@ const EditWarehouseDetails = () => {
            <option value={NewManager}>Select Manager</option>
             {regularUsers.length > 0 ? regularUsers.map((user,index)=>(
                     <option key={index}>{user.userName}</option>
-                  )) : (<option>No managers found!!!</option>)  
+                  )) : ""
             }
           </select>
         </div>

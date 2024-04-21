@@ -59,6 +59,7 @@ const Inventory = () => {
           if(assignedWarehouse === "Not Assigned"){
               setAssigned(false)
               localStorage.setItem("Assigned",JSON.stringify(false))
+              localStorage.setItem("userWarehouse",JSON.stringify(""))
           }else{
               setAssigned(true)
               localStorage.setItem("Assigned",JSON.stringify(true))

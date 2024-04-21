@@ -61,13 +61,13 @@ const Warehouse = () =>{
       try{
         const colRef = collection(db,"Warehouses")
         const allWarehouses = doc(colRef,name)
+        toast.success("Warehouse Deleted",{
+          autoClose:1500
+        })
         await deleteDoc(allWarehouses)
         await deleteWarehouseFromUser(name)
         await unAssignProductsFromWarehouse(name)
         await fetchRegularUsers()
-        toast.success("Warehouse Deleted",{
-          autoClose:1500
-        })
       }catch(error){
         toast.error("Network Error")
         console.log(error)
