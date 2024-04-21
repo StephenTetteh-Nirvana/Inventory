@@ -1,6 +1,6 @@
 import { useState,useEffect } from "react"
-import { Eye,Trash } from "lucide-react"
-import { onSnapshot,collection, doc, deleteDoc, getDocs,updateDoc } from "firebase/firestore";
+import { Eye } from "lucide-react"
+import { onSnapshot,collection, doc, getDocs,updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { Link } from "react-router-dom";
 import User from "../images/no-user-Img.png"
@@ -8,10 +8,6 @@ import Sidebar from "../components/Sidebar"
 import Navbar from "../components/Navbar"
 import UserImg from "../components/UserImg"
 import "../css/Users.css"
-import { toast } from "react-toastify";
-
-
-
 
 const Users = () => {
     const [data,setData] = useState([])

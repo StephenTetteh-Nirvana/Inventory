@@ -76,6 +76,10 @@ const AddNewUser = () => {
             case 'running':
                 console.log('Upload is running');
                 break;
+
+            default:
+               console.log("Upload Failed")
+            break;
             }
         },
         (error) => {

@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword } from "firebase/auth"
-import { collection,doc,setDoc,serverTimestamp } from "firebase/firestore"
+import { collection,doc,setDoc } from "firebase/firestore"
 import { auth,db } from "../firebase"
 import { Link,useNavigate } from "react-router-dom"
 import "../css/Register.css"
@@ -72,7 +72,7 @@ const Register = () => {
   return (
     <div className="register-container">
       <form className="register-form-container" onSubmit={(e)=>e.preventDefault()}>
-        <Link to="/"><div className="register-logo-box"><img src={Logo}/></div></Link>
+        <Link to="/"><div className="register-logo-box"><img src={Logo} alt="logo"/></div></Link>
         <h4>REGISTER FORM</h4>
         <div className="register-input-section">
         <div className="register-userName-section">

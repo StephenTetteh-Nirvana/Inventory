@@ -1,4 +1,4 @@
-import { Plus,Search,ChevronUp,ChevronDown } from "lucide-react"
+import { Plus,ChevronUp,ChevronDown } from "lucide-react"
 import "../css/ProductsTable.css"
 import {  useEffect, useState } from "react"
 import { Link } from "react-router-dom"
@@ -18,16 +18,17 @@ const ProductsTable = ({data,fetchProducts}) => {
     setProductState(value)
   }
 
-  const handleFilter = (e)=> {
-    const value = e.target.value;
-    console.log(value)
-    filterProducts(value)
-  }
+  // Search Functionality
+  // const handleFilter = (e)=> {
+  //   const value = e.target.value;
+  //   console.log(value)
+  //   filterProducts(value)
+  // }
 
-  const filterProducts = (value) => {
-     const filteredProducts = productData.filter((p)=>p.product.includes(value))
-     localStorage.setItem("products",JSON.stringify(filteredProducts))
-  }
+  // const filterProducts = (value) => {
+  //    const filteredProducts = productData.filter((p)=>p.product.includes(value))
+  //    localStorage.setItem("products",JSON.stringify(filteredProducts))
+  // }
 
   useEffect(()=>{
     fetchProducts()

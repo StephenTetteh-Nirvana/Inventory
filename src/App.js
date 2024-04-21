@@ -35,7 +35,7 @@ function App() {
       navigate("/")
     }
     onAuthStateChanged(auth,(user)=>{
-      if(!user && location.pathname === "/dashboard" || location.pathname === "/warehouse" || location.pathname === "/users"){
+      if(!user && (location.pathname === "/dashboard" || location.pathname === "/warehouse" || location.pathname === "/users")){
         navigate("/login")
       }
     })

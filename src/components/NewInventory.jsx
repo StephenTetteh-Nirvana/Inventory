@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { collection, doc , getDoc, getDocs, updateDoc } from "firebase/firestore"
+import { collection, doc , getDoc, updateDoc } from "firebase/firestore"
 import { db,storage } from "../firebase.js"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
@@ -59,6 +59,9 @@ const AddNewProduct = () => {
           case 'running':
               console.log('Upload is running');
               break;
+          default:
+            console.log("Upload Failed")
+            break;
           }
       },
       (error) => {

@@ -59,9 +59,12 @@ const AddNewProduct = () => {
           case 'running':
               console.log('Upload is running');
               break;
-          }
-      },
-      (error) => {
+          default:
+            console.log("Upload Failed")
+          break;
+        }
+        },
+        (error) => {
           console.log(error)
           console.log("upload failed")
           toast.error("Image Upload Failed")

@@ -12,7 +12,7 @@ const ViewProduct = ({product,setViewProduct}) => {
         <div className="product-displayBox">
             <X onClick={hideProductDetails} style={{color:"white",marginLeft:"100%",cursor:"pointer"}}/>
             <div className="product-displayImg">
-                <img src={product.Img ? product.Img : noImg}/>
+                <img src={product.Img ? product.Img : noImg} alt="product"/>
             </div>
             <div className="product-displayDetails">
               <p>Product : {product.product}</p>

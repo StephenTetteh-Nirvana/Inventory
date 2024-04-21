@@ -28,7 +28,7 @@ const UserAccount = ({setViewUser}) => {
     const [editing,setEditing] = useState(false)
     const [loading,setLoading] = useState(false)
     const [errMsg,setErrMsg] = useState("")
-    const [deleteLoader,setdeleteLoader] = useState(false)
+    // const [deleteLoader,setdeleteLoader] = useState(false)
     const navigate = useNavigate()
     
     const closeUser = () =>{
@@ -69,7 +69,10 @@ const UserAccount = ({setViewUser}) => {
             case 'running':
                 console.log('Upload is running');
                 break;
-            }
+            default:
+                console.log("failed")
+            break;
+            }  
         },
         (error) => {
             console.log(error)
