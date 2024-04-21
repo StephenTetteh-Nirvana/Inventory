@@ -92,7 +92,9 @@ const Navbar = () => {
   return (
     <div className="navbar-container">
       <div className="first-section">
+        <Link to="/">
         <img src={Logo} alt='Logo'/>
+        </Link>
         <h3>INVENTORY</h3>
       </div>
       <div className="second-section">
