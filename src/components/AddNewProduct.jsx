@@ -85,11 +85,9 @@ const AddNewProduct = () => {
        setLoading(true)
        setdisabled(true)
        setCancel(true)
-       const colRef = collection(db,"Products")
-       const productArrayReference = doc(colRef,"Product Arrays")
+       const productArrayReference = doc(db,"Products","Product Arrays")
        const productArrays = await getDoc(productArrayReference)
         
-       if(productArrays.exists()){
         const productArray = productArrays.data().products || []
         const date = new Date().toDateString();
         const time = new Date().toLocaleTimeString()
@@ -102,16 +100,15 @@ const AddNewProduct = () => {
               warehouse:warehouse === "" ? "Not Assigned" : warehouse,
               createdAt:`${date} at ${time}`
            }
-            await updateDoc(productArrayReference,{
+           toast.success("New Product Added",{
+            autoClose:1500
+          })
+          setLoading(false)
+          navigate(-1)
+          await updateDoc(productArrayReference,{
               products: [...productArray,newProduct]
             })
-            await addProductToWarehouse(newProduct)
-              toast.success("New Product Added",{
-                autoClose:1500
-              })
-              setLoading(false)
-              navigate(-1)
-            }
+          await addProductToWarehouse(newProduct)
        }catch(error){
         console.log(error)
         setdisabled(false)

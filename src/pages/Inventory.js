@@ -94,13 +94,11 @@ const Inventory = () => {
     const deleteProduct = async(Id,warehouse) =>{
       try{
         setDeleting(true)
-        const colRef = collection(db,"Products")
-        const productArrayReference = doc(colRef,"Product Arrays")
-  
-        const foundProduct = products.filter((p)=>p.id !== Id)
-        localStorage.setItem("products",JSON.stringify(foundProduct))
+        const productArrayReference = doc(db,"Products","Product Arrays")
+        const filteredProductsArr = products.filter((p)=>p.id !== Id)
+        localStorage.setItem("products",JSON.stringify(filteredProductsArr))
         await updateDoc(productArrayReference,{
-          products:foundProduct
+          products:filteredProductsArr
         })
         await deleteProductFromWarehouse(Id,warehouse)
         toast.error("Product Deleted",{

@@ -10,7 +10,7 @@ import noUser from "../images/camera-off.png"
 
 
 const AddNewProduct = () => {
-  const warehouseData = localStorage.getItem("userWarehouse") !== null ? JSON.parse(localStorage.getItem("userWarehouse")) : []
+  const assignedWarehouse = localStorage.getItem("userWarehouse") !== null ? JSON.parse(localStorage.getItem("userWarehouse")) : []
   const [file,setFile] = useState("")
   const [imageUrl,setImageUrl] = useState(null)
   const [Trackprogress,setTrackProgress] = useState(null)
@@ -84,11 +84,9 @@ const AddNewProduct = () => {
        setLoading(true)
        setdisabled(true)
        setCancel(true)
-       const colRef = collection(db,"Products")
-       const productArrayReference = doc(colRef,"Product Arrays")
+       const productArrayReference = doc(db,"Products","Product Arrays")
        const productArrays = await getDoc(productArrayReference)
         
-       if(productArrays.exists()){
         const productArray = productArrays.data().products || []
         const date = new Date().toDateString();
         const time = new Date().toLocaleTimeString()
@@ -98,19 +96,18 @@ const AddNewProduct = () => {
               price:price,
               quantity:quantity,
               Img:imageUrl,
-              warehouse:warehouseData,
+              warehouse:assignedWarehouse,
               createdAt:`${date} at ${time}`
            }
+           toast.success("New Product Added",{
+            autoClose:1500
+          })
+          setLoading(false)
+          navigate(-1)
             await updateDoc(productArrayReference,{
               products: [...productArray,newProduct]
             })
             await addProductToWarehouse(newProduct)
-              toast.success("New Product Added",{
-                autoClose:1500
-              })
-              setLoading(false)
-              navigate(-1)
-            }
        }catch(error){
         console.log(error)
         setdisabled(false)
@@ -131,7 +128,7 @@ const AddNewProduct = () => {
         createdAt:newProduct.createdAt
       }
       try{
-        const docRef = doc(db,"Warehouses",warehouseData)
+        const docRef = doc(db,"Warehouses",assignedWarehouse)
         const docData = await getDoc(docRef)
         const warehouseProductsArr = docData.data().products
         await updateDoc(docRef,{
@@ -170,7 +167,7 @@ const AddNewProduct = () => {
           <div className="all-newProduct-inputs">
           <div className="warehouse-section">
               <label>Assigned Warehouse</label><br/>
-              <input type="text" value={warehouseData} readOnly/>
+              <input type="text" value={assignedWarehouse} readOnly/>
             </div>
             <div className="new-product-name">
                 <label>Product Name</label><br/>

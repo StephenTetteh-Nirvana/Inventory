@@ -22,13 +22,10 @@ const AllProducts = () => {
     }
 
     const deleteProduct = async(Id,warehouse) =>{
+      setLoading(true)
       try{
-        setLoading(true)
-        const colRef = collection(db,"Products")
-        const productArrayReference = doc(colRef,"Product Arrays")
-  
+        const productArrayReference = doc(db,"Products","Product Arrays")
         const foundProduct = products.filter((p)=>p.id !== Id)
-        localStorage.setItem("products",JSON.stringify(foundProduct))
         await updateDoc(productArrayReference,{
           products:foundProduct
         })
@@ -37,6 +34,7 @@ const AllProducts = () => {
         })
         setLoading(false)
         await deleteProductFromWarehouse(Id,warehouse)
+        localStorage.setItem("products",JSON.stringify(foundProduct))
       }catch(error){
         setLoading(false)
          console.log(error)

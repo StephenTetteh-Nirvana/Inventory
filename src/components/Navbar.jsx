@@ -45,20 +45,18 @@ const Navbar = () => {
   }
 
   const fetchUser = async() =>{
+    const userDocRef = doc(db,"users",userData.uid)
+    const unsub = onSnapshot(userDocRef, (snapshot) => {
     try{
-        const colRef = doc(db,"users",userData.uid)
-        const docRef = await getDoc(colRef)
-        const docData = docRef.data()
-    
-        if(docRef.exists){
-        setDisplayName(docRef.data().userName[0])
-        setUserImg(docRef.data().Img)
-        localStorage.setItem("userData",JSON.stringify(docData))
-        }
+        setDisplayName(snapshot.data().userName[0])
+        setUserImg(snapshot.data().Img)
+        localStorage.setItem("userData",JSON.stringify(snapshot.data()))
         setLoggedIn(true)
     }catch(error){
       console.log(error)
     }
+    return unsub;
+  })
   }
 
   const fetchMessages = async() =>{

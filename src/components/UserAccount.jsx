@@ -172,6 +172,7 @@ const UserAccount = ({setViewUser}) => {
     }
 
     useEffect(()=>{
+       setImageUrl(userData.Img)
        setUserName(userData.userName)
        setRole(userData.role)
        setWarehouse(userData.warehouse)
