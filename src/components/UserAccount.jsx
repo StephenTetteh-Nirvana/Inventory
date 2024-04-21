@@ -140,6 +140,7 @@ const UserAccount = ({setViewUser}) => {
         deleteUser(user).then(async() => {
             const userDoc = doc(db,"users",user.uid) 
             await deleteDoc(userDoc)
+            localStorage.clear()
             navigate("/login")
             Swal.fire({
                 title: "Deleted!",
