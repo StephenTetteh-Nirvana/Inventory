@@ -87,7 +87,7 @@ const AllProducts = () => {
                     <div>
                     <p>{product.stockLevel}
                     {product.stockLevel === "0" && <span className="out-of-stock-span">Out Of Stock</span>}
-                    {product.stockLevel === "10" && <span className="low-stock-span">Low Stock</span>}
+                    {product.stockLevel === product.lowStock && <span className="low-stock-span">Low Stock</span>}
                     </p>
                     </div>
 

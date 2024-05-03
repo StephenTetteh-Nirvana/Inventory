@@ -26,6 +26,7 @@ const AddNewProduct = () => {
   const [showMeasurement,setShowMeasurement] = useState(false)
   const [price,setPrice] = useState("")
   const [stockLevel,setStockLevel] = useState("")
+  const [lowStock,setLowStock] = useState("")
   const [errMsg,setErrMsg] = useState("")
   const [disabled,setdisabled] = useState(true)
   const [cancel,setCancel] = useState(false)
@@ -91,7 +92,12 @@ const AddNewProduct = () => {
   }
     
     const addNewProduct =  async() =>{
+      if(price <= 0 || stockLevel <= 0 || lowStock <= 0){
+          setErrMsg("Must be greater than 0")
+          return;
+      }else{
        try{
+       setErrMsg("")
        setLoading(true)
        setdisabled(true)
        setCancel(true)
@@ -106,6 +112,7 @@ const AddNewProduct = () => {
               productMesurement+measurementUnit.split('(')[1].replace(')', ''):measurementUnit,
               price:price,
               stockLevel:stockLevel,
+              lowStock:lowStock,
               category:category,
               brand:brand,
               warehouse:warehouse === "" ? "Not Assigned" : warehouse,
@@ -125,6 +132,7 @@ const AddNewProduct = () => {
         setLoading(false)
         setErrMsg("Bad Connection! Check Your Network")
       }
+    }
     }
 
     // const addProductToWarehouse = async(newProduct) => {
@@ -189,19 +197,17 @@ const AddNewProduct = () => {
     useEffect(()=>{
       fetchCategories()
       fetchBrands()
-       if(product !== "" && price !== "" && stockLevel !== "" && category !== "" && brand !== ""){
+       if(product !== "" && price !== "" && stockLevel !== "" && lowStock !== "" && category !== "" && brand !== ""){
         setdisabled(false)
        }else{
         setdisabled(true)
        }
        if(measurementUnit !== "None"){
         setShowMeasurement(true)
-        console.log("not empty")
        }else{
         setShowMeasurement(false)
-        console.log("empty")
        }
-    },[product,measurementUnit,price,stockLevel,category,brand])
+    },[product,measurementUnit,price,stockLevel,lowStock,category,brand])
 
 
   return (
@@ -287,6 +293,15 @@ const AddNewProduct = () => {
                  value={stockLevel}
                  onChange={(e)=>{setStockLevel(e.target.value)}}
                  placeholder="Enter Stock Level..."
+                required
+                />
+            </div>
+            <div className="new-product-stockLvl">
+                <label>Minimum Stock Level</label><br/>
+                <input type="number" 
+                 value={lowStock}
+                 onChange={(e)=>{setLowStock(e.target.value)}}
+                 placeholder="Enter Minimum Stock Level..."
                 required
                 />
             </div>
