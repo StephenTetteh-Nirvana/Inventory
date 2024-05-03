@@ -9,10 +9,12 @@
     justify-content: center;
     align-items: center;
     z-index:999;
+    padding-bottom:20px;
 }
 .new-product-form{
     width:350px;
     padding:20px;
+    margin-top:10px;
     background-color: #FFFFFF;
 }
 .all-newProduct-inputs{
@@ -22,13 +24,13 @@
 .all-newProduct-inputs > div{
     margin-top:10px;
 }
-.categories-section select,.brands-section select,.warehouse-section select{
+.categories-section select,.brands-section select,.measurement-section select,.warehouse-section select{
     width:101%;
     padding:10px;
     margin-top:6px;
-    font-weight:600;
+    font-weight: 600;
 }
-.new-product-name input,.new-product-price input,.new-product-quantity input{
+.new-product-name input,.new-product-price input,.new-product-stockLvl input,.new-product-measurement input{
   width:95%;
   padding:10px;
   margin-top:6px;

@@ -1,6 +1,6 @@
 .product{
     display: grid;
-    grid-template-columns: repeat(5,1fr);
+    grid-template-columns: repeat(8,1fr);
     padding:10px 0px;
     border-bottom:1px solid black;
 }
@@ -22,7 +22,7 @@
     border:none;
     border-radius:5px;
 }
-.low-stock-span{
+.out-of-stock-span,.low-stock-span{
     margin-left:5px;
     padding:5px;
     background-color: red;

@@ -15,10 +15,6 @@ const ViewProduct = ({product,setViewProduct}) => {
                 <img src={product.Img ? product.Img : noImg} alt="product"/>
             </div>
             <div className="product-displayDetails">
-              <p>Product : {product.product}</p>
-              <p>Price : {product.price}</p>
-              <p>Quantity : {product.quantity}</p>
-              <p>Warehouse : {product.warehouse}</p>
               <p>Created At : {product.createdAt}</p>
             </div> 
         </div>

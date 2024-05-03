@@ -21,7 +21,7 @@ const AllProducts = () => {
         }
     }
 
-    const deleteProduct = async(Id,warehouse) =>{
+    const deleteProduct = async(Id) =>{
       setLoading(true)
       try{
         const productArrayReference = doc(db,"Products","Product Arrays")
@@ -33,7 +33,6 @@ const AllProducts = () => {
           autoClose:1000
         })
         setLoading(false)
-        await deleteProductFromWarehouse(Id,warehouse)
         localStorage.setItem("products",JSON.stringify(foundProduct))
       }catch(error){
         setLoading(false)
@@ -42,27 +41,27 @@ const AllProducts = () => {
       }
     }
 
-    const deleteProductFromWarehouse = async(Id,warehouse) => {
-      try{
-        const colRef = collection(db,"Warehouses")
-        const docRef = await getDocs(colRef)
+    // const deleteProductFromWarehouse = async(Id,warehouse) => {
+    //   try{
+    //     const colRef = collection(db,"Warehouses")
+    //     const docRef = await getDocs(colRef)
 
-        docRef.forEach(async(document)=>{
-          if(warehouse === document.id){
-            const warehouseRef = doc(db,"Warehouses",document.id)
-            const productsArr = document.data().products
-            const productToDelete = productsArr.filter((p)=>p.id !== Id)
-            await updateDoc(warehouseRef,{
-             products:productToDelete
-           })
-          }
-        })
+    //     docRef.forEach(async(document)=>{
+    //       if(warehouse === document.id){
+    //         const warehouseRef = doc(db,"Warehouses",document.id)
+    //         const productsArr = document.data().products
+    //         const productToDelete = productsArr.filter((p)=>p.id !== Id)
+    //         await updateDoc(warehouseRef,{
+    //          products:productToDelete
+    //        })
+    //       }
+    //     })
      
-      }catch(error){
-        console.log(error)
-        toast.error("Network Error")
-      }  
-    }
+    //   }catch(error){
+    //     console.log(error)
+    //     toast.error("Network Error")
+    //   }  
+    // }
 
 
   return (
@@ -78,13 +77,26 @@ const AllProducts = () => {
                     </div>
 
                     <div>
-                    <p>${product.price.toLocaleString()}</p>
+                    <p>{product.UnitOfMeasurement}</p>
                     </div>
 
                     <div>
-                    <p>{product.quantity}
-                    {product.quantity === "0" && <span className="low-stock-span">Out Of Stock</span>}
+                    <p>${product.price.toLocaleString()}.00</p>
+                    </div>
+
+                    <div>
+                    <p>{product.stockLevel}
+                    {product.stockLevel === "0" && <span className="out-of-stock-span">Out Of Stock</span>}
+                    {product.stockLevel === "10" && <span className="low-stock-span">Low Stock</span>}
                     </p>
+                    </div>
+
+                    <div>
+                    <p>{product.category}</p>
+                    </div>
+
+                    <div>
+                    <p>{product.brand}</p>
                     </div>
 
                     <div>
@@ -99,7 +111,7 @@ const AllProducts = () => {
                         <Pencil size={20} style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
                         </Link>
                         <Trash 
-                        onClick={()=>deleteProduct(product.id,product.warehouse)} 
+                        onClick={()=>deleteProduct(product.id)} 
                         size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}}
                         />
                         </div>

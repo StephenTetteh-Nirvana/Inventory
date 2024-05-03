@@ -57,8 +57,11 @@ const ProductsTable = ({data,fetchProducts}) => {
           <ul>
             <li>Id</li>
             <li>Product</li>
-            <li>Price</li>
-            <li>Quantity</li>
+            <li>Measurement</li>
+            <li>Unit Price</li>
+            <li>Stock Level</li>
+            <li>Category</li>
+            <li>Brand</li>
             <li>Actions</li>
           </ul>
          </div>

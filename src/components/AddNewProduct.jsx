@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import "../css/AddNewProduct.css"
-import { collection, doc , getDoc, getDocs, updateDoc } from "firebase/firestore"
+import { doc , getDoc, updateDoc } from "firebase/firestore"
 import { db,storage } from "../firebase.js"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
@@ -21,12 +21,17 @@ const AddNewProduct = () => {
   const [brand,setBrand] = useState("")
   const [warehouse,setWarehouse] = useState("")
   const [product,setProduct] = useState("")
+  const [measurementUnit,setMeasurementUnit] = useState("None")
+  const [productMesurement,setProductMeasurement] = useState("")
+  const [showMeasurement,setShowMeasurement] = useState(false)
   const [price,setPrice] = useState("")
   const [stockLevel,setStockLevel] = useState("")
   const [errMsg,setErrMsg] = useState("")
   const [disabled,setdisabled] = useState(true)
   const [cancel,setCancel] = useState(false)
   const [loading,setLoading] = useState(false)
+  const date = new Date().toDateString();
+  const time = new Date().toLocaleTimeString()
 
 
   const navigate = useNavigate()
@@ -92,30 +97,27 @@ const AddNewProduct = () => {
        setCancel(true)
        const productArrayReference = doc(db,"Products","Product Arrays")
        const productArrays = await getDoc(productArrayReference)
-        
-        const productArray = productArrays.data().products || []
-        const date = new Date().toDateString();
-        const time = new Date().toLocaleTimeString()
+       const productArray = productArrays.data().products || []
             const newProduct = {
-              id:String(Math.round(Math.random()*1000)),
-              category:category,
-              bradn:brand,
-              product:product,
-              price:price,
-              stockLvl:stockLevel,
+              id:String(Math.round(Math.random()*5000)),
               Img:imageUrl,
+              product:product,
+              UnitOfMeasurement:measurementUnit !== "None" ?
+              productMesurement+measurementUnit.split('(')[1].replace(')', ''):measurementUnit,
+              price:price,
+              stockLevel:stockLevel,
+              category:category,
+              brand:brand,
               warehouse:warehouse === "" ? "Not Assigned" : warehouse,
-              createdAt:`${date} at ${time}`
+              createdAt:`${date} at ${time}`,
            }
            toast.success("New Product Added",{
             autoClose:1500
           })
-          setLoading(false)
           navigate(-1)
           await updateDoc(productArrayReference,{
               products: [...productArray,newProduct]
             })
-          await addProductToWarehouse(newProduct)
        }catch(error){
         console.log(error)
         setdisabled(false)
@@ -177,7 +179,7 @@ const AddNewProduct = () => {
     const fetchBrands = () =>{
       try{
         if(brands.length > 0 && brand === ""){
-          setBrand(brand[0].name);
+          setBrand(brands[0].name);
         }
       }catch(error){
         console.log(error)
@@ -187,12 +189,19 @@ const AddNewProduct = () => {
     useEffect(()=>{
       fetchCategories()
       fetchBrands()
-       if(category !== "" && brand !== "" && warehouse !=="" && product !== "" && price !== "" && stockLevel !== ""){
+       if(product !== "" && price !== "" && stockLevel !== "" && category !== "" && brand !== ""){
         setdisabled(false)
        }else{
         setdisabled(true)
        }
-    },[warehouse,product,price,stockLevel])
+       if(measurementUnit !== "None"){
+        setShowMeasurement(true)
+        console.log("not empty")
+       }else{
+        setShowMeasurement(false)
+        console.log("empty")
+       }
+    },[product,measurementUnit,price,stockLevel,category,brand])
 
 
   return (
@@ -244,29 +253,46 @@ const AddNewProduct = () => {
                 required
                 />
             </div>
+            <div className="measurement-section">
+              <label>Unit Of Measurement</label><br/>
+              <select onChange={(e)=>setMeasurementUnit(e.target.value)}>
+                <option>None</option>
+                <option>Kilograms(kg)</option>
+                <option>Liters(L)</option>
+                <option>Pounds(Ib)</option>
+              </select>
+            </div>
+            {showMeasurement ? (
+              <div className="new-product-measurement">
+              <label>Product Measurement</label><br/>
+              <input type="number"  
+              value={productMesurement}
+              onChange={(e)=>{setProductMeasurement(e.target.value)}}
+              placeholder="Enter Product Measurement..."
+              required/>
+              </div>
+            ):""}
             <div className="new-product-price">
-                <label>Product Price</label><br/>
+                <label>Unit Price</label><br/>
                 <input type="number"  
                  value={price}
                  onChange={(e)=>{setPrice(e.target.value)}}
-                placeholder="Enter Product Price..."
+                placeholder="Enter Unit Price..."
                 required
                 />
             </div>
-            <div className="new-product-quantity">
+            <div className="new-product-stockLvl">
                 <label>Stock Level</label><br/>
                 <input type="number" 
                  value={stockLevel}
-                 onChange={(e)=>{setQuantity(e.target.value)}}
-                 placeholder="Stock Level..."
+                 onChange={(e)=>{setStockLevel(e.target.value)}}
+                 placeholder="Enter Stock Level..."
                 required
                 />
             </div>
           </div>
           <p className="error-msg">{errMsg}</p>
-          {warehouseData && warehouseData.length === 0 ? 
-          (<p className="error-msg">Create a warehouse before adding product</p>)
-          : categories && categories.length === 0 ?
+          {categories && categories.length === 0 ?
           (<p className="error-msg">Create a category before adding product</p>)
           : brands && brands.length === 0 ?
           (<p className="error-msg">Create a brand before adding product</p>)

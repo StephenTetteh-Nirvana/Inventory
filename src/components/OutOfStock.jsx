@@ -16,11 +16,27 @@ const OutOfStock = () => {
               </div>
 
               <div>
+               <p>{product.measurement}</p>
+              </div>
+
+              <div>
                <p>${product.price.toLocaleString()}</p>
               </div>
 
               <div>
-               <p>{product.quantity}</p>
+               <p>{product.stockLevel}</p>
+              </div>
+
+              <div>
+               <p>{product.stockLevel}</p>
+              </div>
+
+              <div>
+               <p>{product.category}</p>
+              </div>
+
+              <div>
+               <p>{product.brand}</p>
               </div>
               <div>
                <p style={{fontWeight:"700"}}>No Actions</p>
