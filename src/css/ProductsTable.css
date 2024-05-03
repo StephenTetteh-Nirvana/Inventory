@@ -1,9 +1,10 @@
 .products-table{
-    margin-top:50px;
+    margin-top:30px;
     width:97%;
-    height:70vh;
+    height:75vh;
     background-color: #FFFFFF;
     box-shadow:rgba(0,0,0,0.14) 3px 3px 3px 3px;
+    overflow:auto;
 }
 .search-and-add-section{
     display:flex;

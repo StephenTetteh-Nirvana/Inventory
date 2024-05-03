@@ -238,8 +238,7 @@ const AddNewProduct = () => {
     useEffect(()=>{
       fetchCategories()
       fetchBrands()
-       if(product !== "" && price !== "" && productMesurement !== "" && stockLevel !== "" && 
-         lowStock !== "" && category !== "" && brand !== ""){
+       if(product !== "" && price !== "" && stockLevel !== "" && lowStock !== "" && category !== "" && brand !== ""){
         setdisabled(false)
        }else{
         setdisabled(true)
@@ -248,6 +247,9 @@ const AddNewProduct = () => {
         setShowMeasurement(true)
        }else{
         setShowMeasurement(false)
+       }
+       if(measurementUnit !== "None" && productMesurement === ""){
+        setdisabled(true)
        }
     },[product,measurementUnit,productMesurement,price,stockLevel,lowStock,category,brand])
 
