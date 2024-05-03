@@ -28,6 +28,12 @@ const EditCategory = () => {
                 position:"top-center"
             })
         }else{
+            for (const data of parsedData) {
+                if (name === data.name) {
+                    setErrMsg("Category Already Exists!");
+                    return;
+                }
+            }
         setLoading(true)
         const docRef = doc(db,"Categories",categoryId)
         await updateDoc(docRef,{
