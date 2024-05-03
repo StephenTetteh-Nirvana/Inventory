@@ -22,7 +22,7 @@
 .all-newProduct-inputs > div{
     margin-top:10px;
 }
-.warehouse-section select{
+.categories-section select,.brands-section select,.warehouse-section select{
     width:101%;
     padding:10px;
     margin-top:6px;

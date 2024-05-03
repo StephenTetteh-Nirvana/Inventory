@@ -6,7 +6,7 @@ import AllProducts from "./AllProducts"
 import OutOfStock from "./OutOfStock"
 
 const ProductsTable = ({data,fetchProducts}) => {
-  const productData = localStorage.getItem("products") !== null ? JSON.parse(localStorage.getItem("products")) : []
+  // const productData = localStorage.getItem("products") !== null ? JSON.parse(localStorage.getItem("products")) : []
   const [ProductState,setProductState] = useState("All")
   const [dropDown,setdropDown] = useState(false)
 
