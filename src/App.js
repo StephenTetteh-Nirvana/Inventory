@@ -3,6 +3,8 @@ import { useEffect } from "react"
 import { auth } from "./firebase.js";
 import { useLocation } from "react-router-dom"
 import { ToastContainer } from 'react-toastify';
+import { onAuthStateChanged } from "firebase/auth/cordova";
+import "./App.css"
 import 'react-toastify/dist/ReactToastify.css';
 
 import Home from "./pages/Home.js"
@@ -11,6 +13,10 @@ import Register from "./pages/Register.js"
 import Dashboard from "./pages/Dashboard.js"
 import NewProduct from "./pages/NewProduct.js"
 import EditProduct from "./pages/EditProduct.js"
+import CategoriesPage from "./pages/CategoriesPage.js";
+import NewCategory from "./pages/NewCategory.js";
+import EditCategoryPage from "./pages/EditCategoryPage.js";
+import Brands from "./pages/Brands.js";
 import Warehouse from "./pages/Warehouse.js"
 import NewWarehouse from "./pages/NewWarehouse.js"
 import EditWarehouse from "./pages/EditWarehouse.js"
@@ -19,8 +25,7 @@ import NotFound from "./pages/NotFound.js"
 import NewUser from "./pages/NewUser.js"
 import Inventory from "./pages/Inventory.js"
 import NewInventoryPage from "./pages/NewInventoryPage.js"
-import "./App.css"
-import { onAuthStateChanged } from "firebase/auth/cordova";
+
 
 
 function App() {
@@ -55,6 +60,10 @@ return(
         <Route path="/dashboard" element={<Dashboard/>}></Route>
         <Route path="/dashboard/add" element={<NewProduct/>}></Route>
         <Route path="/dashboard/editProduct/:id" element={<EditProduct/>}></Route>
+        <Route path="/categories" element={<CategoriesPage/>}></Route>
+        <Route path="/categories/add" element={<NewCategory/>}></Route>
+        <Route path="/categories/edit/:id" element={<EditCategoryPage/>}></Route>
+        <Route path="/brands" element={<Brands/>}></Route>
         <Route path="/warehouse" element={<Warehouse/>}></Route>
         <Route path="/warehouse/add" element={<NewWarehouse/>}></Route>
         <Route path= "/warehouse/edit/:id" element={<EditWarehouse/>}></Route>
