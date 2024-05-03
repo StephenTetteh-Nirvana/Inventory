@@ -1,4 +1,4 @@
-.editCategory{
+.editBrand{
     position:absolute;
     top:0;
     left:0;
@@ -9,19 +9,19 @@
     justify-content: center;
     align-items: center;
 }
-.editCategory-form{
+.editBrand-form{
     width:300px;
     padding:20px;
     background: #FFFFFF;
 }
-.editCategory-form input {
+.editBrand-form input {
     margin-top:10px;
     width:95%;
     padding:8px;
     font-weight:600;
     outline:none;
 }
-.editCategory-form button{
+.editBrand-form button{
     margin-top:12px;
     padding:9px;
     background:#2666CF;

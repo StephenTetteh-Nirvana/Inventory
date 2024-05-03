@@ -56,8 +56,8 @@ const EditCategory = () => {
   },[])
 
   return (
-    <div className="catergoryPopup">
-    <form className="catergoryAdd-form" onSubmit={(e)=>e.preventDefault()}>
+    <div className="editCategory">
+    <form className="editCategory-form" onSubmit={(e)=>e.preventDefault()}>
     <div className="form-title">
       <span><ChevronLeft onClick={closeEditing} style={{cursor:"pointer"}} size={30}/></span>
       <h2>Edit Category</h2>

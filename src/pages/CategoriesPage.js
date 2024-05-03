@@ -42,7 +42,6 @@ const CategoriesPage = () => {
         autoClose:2000
       })
     }
-     
    }
 
    useEffect(()=>{

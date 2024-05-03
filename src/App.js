@@ -17,6 +17,7 @@ import CategoriesPage from "./pages/CategoriesPage.js";
 import NewCategory from "./pages/NewCategory.js";
 import EditCategoryPage from "./pages/EditCategoryPage.js";
 import Brands from "./pages/Brands.js";
+import NewBrand from "./pages/NewBrand.js";
 import Warehouse from "./pages/Warehouse.js"
 import NewWarehouse from "./pages/NewWarehouse.js"
 import EditWarehouse from "./pages/EditWarehouse.js"
@@ -25,6 +26,7 @@ import NotFound from "./pages/NotFound.js"
 import NewUser from "./pages/NewUser.js"
 import Inventory from "./pages/Inventory.js"
 import NewInventoryPage from "./pages/NewInventoryPage.js"
+import EditBrandPage from "./pages/EditBrandPage.js";
 
 
 
@@ -64,6 +66,8 @@ return(
         <Route path="/categories/add" element={<NewCategory/>}></Route>
         <Route path="/categories/edit/:id" element={<EditCategoryPage/>}></Route>
         <Route path="/brands" element={<Brands/>}></Route>
+        <Route path="/brands/add" element={<NewBrand/>}></Route>
+        <Route path="/brands/edit/:id" element={<EditBrandPage/>}></Route>
         <Route path="/warehouse" element={<Warehouse/>}></Route>
         <Route path="/warehouse/add" element={<NewWarehouse/>}></Route>
         <Route path= "/warehouse/edit/:id" element={<EditWarehouse/>}></Route>
