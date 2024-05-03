@@ -21,7 +21,7 @@ const AllProducts = () => {
         }
     }
 
-    const deleteProduct = async(Id) =>{
+    const deleteProduct = async(Id,category,brand) =>{
       setLoading(true)
       try{
         const productArrayReference = doc(db,"Products","Product Arrays")
@@ -34,12 +34,60 @@ const AllProducts = () => {
         })
         setLoading(false)
         localStorage.setItem("products",JSON.stringify(foundProduct))
+        await deleteFromCategories(Id,category)
+        await deleteFromBrands(Id,brand)
       }catch(error){
         setLoading(false)
          console.log(error)
          toast.error("Network Error")
       }
     }
+
+    const deleteFromCategories = async(Id,category) => {
+      try{
+          const colRef = collection(db,"Categories")
+          const docRef = await getDocs(colRef)
+    
+          docRef.forEach(async(document)=>{
+            const docId = document.id;
+            const docName = document.data().name;
+            if(category === docName){
+                const categoryRef = doc(db,"Categories",docId)
+                const productsArr = document.data().products
+                const productToDelete = productsArr.filter((p)=>p.id !== Id)
+              await updateDoc(categoryRef,{
+                products:productToDelete
+              })
+              }
+          })
+          }catch(error){
+             console.log(error)
+             toast.error("Network Error")
+           }  
+         }
+
+         const deleteFromBrands = async(Id,brand) => {
+          try{
+              const colRef = collection(db,"Brands")
+              const docRef = await getDocs(colRef)
+        
+              docRef.forEach(async(document)=>{
+                const docId = document.id;
+                const docName = document.data().name;
+                if(brand === docName){
+                    const brandRef = doc(db,"Brands",docId)
+                    const productsArr = document.data().products
+                    const productToDelete = productsArr.filter((p)=>p.id !== Id)
+                  await updateDoc(brandRef,{
+                    products:productToDelete
+                  })
+                  }
+              })
+              }catch(error){
+                 console.log(error)
+                 toast.error("Network Error")
+               }  
+             }
 
     // const deleteProductFromWarehouse = async(Id,warehouse) => {
     //   try{
@@ -111,7 +159,7 @@ const AllProducts = () => {
                         <Pencil size={20} style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
                         </Link>
                         <Trash 
-                        onClick={()=>deleteProduct(product.id)} 
+                        onClick={()=>deleteProduct(product.id,product.category,product.brand)} 
                         size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}}
                         />
                         </div>

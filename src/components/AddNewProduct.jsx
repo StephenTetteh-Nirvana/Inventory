@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import "../css/AddNewProduct.css"
-import { doc , getDoc, updateDoc } from "firebase/firestore"
+import { doc , getDoc, getDocs, updateDoc, collection} from "firebase/firestore"
 import { db,storage } from "../firebase.js"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
@@ -10,7 +10,6 @@ import noUser from "../images/camera-off.png"
 
 
 const AddNewProduct = () => {
-  const warehouseData = localStorage.getItem("warehouses") !== null ? JSON.parse(localStorage.getItem("warehouses")) : []
   const categories = localStorage.getItem("categories") !== null ? JSON.parse(localStorage.getItem("categories")) : []
   const brands = localStorage.getItem("brands") !== null ? JSON.parse(localStorage.getItem("brands")) : []
   const [file,setFile] = useState("")
@@ -125,6 +124,8 @@ const AddNewProduct = () => {
           await updateDoc(productArrayReference,{
               products: [...productArray,newProduct]
             })
+          await addProductToCategory(newProduct)
+          await addProductToBrand(newProduct)
        }catch(error){
         console.log(error)
         setdisabled(false)
@@ -133,6 +134,46 @@ const AddNewProduct = () => {
         setErrMsg("Bad Connection! Check Your Network")
       }
     }
+    }
+
+    const addProductToCategory = async(newProduct) =>{
+      try{
+          const colRef = collection(db,"Categories")
+          const docRef = await getDocs(colRef)
+          docRef.forEach(async(document)=>{
+          const docId = document.id;
+          const docName = document.data().name;
+          if(category === docName){
+            const categoryRef = doc(db,"Categories",docId)
+            const categoryProductsArr = document.data().products
+            await updateDoc(categoryRef,{
+            products:[...categoryProductsArr,newProduct]
+            })
+          }
+          })
+          }catch(error){
+          console.log(error)
+          }  
+    }
+
+    const addProductToBrand = async(newProduct) =>{
+      try{
+          const colRef = collection(db,"Brands")
+          const docRef = await getDocs(colRef)
+          docRef.forEach(async(document)=>{
+          const docId = document.id;
+          const docName = document.data().name;
+          if(brand === docName){
+            const brandRef = doc(db,"Brands",docId)
+            const brandProductsArr = document.data().products
+            await updateDoc(brandRef,{
+            products:[...brandProductsArr,newProduct]
+            })
+          }
+          })
+          }catch(error){
+          console.log(error)
+          }  
     }
 
     // const addProductToWarehouse = async(newProduct) => {
@@ -197,7 +238,8 @@ const AddNewProduct = () => {
     useEffect(()=>{
       fetchCategories()
       fetchBrands()
-       if(product !== "" && price !== "" && stockLevel !== "" && lowStock !== "" && category !== "" && brand !== ""){
+       if(product !== "" && price !== "" && productMesurement !== "" && stockLevel !== "" && 
+         lowStock !== "" && category !== "" && brand !== ""){
         setdisabled(false)
        }else{
         setdisabled(true)
@@ -207,7 +249,7 @@ const AddNewProduct = () => {
        }else{
         setShowMeasurement(false)
        }
-    },[product,measurementUnit,price,stockLevel,lowStock,category,brand])
+    },[product,measurementUnit,productMesurement,price,stockLevel,lowStock,category,brand])
 
 
   return (
