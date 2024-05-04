@@ -67,6 +67,8 @@ const EditProductDetails = () => {
     toast.success("Product Updated",{
       autoClose:1000
     })
+    await editProductInCategory(updatedProductArray)
+    await editProductInBrand(updatedProductArray)
   }
   }else{
     toast.error("Fill The Form",{
@@ -79,6 +81,87 @@ const EditProductDetails = () => {
       console.log(error)
    }
 }
+
+const editProductInCategory = async() =>{
+  try{
+    const colRef = collection(db,"Categories")
+    const docRef = await getDocs(colRef)
+  
+    docRef.forEach(async(document)=>{
+      const docId = document.id;
+      const docName = document.data().name
+      if(foundProduct.category === docName){
+        const productsArr = document.data().products
+        const updatedProductArray = productsArr.map((product)=>{
+          if(foundProduct.id === product.id){
+            const updatedProduct = {
+              ...product,
+              product:productName,
+              price:price,
+              stockLevel:stockLevel,
+              UnitOfMeasurement:measurementUnit !== "None" ?
+              newMeasurement+measurementUnit.split('(')[1].replace(')', ''):oldMeasurement,
+              lowStock:lowStock,
+              category:category,
+              brand:brand
+            }
+            return updatedProduct;
+          }else{
+            return product;
+          }
+        })
+        const categoryRef = doc(db,"Categories",docId)
+        await updateDoc(categoryRef,{
+         products:updatedProductArray
+       })
+      }
+    })
+  }catch(error){
+    console.log("Failed to update in category")
+    console.log(error)
+  }
+  }
+
+
+  const editProductInBrand = async() =>{
+    try{
+      const colRef = collection(db,"Brands")
+      const docRef = await getDocs(colRef)
+    
+      docRef.forEach(async(document)=>{
+        const docId = document.id;
+        const docName = document.data().name
+        if(foundProduct.brand === docName){
+        const productsArr = document.data().products
+        const updatedProductArray = productsArr.map((product)=>{
+          if(foundProduct.id === product.id){
+            const updatedProduct = {
+              ...product,
+              product:productName,
+              price:price,
+              stockLevel:stockLevel,
+              UnitOfMeasurement:measurementUnit !== "None" ?
+              newMeasurement+measurementUnit.split('(')[1].replace(')', ''):oldMeasurement,
+              lowStock:lowStock,
+              category:category,
+              brand:brand
+            }
+            return updatedProduct;
+          }else{
+            return product;
+          }
+        })
+          const brandRef = doc(db,"Brands",docId)
+          await updateDoc(brandRef,{
+           products:updatedProductArray
+         })
+        }
+      })
+    }catch(error){
+      console.log("Failed to update in brand")
+      console.log(error)
+    }
+    }
 
 // const editProductInWarehouse = async(foundProduct,updatedProductArray) =>{
 //   const colRef = collection(db,"Warehouses")
