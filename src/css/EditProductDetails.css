@@ -8,6 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-bottom:25px;
 }
 .edit-product-container form{
     width:300px;
@@ -15,6 +16,7 @@
     color:black;
     border-radius:5px;
     padding:20px;
+    margin-top:25px;
 }
 .form-title{
     display:flex;
@@ -29,14 +31,14 @@
 .edit-product-inputs > div{
     margin-top:10px;
 }
-.edit-product-name input,.edit-product-price input,.edit-product-quantity input  {
+.edit-product-name input,.edit-product-price input,.old-measurement input,.edit-product-stockLevel input,.edit-product-lowStock input{
     padding:10px;
     width:95%;
     margin-top:4px;
     outline:none;
     font-weight:600;
 }
-.edit-product-warehouse select{
+.edit-product-category select,.edit-product-brand select{
     padding:10px;
     width:103%;
     margin-top:4px;

@@ -10,12 +10,22 @@ import "../css/EditProductDetails.css"
 const EditProductDetails = () => {
   const { id } = useParams()
   const productData = localStorage.getItem("products") !== null ? JSON.parse(localStorage.getItem("products")) : []
+  const categories = localStorage.getItem("categories") !== null ? JSON.parse(localStorage.getItem("categories")) : []
+  const brands = localStorage.getItem("brands") !== null ? JSON.parse(localStorage.getItem("brands")) : []
   const foundProduct = productData.find((p)=> p.id === id)
 
   const [productName,setProductName] = useState('')
   const [price,setPrice] = useState('')
-  const [quantity,setQuantity] = useState('')
+  const [oldMeasurement,setOldMeasurement] = useState("")
+  const [newMeasurement,setNewMeasurement] = useState("")
+  const [measurementUnit,setMeasurementUnit] = useState("None")
+  const [showMeasurement,setShowMeasurement] = useState(false)
+  const [stockLevel,setStockLevel] = useState('')
+  const [lowStock,setLowStock] = useState("")
+  const [category,setCategory] = useState("")
+  const [brand,setBrand] = useState("")
   const [loading,setLoading] = useState(false)
+  const [disabled] = useState(true)
   const navigate = useNavigate()
 
    const closeuserPopup = () =>{
@@ -24,7 +34,7 @@ const EditProductDetails = () => {
 
   const editProduct = async() =>{
     try{
-    if(productName !== "" && price !== "" && quantity !== "") {
+    if(productName !== "" && price !== "" && stockLevel !== "" && lowStock !== "" && category !== "" && brand !== "") {
     setLoading(true)
     const colRef = collection(db,"Products")
     const productArrayReference = doc(colRef,"Product Arrays")
@@ -38,7 +48,12 @@ const EditProductDetails = () => {
             ...product,
             product:productName,
             price:price,
-            quantity:quantity
+            stockLevel:stockLevel,
+            UnitOfMeasurement:measurementUnit !== "None" ?
+            newMeasurement+measurementUnit.split('(')[1].replace(')', ''):oldMeasurement,
+            lowStock:lowStock,
+            category:category,
+            brand:brand
           }
           return updatedProduct;
         }else{
@@ -48,12 +63,10 @@ const EditProductDetails = () => {
       await updateDoc(productArrayReference,{
         products:updatedProductArray
     })
-    await editProductInWarehouse(foundProduct,updatedProductArray)
+    navigate(-1)
     toast.success("Product Updated",{
       autoClose:1000
     })
-    setLoading(false)
-    navigate(-1)
   }
   }else{
     toast.error("Fill The Form",{
@@ -67,25 +80,35 @@ const EditProductDetails = () => {
    }
 }
 
-const editProductInWarehouse = async(foundProduct,updatedProductArray) =>{
-  const colRef = collection(db,"Warehouses")
-  const docRef = await getDocs(colRef)
+// const editProductInWarehouse = async(foundProduct,updatedProductArray) =>{
+//   const colRef = collection(db,"Warehouses")
+//   const docRef = await getDocs(colRef)
 
-  docRef.forEach(async(document)=>{
-    if(foundProduct.warehouse === document.id){
-      const warehouseRef = doc(db,"Warehouses",document.id)
-      await updateDoc(warehouseRef,{
-       products:updatedProductArray
-     })
-    }
-  })
-}
+//   docRef.forEach(async(document)=>{
+//     if(foundProduct.warehouse === document.id){
+//       const warehouseRef = doc(db,"Warehouses",document.id)
+//       await updateDoc(warehouseRef,{
+//        products:updatedProductArray
+//      })
+//     }
+//   })
+// }
 
   useEffect(()=>{
     setProductName(foundProduct.product)
     setPrice(foundProduct.price)
-    setQuantity(foundProduct.quantity)
-  },[])
+    setOldMeasurement(foundProduct.UnitOfMeasurement)
+    setStockLevel(foundProduct.stockLevel)
+    setLowStock(foundProduct.lowStock)
+    setCategory(foundProduct.category)
+    setBrand(foundProduct.brand)
+
+    if(measurementUnit !== "None"){
+      setShowMeasurement(true)
+     }else{
+      setShowMeasurement(false)
+     }
+  },[measurementUnit])
 
   return(
     <div className="edit-product-container">
@@ -98,23 +121,70 @@ const editProductInWarehouse = async(foundProduct,updatedProductArray) =>{
     <div className="edit-product-inputs">
         <div className="edit-product-name">
           <label>Product</label><br/>
-          <input type="text" value={productName} onChange={(e)=>setProductName(e.target.value)}/>
+          <input type="text" value={productName} onChange={(e)=>setProductName(e.target.value)} required/>
         </div>
 
         <div className="edit-product-price">
           <label>Price</label><br/>
-          <input type="text" value={price} onChange={(e)=>setPrice(e.target.value)}/>
+          <input type="number" value={price} onChange={(e)=>setPrice(e.target.value)} required/>
         </div>
-        <div className="edit-product-quantity">
-          <label>Quantity</label><br/>
-          <input type="text" value={quantity} onChange={(e)=>setQuantity(e.target.value)}/>
+        <div className="old-measurement">
+          <label>Old Measurement</label><br/>
+          <input disabled={disabled} 
+            style={disabled ? {cursor:"not-allowed",opacity:"0.9" } : {}}  type="text" value={oldMeasurement}/>
+        </div>
+        <div className="measurement-section">
+              <label>New Unit Of Measurement</label><br/>
+              <select onChange={(e)=>setMeasurementUnit(e.target.value)}>
+                <option>None</option>
+                <option>Kilograms(kg)</option>
+                <option>Liters(L)</option>
+                <option>Pounds(Ib)</option>
+              </select>
+            </div>
+            {showMeasurement  ? (
+              <div className="new-product-measurement">
+              <label>New Product Measurement</label><br/>
+              <input type="number"  
+              onChange={(e)=>{setNewMeasurement(e.target.value)}}
+              placeholder="Enter Product Measurement..."
+              required/>
+              </div>
+            ):""}
+        <div className="edit-product-stockLevel">
+          <label>Stock Level</label><br/>
+          <input type="number" value={stockLevel} onChange={(e)=>setStockLevel(e.target.value)} required/>
+        </div>
+        <div className="edit-product-lowStock">
+          <label>Minimum Stock Level</label><br/>
+          <input type="number" value={lowStock} onChange={(e)=>setLowStock(e.target.value)} required/>
+        </div>
+        <div className="edit-product-category">
+        <label>Change Category</label><br/>
+        <select value={category} onChange={(e) => setCategory(e.target.value)}>
+            {categories.length > 0 && (
+                categories.map((categoryData) => (
+                    <option key={categoryData.name} value={categoryData.name}>{categoryData.name}</option>
+                ))
+            )}
+        </select>
+        </div>
+        <div className="edit-product-brand">
+        <label>Change Brand</label><br/>
+        <select value={brand} onChange={(e) => setBrand(e.target.value)}>
+            {brands.length > 0 && (
+                brands.map((brandData) => (
+                    <option key={brandData.name} value={brandData.name}>{brandData.name}</option>
+                ))
+            )}
+        </select>
         </div>
     </div>
     <div className="edit-product-buttons">
         { loading ? (
             <Loader/>
         ) : (
-            <button className="edit-product-saveBtn" onClick={()=>editProduct()}>Save Changes</button>
+            <button className="edit-product-saveBtn" onClick={editProduct}>Save Changes</button>
         )}
     </div>
     </form>
