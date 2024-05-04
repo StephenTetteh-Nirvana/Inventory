@@ -6,12 +6,25 @@ import { Loader,Eye,Pencil,Trash } from "lucide-react"
 import { toast } from "react-toastify"
 import Navbar from "../components/Navbar"
 import Sidebar from "../components/Sidebar"
+import ViewBrandProducts from "../components/ViewBrandProducts"
 import "../css/Brands.css"
 
 const Brands = () => {
+  const allBrands = localStorage.getItem("brands") !== null ? JSON.parse(localStorage.getItem("brands")) : []
   const [width,setWidth] = useState(false)
   const [brands,setBrands] = useState([])
+  const [displayProducts,setDisplayProducts] = useState(false)
+  const [brand,setBrand] = useState("")
+  const [products,setProducts] = useState([])
   const [deleting,setDeleting] = useState(false)
+
+  const showProducts = (name) =>{
+    const foundCategory = allBrands.find((c)=>c.name == name)
+    setProducts(foundCategory.products)
+    setBrand(foundCategory.name)
+    setDisplayProducts(true)
+   }
+
 
   const fetchBrands = () => {
     const unsub = onSnapshot(collection(db,"Brands"),(snapshot)=>{
@@ -85,7 +98,7 @@ const Brands = () => {
               <button className="delete-loader"><Loader size={17} style={{color:"white"}} /></button>
             ) : (
               <div>
-              <Eye size={20} style={{color:"green",cursor:"pointer"}}/>
+              <Eye onClick={()=>showProducts(brand.name)} size={20} style={{color:"green",cursor:"pointer"}}/>
               <Link to={`/brands/edit/${brand.id}`}>
               <Pencil size={20} style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
               </Link>
@@ -102,6 +115,7 @@ const Brands = () => {
         </div>
       </div>
   </div>
+  {displayProducts && (<ViewBrandProducts products={products} brand={brand} setDisplayProducts={setDisplayProducts}/>)}
 </div>
   )
 }

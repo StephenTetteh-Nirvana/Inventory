@@ -5,14 +5,25 @@ import { Eye,Loader,Pencil,Trash } from "lucide-react"
 import { db } from "../firebase"
 import Navbar from "../components/Navbar"
 import Sidebar from "../components/Sidebar"
-import "../css/CategoriesPage.css"
 import { toast } from "react-toastify"
+import ViewCategoryProducts from "../components/ViewCategoryProducts"
+import "../css/CategoriesPage.css"
 
 const CategoriesPage = () => {
+   const allCategories = localStorage.getItem("categories") !== null ? JSON.parse(localStorage.getItem("categories")) : []
    const [width,setWidth] = useState(false)
    const [categories,setCategories] = useState([])
+   const [displayProducts,setDisplayProducts] = useState(false)
+   const [products,setProducts] = useState([])
+   const [category,setCategory] = useState("")
    const [deleting,setDeleting] = useState(false)
 
+   const showProducts = (name) =>{
+    const foundCategory = allCategories.find((c)=>c.name == name)
+    setProducts(foundCategory.products)
+    setCategory(foundCategory.name)
+    setDisplayProducts(true)
+   }
 
    const fetchCategories = () => {
     const unsub = onSnapshot(collection(db,"Categories"),(snapshot)=>{
@@ -86,7 +97,7 @@ const CategoriesPage = () => {
               <button className="delete-loader"><Loader size={17} style={{color:"white"}} /></button>
             ) : (
               <div>
-              <Eye size={20} style={{color:"green",cursor:"pointer"}}/>
+              <Eye onClick={()=>showProducts(category.name)} size={20} style={{color:"green",cursor:"pointer"}}/>
               <Link to={`/categories/edit/${category.id}`}>
               <Pencil size={20} style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
               </Link>
@@ -103,6 +114,7 @@ const CategoriesPage = () => {
       </div>
     </div>
   </div>
+  {displayProducts && (<ViewCategoryProducts products={products} category={category} setDisplayProducts={setDisplayProducts}/>)}
 </div>
   )
 }

@@ -50,9 +50,9 @@ const Warehouse = () =>{
    }
 
    const displayProducts = (name) =>{
-    const foundProduct = warehouses.find((w)=>w.name === name)
-        if(foundProduct){
-            setProducts(foundProduct.products)
+    const foundWarehouse = warehouses.find((w)=>w.name === name)
+        if(foundWarehouse){
+            setProducts(foundWarehouse.products)
             setViewProducts(true)
         }
    }
