@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { onSnapshot,collection,deleteDoc,doc,getDoc,updateDoc } from "firebase/firestore"
+import { onSnapshot,collection,deleteDoc,doc,getDoc,updateDoc,getDocs } from "firebase/firestore"
 import { db } from "../firebase"
 import { Loader,Eye,Pencil,Trash } from "lucide-react"
 import { toast } from "react-toastify"
@@ -67,9 +67,8 @@ const Brands = () => {
           await updateDoc(productsColRef,{
           products:updatedProductsArray
           })
-      } else {
-          console.log("Document does not exist");
       }
+      await deleteBrandProductsInCategory(brandName)
       const docRef = doc(db,"Brands",brandID)
       await deleteDoc(docRef)
       setDeleting(false)
@@ -83,8 +82,28 @@ const Brands = () => {
         autoClose:2000
       })
     }
-     
    }
+
+   const deleteBrandProductsInCategory = async(brandName) =>{
+    try{
+    const categoryColRef = collection(db,"Categories")
+    const allCategoryDocs = await getDocs(categoryColRef)
+
+    allCategoryDocs.forEach(async(categoryDoc)=>{
+      if(categoryDoc){
+        const categoryID = categoryDoc.id;
+        const categoryProducts = categoryDoc.data().products
+        const updatedCategoryProducts = categoryProducts.filter((p)=>p.brand !== brandName)
+        const categoryDocRef = doc(db,"Categories",categoryID)
+        await updateDoc(categoryDocRef,{
+          products:updatedCategoryProducts
+        })
+    }
+    })
+   }catch(error){
+    console.log(error)
+  }
+}
 
   useEffect(()=>{
   fetchBrands()

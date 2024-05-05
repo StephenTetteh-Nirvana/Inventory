@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { onSnapshot,collection,deleteDoc,doc, updateDoc,getDoc } from "firebase/firestore"
+import { onSnapshot,collection,deleteDoc,doc, updateDoc,getDoc,getDocs } from "firebase/firestore"
 import { Eye,Loader,Pencil,Trash } from "lucide-react"
 import { db } from "../firebase"
 import Swal from "sweetalert2"
@@ -66,9 +66,8 @@ const CategoriesPage = () => {
           await updateDoc(productsColRef,{
           products:updatedProductsArray
           })
-      } else {
-          console.log("Document does not exist");
       }
+      await deleteCategoryProductsInBrand(categoryName)
       const docRef = doc(db,"Categories",Id)
       await deleteDoc(docRef)
       setDeleting(false)
@@ -83,6 +82,27 @@ const CategoriesPage = () => {
       })
     }
    }
+
+   const deleteCategoryProductsInBrand = async(categoryName) =>{
+    try{
+    const brandColRef = collection(db,"Brands")
+    const allBrandDocs = await getDocs(brandColRef)
+
+    allBrandDocs.forEach(async(brandDoc)=>{
+      if(brandDoc){
+        const brandID = brandDoc.id;
+        const brandProducts = brandDoc.data().products
+        const updatedBrandProducts = brandProducts.filter((p)=>p.category !== categoryName)
+        const brandDocRef = doc(db,"Brands",brandID)
+        await updateDoc(brandDocRef,{
+          products:updatedBrandProducts
+        })
+    }
+    })
+   }catch(error){
+    console.log(error)
+  }
+}
 
    useEffect(()=>{
     fetchCategories()
