@@ -87,7 +87,6 @@ const EditProductDetails = () => {
   const editProductInCategory = async() =>{
   try{
     if(category !== foundProduct.category){
-      console.log("category changed")
       addProductToNewCategory()
       return;
     }
@@ -206,7 +205,6 @@ const EditProductDetails = () => {
   const editProductInBrand = async() =>{
     try{
       if(brand !== foundProduct.brand){
-        console.log("brand changed")
         addProductToNewBrand()
         return;
       }
