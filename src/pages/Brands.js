@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { onSnapshot,collection,deleteDoc,doc } from "firebase/firestore"
+import { onSnapshot,collection,deleteDoc,doc,getDoc,updateDoc } from "firebase/firestore"
 import { db } from "../firebase"
 import { Loader,Eye,Pencil,Trash } from "lucide-react"
 import { toast } from "react-toastify"
+import Swal from "sweetalert2"
 import Navbar from "../components/Navbar"
 import Sidebar from "../components/Sidebar"
 import ViewBrandProducts from "../components/ViewBrandProducts"
@@ -38,9 +39,37 @@ const Brands = () => {
     return unsub;
    }
 
-   const deleteBrand = async(brandID) =>{
+   const deletePopUp = (Id,brandName) =>{
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Deleting this brand will delete all products associated with this brand",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then(async(result) => {
+      if (result.isConfirmed) {
+        await deleteBrand(Id,brandName)
+      }
+    });
+   }
+
+
+   const deleteBrand = async(brandID,brandName) =>{
     try{
       setDeleting(true)
+      const productsColRef = doc(db,"Products","Product Arrays")
+      const productsDoc = await getDoc(productsColRef);
+      if (productsDoc.exists()) {
+          const productsArray = productsDoc.data().products;
+          const updatedProductsArray = productsArray.filter((p)=>p.brand !== brandName)
+          await updateDoc(productsColRef,{
+          products:updatedProductsArray
+          })
+      } else {
+          console.log("Document does not exist");
+      }
       const docRef = doc(db,"Brands",brandID)
       await deleteDoc(docRef)
       setDeleting(false)
@@ -50,7 +79,7 @@ const Brands = () => {
     }catch(error){
       console.log(error)
       setDeleting(false)
-      toast.error("Operation Failed",{
+      toast.error("Network Error",{
         autoClose:2000
       })
     }
@@ -102,7 +131,7 @@ const Brands = () => {
               <Link to={`/brands/edit/${brand.id}`}>
               <Pencil size={20} style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
               </Link>
-              <Trash onClick={()=>deleteBrand(brand.id)} size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}}/>
+              <Trash onClick={()=>deletePopUp(brand.id,brand.name)} size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}}/>
               </div>
             )}
             </div>

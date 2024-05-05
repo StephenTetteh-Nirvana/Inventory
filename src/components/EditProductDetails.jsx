@@ -26,6 +26,8 @@ const EditProductDetails = () => {
   const [brand,setBrand] = useState("")
   const [loading,setLoading] = useState(false)
   const [disabled] = useState(true)
+  const date = new Date().toDateString();
+  const time = new Date().toLocaleTimeString()
   const navigate = useNavigate()
 
    const closeuserPopup = () =>{
@@ -67,8 +69,8 @@ const EditProductDetails = () => {
     toast.success("Product Updated",{
       autoClose:1000
     })
-    await editProductInCategory(updatedProductArray)
-    await editProductInBrand(updatedProductArray)
+    await editProductInCategory()
+    await editProductInBrand()
   }
   }else{
     toast.error("Fill The Form",{
@@ -82,8 +84,14 @@ const EditProductDetails = () => {
    }
 }
 
-const editProductInCategory = async() =>{
+  const editProductInCategory = async() =>{
   try{
+    if(category !== foundProduct.category){
+      console.log("category changed")
+      addProductToNewCategory()
+      return;
+    }
+
     const colRef = collection(db,"Categories")
     const docRef = await getDocs(colRef)
   
@@ -123,6 +131,49 @@ const editProductInCategory = async() =>{
   }
 
 
+  const addProductToNewCategory = async() =>{
+    try{
+      const colRef = collection(db,"Categories")
+      const docRef = await getDocs(colRef)
+ 
+      docRef.forEach(async(document)=>{
+       const docId = document.id;
+       const docName = document.data().name
+       if(foundProduct.category === docName){
+         const oldCategoriesProductsArr = document.data().products
+         const newCategoriesProductsArr = oldCategoriesProductsArr.filter((p)=> p.id !== foundProduct.id)
+         const categoriesRef = doc(db,"Categories",docId)
+         await updateDoc(categoriesRef,{
+          products:newCategoriesProductsArr
+         })
+       }
+       
+       if(category === docName){
+         const productsArr = document.data().products
+         const newProduct = {
+           product:productName,
+           price:price,
+           stockLevel:stockLevel,
+           UnitOfMeasurement:measurementUnit !== "None" ?
+           newMeasurement+measurementUnit.split('(')[1].replace(')', ''):oldMeasurement,
+           lowStock:lowStock,
+           category:category,
+           brand:brand,
+           createdAt:`${date} at ${time}`
+       }
+       const categoryRef = doc(db,"Categories",docId)
+       await updateDoc(categoryRef,{
+        products:[...productsArr,newProduct]
+       })
+     }
+     })
+    }catch(error){
+      console.log("Operation FAILED")
+      console.log(error)
+    }
+    
+  }
+
   const editProductInBrand = async() =>{
     try{
       const colRef = collection(db,"Brands")
@@ -161,7 +212,7 @@ const editProductInCategory = async() =>{
       console.log("Failed to update in brand")
       console.log(error)
     }
-    }
+  }
 
 // const editProductInWarehouse = async(foundProduct,updatedProductArray) =>{
 //   const colRef = collection(db,"Warehouses")

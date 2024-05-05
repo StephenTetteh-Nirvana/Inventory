@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { onSnapshot,collection,deleteDoc,doc } from "firebase/firestore"
+import { onSnapshot,collection,deleteDoc,doc, updateDoc,getDoc } from "firebase/firestore"
 import { Eye,Loader,Pencil,Trash } from "lucide-react"
 import { db } from "../firebase"
+import Swal from "sweetalert2"
+import { toast } from "react-toastify"
 import Navbar from "../components/Navbar"
 import Sidebar from "../components/Sidebar"
-import { toast } from "react-toastify"
 import ViewCategoryProducts from "../components/ViewCategoryProducts"
 import "../css/CategoriesPage.css"
+
 
 const CategoriesPage = () => {
    const allCategories = localStorage.getItem("categories") !== null ? JSON.parse(localStorage.getItem("categories")) : []
@@ -37,9 +39,36 @@ const CategoriesPage = () => {
     return unsub;
    }
 
-   const deleteCategory = async(Id) =>{
+   const deletePopUp = (Id,categoryName) =>{
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Deleting this category will delete all products associated with this category",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then(async(result) => {
+      if (result.isConfirmed) {
+        await deleteCategory(Id,categoryName)
+      }
+    });
+   }
+
+   const deleteCategory = async(Id,categoryName) =>{
     try{
       setDeleting(true)
+      const productsColRef = doc(db,"Products","Product Arrays")
+      const productsDoc = await getDoc(productsColRef);
+      if (productsDoc.exists()) {
+          const productsArray = productsDoc.data().products;
+          const updatedProductsArray = productsArray.filter((p)=>p.category !== categoryName)
+          await updateDoc(productsColRef,{
+          products:updatedProductsArray
+          })
+      } else {
+          console.log("Document does not exist");
+      }
       const docRef = doc(db,"Categories",Id)
       await deleteDoc(docRef)
       setDeleting(false)
@@ -49,7 +78,7 @@ const CategoriesPage = () => {
     }catch(error){
       console.log(error)
       setDeleting(false)
-      toast.error("Operation Failed",{
+      toast.error("Network Error",{
         autoClose:2000
       })
     }
@@ -101,7 +130,7 @@ const CategoriesPage = () => {
               <Link to={`/categories/edit/${category.id}`}>
               <Pencil size={20} style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
               </Link>
-              <Trash onClick={()=>deleteCategory(category.id)} size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}}/>
+              <Trash onClick={()=>deletePopUp(category.id,category.name)} size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}}/>
               </div>
             )}
             </div>

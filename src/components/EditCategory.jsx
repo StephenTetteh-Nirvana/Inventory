@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useParams,useNavigate } from "react-router-dom"
 import { ChevronLeft } from "lucide-react"
-import { updateDoc,doc } from "firebase/firestore"
+import { updateDoc,doc,getDoc, collection, getDocs } from "firebase/firestore"
 import { db } from "../firebase"
 import { toast } from "react-toastify"
 import "../css/EditCategory.css"
@@ -35,14 +35,34 @@ const EditCategory = () => {
                 }
             }
         setLoading(true)
-        const docRef = doc(db,"Categories",categoryId)
-        await updateDoc(docRef,{
-            name:name
-        })
-        navigate(-1)
-        toast.success("Category Updated",{
-            autoClose:1000
-        })             
+        const allProducts = doc(db,"Products","Product Arrays")
+        const productsDoc = await getDoc(allProducts);
+        if (productsDoc.exists()) {
+            const productsArray = productsDoc.data().products;
+            const updatedProductArray = productsArray.map((product)=>{
+              if(foundCategory.name === product.category){
+                const updatedProduct = {
+                  ...product,
+                  category:name,
+                }
+                return updatedProduct;
+              }else{
+                return product;
+              }
+            })
+            await updateDoc(allProducts,{
+              products:updatedProductArray
+          })
+          }
+          await editCategoryInBrand()
+          const docRef = doc(db,"Categories",categoryId)
+          await updateDoc(docRef,{
+              name:name
+          })
+          navigate(-1)
+          toast.success("Category Updated",{
+              autoClose:1000
+          })             
     }
     }catch(error){
         console.log(error)
@@ -50,6 +70,30 @@ const EditCategory = () => {
         setErrMsg("Bad Connection! Check Your Network")
     }
   }
+
+  const editCategoryInBrand = async() => {
+    const brandRef = collection(db,"Brands")
+    const allBrands = await getDocs(brandRef)
+    allBrands.forEach(async(brand)=>{
+      const Id = brand.id;
+      const brandProducts = brand.data().products
+      const updatedBrandProducts = brandProducts.map((product)=>{
+        if(foundCategory.name === product.category){
+          const updatedProduct = {
+            ...product,
+            category:name,
+          }
+          return updatedProduct;
+        }else{
+          return product;
+        }
+      })
+      const foundBrandDoc = doc(db,"Brands",Id)
+      await updateDoc(foundBrandDoc,{
+        products:updatedBrandProducts
+        })
+    })
+    }
 
   useEffect(()=>{
     setName(foundCategory.name)
