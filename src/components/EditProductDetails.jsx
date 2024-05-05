@@ -43,7 +43,6 @@ const EditProductDetails = () => {
     const productArr = await getDoc(productArrayReference)
     if(productArr.exists){
       const productArray = productArr.data().products
-
       const updatedProductArray = productArray.map((product)=>{
         if(foundProduct.id === product.id){
           const updatedProduct = {
@@ -84,6 +83,7 @@ const EditProductDetails = () => {
    }
 }
 
+   // FUNCTIONS FOR UPDATING CATEGORY VALUE IN BOTH CATEGORY AND BRAND
   const editProductInCategory = async() =>{
   try{
     if(category !== foundProduct.category){
@@ -130,18 +130,17 @@ const EditProductDetails = () => {
   }
   }
 
-
   const addProductToNewCategory = async() =>{
     try{
       const colRef = collection(db,"Categories")
       const docRef = await getDocs(colRef)
- 
+
       docRef.forEach(async(document)=>{
        const docId = document.id;
        const docName = document.data().name
        if(foundProduct.category === docName){
          const oldCategoriesProductsArr = document.data().products
-         const newCategoriesProductsArr = oldCategoriesProductsArr.filter((p)=> p.id !== foundProduct.id)
+         const newCategoriesProductsArr = oldCategoriesProductsArr.filter((p)=> p.category !== foundProduct.category)
          const categoriesRef = doc(db,"Categories",docId)
          await updateDoc(categoriesRef,{
           products:newCategoriesProductsArr
@@ -167,15 +166,50 @@ const EditProductDetails = () => {
        })
      }
      })
+     await updateCategoryInBrand()
     }catch(error){
       console.log("Operation FAILED")
       console.log(error)
     }
-    
   }
 
+  const updateCategoryInBrand = async() =>{
+    const colRef = collection(db,"Brands")
+    const docRef = await getDocs(colRef)
+
+    docRef.forEach(async(document)=>{
+      const docId = document.id;
+      const docName = document.data().name
+      if(foundProduct.brand === docName){
+        const productsArr = document.data().products
+        const updatedProductArray = productsArr.map((product)=>{
+          if(foundProduct.category === product.category){
+            const updatedProduct = {
+              ...product,
+              category:category,
+            }
+            return updatedProduct
+          }else{
+            return product;
+          }
+          })
+        const brandRef = doc(db,"Brands",docId)
+        await updateDoc(brandRef,{
+         products:updatedProductArray
+        })
+      }
+    })
+  }
+
+
+   //FUNCTIONS FOR UPDATING BRAND VALUE IN BOTH BRAND AND CATEGORY
   const editProductInBrand = async() =>{
     try{
+      if(brand !== foundProduct.brand){
+        console.log("brand changed")
+        addProductToNewBrand()
+        return;
+      }
       const colRef = collection(db,"Brands")
       const docRef = await getDocs(colRef)
     
@@ -212,6 +246,78 @@ const EditProductDetails = () => {
       console.log("Failed to update in brand")
       console.log(error)
     }
+  }
+
+  const addProductToNewBrand = async() =>{
+    try{
+      const colRef = collection(db,"Brands")
+      const docRef = await getDocs(colRef)
+ 
+      docRef.forEach(async(document)=>{
+       const docId = document.id;
+       const docName = document.data().name
+       if(foundProduct.brand === docName){
+         const oldCategoriesProductsArr = document.data().products
+         const newCategoriesProductsArr = oldCategoriesProductsArr.filter((p)=> p.brand !== foundProduct.brand)
+         const categoriesRef = doc(db,"Brands",docId)
+         await updateDoc(categoriesRef,{
+          products:newCategoriesProductsArr
+         })
+       }
+       
+       if(brand === docName){
+         const productsArr = document.data().products
+         const newProduct = {
+           product:productName,
+           price:price,
+           stockLevel:stockLevel,
+           UnitOfMeasurement:measurementUnit !== "None" ?
+           newMeasurement+measurementUnit.split('(')[1].replace(')', ''):oldMeasurement,
+           lowStock:lowStock,
+           category:category,
+           brand:brand,
+           createdAt:`${date} at ${time}`
+       }
+       const categoryRef = doc(db,"Brands",docId)
+       await updateDoc(categoryRef,{
+        products:[...productsArr,newProduct]
+       })
+     }
+     })
+     await updateBrandInCategory()
+    }catch(error){
+      console.log("Operation FAILED")
+      console.log(error)
+    }
+    
+  }
+
+  const updateBrandInCategory = async() =>{
+    const colRef = collection(db,"Categories")
+    const docRef = await getDocs(colRef)
+
+    docRef.forEach(async(document)=>{
+      const docId = document.id;
+      const docName = document.data().name
+      if(foundProduct.category === docName){
+        const productsArr = document.data().products
+        const updatedProductArray = productsArr.map((product)=>{
+          if(foundProduct.brand === product.brand){
+            const updatedProduct = {
+              ...product,
+              brand:brand,
+            }
+            return updatedProduct
+          }else{
+            return product;
+          }
+          })
+        const categoryRef = doc(db,"Categories",docId)
+        await updateDoc(categoryRef,{
+         products:updatedProductArray
+        })
+      }
+    })
   }
 
 // const editProductInWarehouse = async(foundProduct,updatedProductArray) =>{

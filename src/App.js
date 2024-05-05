@@ -37,12 +37,16 @@ function App() {
 
   useEffect(()=>{
     if(userRole === "Regular" && 
-    (location.pathname === "/dashboard" || location.pathname === "/warehouse" || location.pathname === "/users")){
+    (location.pathname === "/dashboard" || location.pathname === "/categories" 
+    || 
+    location.pathname === "/users" ||  location.pathname === "/brands")){
       console.log("no-user",)
       navigate("/")
     }
     onAuthStateChanged(auth,(user)=>{
-      if(!user && (location.pathname === "/dashboard" || location.pathname === "/warehouse" || location.pathname === "/users")){
+      if(!user && (location.pathname === "/dashboard" || location.pathname === "/categories" 
+      || 
+      location.pathname === "/users" || location.pathname === "/brands")){
         navigate("/login")
       }
     })
