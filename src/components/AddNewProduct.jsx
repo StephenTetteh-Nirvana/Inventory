@@ -18,7 +18,7 @@ const AddNewProduct = () => {
   
   const [category,setCategory] = useState("")
   const [brand,setBrand] = useState("")
-  const [warehouse,setWarehouse] = useState("")
+  const [warehouse] = useState("")
   const [product,setProduct] = useState("")
   const [measurementUnit,setMeasurementUnit] = useState("None")
   const [productMesurement,setProductMeasurement] = useState("")
@@ -238,6 +238,9 @@ const AddNewProduct = () => {
     useEffect(()=>{
       fetchCategories()
       fetchBrands()
+    },[])
+
+    useEffect(()=>{
        if(product !== "" && price !== "" && stockLevel !== "" && lowStock !== "" && category !== "" && brand !== ""){
         setdisabled(false)
        }else{

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Link,useNavigate } from "react-router-dom"
 import { User,LogOut, Bell  } from "lucide-react"
 import { auth, db } from "../firebase"
-import { doc,getDoc,onSnapshot } from "firebase/firestore"
+import { doc,onSnapshot } from "firebase/firestore"
 import { onAuthStateChanged, signOut } from "firebase/auth"
 import { toast } from "react-toastify"
 import Logo from "../images/logo.png"
@@ -75,7 +75,7 @@ const Navbar = () => {
 
 
   useEffect(()=>{
-     onAuthStateChanged(auth,(user)=>{
+    const unsubscribe = onAuthStateChanged(auth,(user)=>{
       if(user){
         fetchUser()
         fetchMessages()
@@ -85,7 +85,8 @@ const Navbar = () => {
         setLoggedIn(false)
       }
      })
-  },[])
+     return () => unsubscribe();
+  },[fetchUser,fetchMessages])
   
   return (
     <div className="navbar-container">

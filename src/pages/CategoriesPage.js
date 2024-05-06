@@ -21,7 +21,7 @@ const CategoriesPage = () => {
    const [deleting,setDeleting] = useState(false)
 
    const showProducts = (name) =>{
-    const foundCategory = allCategories.find((c)=>c.name == name)
+    const foundCategory = allCategories.find((c)=>c.name === name)
     setProducts(foundCategory.products)
     setCategory(foundCategory.name)
     setDisplayProducts(true)

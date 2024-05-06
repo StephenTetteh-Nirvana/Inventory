@@ -340,7 +340,9 @@ const EditProductDetails = () => {
     setLowStock(foundProduct.lowStock)
     setCategory(foundProduct.category)
     setBrand(foundProduct.brand)
+  },[])
 
+  useEffect(()=>{
     if(measurementUnit !== "None"){
       setShowMeasurement(true)
      }else{

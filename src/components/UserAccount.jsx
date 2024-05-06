@@ -180,7 +180,7 @@ const UserAccount = ({setViewUser}) => {
        setRole(userData.role)
        setWarehouse(userData.warehouse)
        setDate(userData.createdAt)
-    },[])
+    },[userData.Img,userData.createdAt,userData.role,userData.userName,userData.warehouse])
 
   return (
     <div className="user-profile-container">

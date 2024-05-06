@@ -43,14 +43,15 @@ function App() {
       console.log("no-user",)
       navigate("/")
     }
-    onAuthStateChanged(auth,(user)=>{
+    const unsub = onAuthStateChanged(auth,(user)=>{
       if(!user && (location.pathname === "/dashboard" || location.pathname === "/categories" 
       || 
       location.pathname === "/users" || location.pathname === "/brands")){
         navigate("/login")
       }
     })
-  },[])
+    return ()=> unsub()
+  },[userRole,location.pathname,navigate,onAuthStateChanged])
   
  
 return(

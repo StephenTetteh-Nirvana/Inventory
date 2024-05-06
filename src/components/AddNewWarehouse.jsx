@@ -79,15 +79,18 @@ const AddNewWarehouse = () => {
         }
       })
   }
-  
-   useEffect(()=>{
+
+  useEffect(()=>{
     fetchLocalRegularUsers()
-     if (name !== "" && location !== "" && contact !== "") {
-      setdisabled(false);
-    } else {
-      setdisabled(true);
-    }
-   },[name,location,contact,manager])
+  },[])
+  
+  useEffect(()=>{
+    if (name !== "" && location !== "" && contact !== "") {
+    setdisabled(false);
+  } else {
+    setdisabled(true);
+  }
+  },[name,location,contact,manager])
 
   return (
     <div className="new-warehouse-container">

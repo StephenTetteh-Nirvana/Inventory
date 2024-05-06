@@ -6,7 +6,6 @@ import { toast } from "react-toastify"
 import Loader from "./Loader"
 import "../css/CategoryAdd.css"
 import { useNavigate } from "react-router-dom"
-import { connectFunctionsEmulator } from "firebase/functions"
 
 const CategoryAdd = () => {
   const parsedData = JSON.parse(localStorage.getItem("categories")) !== null ? JSON.parse(localStorage.getItem("categories")) : []

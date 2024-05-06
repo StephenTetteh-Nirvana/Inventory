@@ -20,7 +20,7 @@ const Brands = () => {
   const [deleting,setDeleting] = useState(false)
 
   const showProducts = (name) =>{
-    const foundCategory = allBrands.find((c)=>c.name == name)
+    const foundCategory = allBrands.find((c)=>c.name === name)
     setProducts(foundCategory.products)
     setBrand(foundCategory.name)
     setDisplayProducts(true)
