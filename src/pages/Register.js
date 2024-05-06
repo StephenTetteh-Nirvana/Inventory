@@ -6,6 +6,7 @@ import "../css/Register.css"
 import Logo from "../images/logo.png"
 import { useEffect, useState } from "react"
 import  Loader  from "../components/Loader.jsx"
+import { toast } from "react-toastify"
 
 const Register = () => {
   const [userName,setUsername] = useState("")
@@ -20,6 +21,7 @@ const Register = () => {
     
   const RegisterUser = async() =>{
       try{
+        setErrMsg("")
         setLoading(true)
          await createUserWithEmailAndPassword(auth,email,password)
          const user = auth.currentUser;
@@ -36,6 +38,9 @@ const Register = () => {
             createdAt:`${date} at ${time}`
           })
           navigate("/login")
+          toast.success("Account Created",{
+            autoClose:1000
+          })
       }catch(error){
         setLoading(false)
         console.log(error)

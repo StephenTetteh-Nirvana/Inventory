@@ -18,6 +18,7 @@ const Login = () => {
 
   const LoginUser = async () =>{
     try{
+      setErrMsg("")
       setLoading(true)
       await signInWithEmailAndPassword(auth,email,password);
       const user = auth.currentUser;
