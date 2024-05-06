@@ -94,7 +94,8 @@ const EditBrand = () => {
             })
         })
         }
-
+        
+    // eslint-disable-next-line
     useEffect(()=>{
         setName(foundBrand.name)
       },[])

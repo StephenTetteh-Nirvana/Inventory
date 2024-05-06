@@ -128,7 +128,8 @@ const Inventory = () => {
         console.log(error)
       }  
     }
-
+ 
+    // eslint-disable-next-line
     useEffect(()=>{
       fetchProducts()
       checkMessageSent()

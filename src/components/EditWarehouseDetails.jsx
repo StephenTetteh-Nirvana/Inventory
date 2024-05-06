@@ -149,7 +149,8 @@ const EditWarehouseDetails = () => {
             console.log(error)
         }
     }
-
+    
+    // eslint-disable-next-line
     useEffect(()=>{
         setManager(foundWarehouse.manager)
         setName(foundWarehouse.name)

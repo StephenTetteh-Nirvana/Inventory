@@ -52,7 +52,7 @@ const Users = () => {
         }) 
     }
 
-
+    // eslint-disable-next-line
     useEffect(()=>{
         fetchUsers()
     },[])

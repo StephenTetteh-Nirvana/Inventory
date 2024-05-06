@@ -74,7 +74,8 @@ const ContactAdmin = ({setShowPopUp}) => {
           console.log(error)
         }
       }
-
+       
+      // eslint-disable-next-line
       useEffect(()=>{
         fetchLocalAdmins()
       },[admin])

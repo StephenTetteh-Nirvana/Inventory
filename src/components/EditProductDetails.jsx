@@ -332,6 +332,7 @@ const EditProductDetails = () => {
 //   })
 // }
 
+  // eslint-disable-next-line
   useEffect(()=>{
     setProductName(foundProduct.product)
     setPrice(foundProduct.price)

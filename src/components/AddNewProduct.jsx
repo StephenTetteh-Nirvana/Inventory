@@ -234,7 +234,7 @@ const AddNewProduct = () => {
         console.log(error)
       }
     }
-
+    // eslint-disable-next-line
     useEffect(()=>{
       fetchCategories()
       fetchBrands()

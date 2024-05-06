@@ -79,7 +79,8 @@ const AddNewWarehouse = () => {
         }
       })
   }
-
+  
+  // eslint-disable-next-line
   useEffect(()=>{
     fetchLocalRegularUsers()
   },[])

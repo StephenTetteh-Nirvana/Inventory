@@ -86,7 +86,7 @@ const Navbar = () => {
       }
      })
      return () => unsubscribe();
-  },[fetchUser,fetchMessages])
+  },[])
   
   return (
     <div className="navbar-container">

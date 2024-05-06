@@ -94,7 +94,8 @@ const EditCategory = () => {
         })
     })
     }
-
+  
+  // eslint-disable-next-line
   useEffect(()=>{
     setName(foundCategory.name)
   },[])
