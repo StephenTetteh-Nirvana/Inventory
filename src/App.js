@@ -51,7 +51,7 @@ function App() {
       }
     })
     return ()=> unsub()
-  },[userRole,location.pathname])
+  },[userRole,location.pathname,navigate])
   
  
 return(
