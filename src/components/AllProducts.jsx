@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Eye,Pencil,Trash,Loader } from "lucide-react"
 import { Link } from "react-router-dom"
-import { updateDoc,doc,collection,getDocs } from "firebase/firestore"
+import { updateDoc,doc,collection,getDocs,getDoc } from "firebase/firestore"
 import { db } from "../firebase"
 import "../css/AllProducts.css"
 import ViewProduct from "./ViewProduct"
@@ -25,17 +25,19 @@ const AllProducts = () => {
       setLoading(true)
       try{
         const productArrayReference = doc(db,"Products","Product Arrays")
-        const foundProduct = products.filter((p)=>p.id !== Id)
+        const productData = await getDoc(productArrayReference)
+        const productArr = productData.data().products
+        const updatedProductsArr = productArr.filter((p)=>p.id !== Id)
         await updateDoc(productArrayReference,{
-          products:foundProduct
+          products:updatedProductsArr
         })
         toast.success("Product Deleted",{
           autoClose:1000
         })
-        setLoading(false)
-        localStorage.setItem("products",JSON.stringify(foundProduct))
         await deleteFromCategories(Id,category)
         await deleteFromBrands(Id,brand)
+        setLoading(false)
+        localStorage.setItem("products",JSON.stringify(updatedProductsArr))
       }catch(error){
         setLoading(false)
          console.log(error)
@@ -52,9 +54,9 @@ const AllProducts = () => {
             const docId = document.id;
             const docName = document.data().name;
             if(category === docName){
-                const categoryRef = doc(db,"Categories",docId)
-                const productsArr = document.data().products
-                const productToDelete = productsArr.filter((p)=>p.id !== Id)
+              const productsArr = document.data().products
+              const productToDelete = productsArr.filter((p)=>p.id !== Id)
+              const categoryRef = doc(db,"Categories",docId)
               await updateDoc(categoryRef,{
                 products:productToDelete
               })
