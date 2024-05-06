@@ -255,11 +255,11 @@ const EditProductDetails = () => {
        const docId = document.id;
        const docName = document.data().name
        if(foundProduct.brand === docName){
-         const oldCategoriesProductsArr = document.data().products
-         const newCategoriesProductsArr = oldCategoriesProductsArr.filter((p)=> p.brand !== foundProduct.brand)
-         const categoriesRef = doc(db,"Brands",docId)
-         await updateDoc(categoriesRef,{
-          products:newCategoriesProductsArr
+         const oldBrandProductsArr = document.data().products
+         const newBrandProductsArr = oldBrandProductsArr.filter((p)=> p.brand !== foundProduct.brand)
+         const brandRef = doc(db,"Brands",docId)
+         await updateDoc(brandRef,{
+          products:newBrandProductsArr
          })
        }
        
@@ -287,7 +287,6 @@ const EditProductDetails = () => {
       console.log("Operation FAILED")
       console.log(error)
     }
-    
   }
 
   const updateBrandInCategory = async() =>{

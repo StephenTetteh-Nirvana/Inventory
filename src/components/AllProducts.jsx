@@ -66,28 +66,28 @@ const AllProducts = () => {
            }  
          }
 
-         const deleteFromBrands = async(Id,brand) => {
-          try{
-              const colRef = collection(db,"Brands")
-              const docRef = await getDocs(colRef)
-        
-              docRef.forEach(async(document)=>{
-                const docId = document.id;
-                const docName = document.data().name;
-                if(brand === docName){
-                    const brandRef = doc(db,"Brands",docId)
-                    const productsArr = document.data().products
-                    const productToDelete = productsArr.filter((p)=>p.id !== Id)
-                  await updateDoc(brandRef,{
-                    products:productToDelete
-                  })
-                  }
-              })
-              }catch(error){
-                 console.log(error)
-                 toast.error("Network Error")
-               }  
-             }
+    const deleteFromBrands = async(Id,brand) => {
+    try{
+        const colRef = collection(db,"Brands")
+        const docRef = await getDocs(colRef)
+  
+        docRef.forEach(async(document)=>{
+          const docId = document.id;
+          const docName = document.data().name;
+          if(brand === docName){
+              const brandRef = doc(db,"Brands",docId)
+              const productsArr = document.data().products
+              const productToDelete = productsArr.filter((p)=>p.id !== Id)
+            await updateDoc(brandRef,{
+              products:productToDelete
+            })
+            }
+        })
+        }catch(error){
+            console.log(error)
+            toast.error("Network Error")
+          }  
+        }
 
     // const deleteProductFromWarehouse = async(Id,warehouse) => {
     //   try{
