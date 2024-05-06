@@ -23,7 +23,7 @@ const InventoryStats = () => {
             <CircleDollarSign style={{marginTop:3}} size={50}/>
             <div>
              <h3>Total Amount</h3>
-             <h2>$20000.00</h2>
+             <h2>$0.00</h2>
             </div>
         </div>
         <div className="third-inventory-stat">
