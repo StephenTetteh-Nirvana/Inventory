@@ -28,24 +28,16 @@ const Dashboard = () => {
       return unsub;
       }
 
-    const totalAmount = async() =>{
-      const colRef = collection(db,"Products")
-      const unsub = onSnapshot(doc(colRef,"Product Arrays"), (snapshot) => {
-      try {
-      const products = snapshot.data().products;
-      let sum = 0;
-        
-            products.forEach((product)=>{
-              const total = product.price*product.quantity;
-              sum += total;
-            })
-          localStorage.setItem("totalAmount",JSON.stringify(sum))
-      } catch (error) {
-          console.error("Error fetching data: ", error);
+    const fetchUnits = () =>{
+      const unsub = onSnapshot(collection(db,"Units"),(snapshot)=>{
+        let list = []
+        snapshot.forEach((doc)=>{
+          list.unshift({id:doc.id,...doc.data()})
+        })
+        localStorage.setItem("units",JSON.stringify(list))
+      })
+      return unsub;
       }
-    });
-    return unsub;
-    }
 
     const fetchCategories = () => {
       const unsub = onSnapshot(collection(db,"Categories"),(snapshot)=>{
@@ -58,22 +50,41 @@ const Dashboard = () => {
       return unsub;
       }
 
-      const fetchBrands = () => {
-      const unsub = onSnapshot(collection(db,"Brands"),(snapshot)=>{
-        let list = []
-        snapshot.forEach((doc)=>{
-          list.unshift({id:doc.id,...doc.data()})
-        })
-        localStorage.setItem("brands",JSON.stringify(list))
+    const fetchBrands = () => {
+    const unsub = onSnapshot(collection(db,"Brands"),(snapshot)=>{
+      let list = []
+      snapshot.forEach((doc)=>{
+        list.unshift({id:doc.id,...doc.data()})
       })
-      return unsub;
-      }
+      localStorage.setItem("brands",JSON.stringify(list))
+    })
+    return unsub;
+    }
+
+     // const totalAmount = async() =>{
+    //   const colRef = collection(db,"Products")
+    //   const unsub = onSnapshot(doc(colRef,"Product Arrays"), (snapshot) => {
+    //   try {
+    //   const products = snapshot.data().products;
+    //   let sum = 0;
+        
+    //         products.forEach((product)=>{
+    //           const total = product.price*product.quantity;
+    //           sum += total;
+    //         })
+    //       localStorage.setItem("totalAmount",JSON.stringify(sum))
+    //   } catch (error) {
+    //       console.error("Error fetching data: ", error);
+    //   }
+    // });
+    // return unsub;
+    // }
     
 
 
       useEffect(()=>{
          fetchProducts()
-         totalAmount()
+         fetchUnits()
          fetchCategories()
          fetchBrands()
       },[])

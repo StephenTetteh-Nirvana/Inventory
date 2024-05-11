@@ -127,7 +127,7 @@ const AllProducts = () => {
                     </div>
 
                     <div>
-                    <p>{product.UnitOfMeasurement}</p>
+                    <p>{product.Measurement}</p>
                     </div>
 
                     <div>

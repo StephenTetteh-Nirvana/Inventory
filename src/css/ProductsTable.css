@@ -41,7 +41,27 @@
     top:8px;
     left:80%;
 }
-
+.units-section{
+   display:flex;
+}
+.allUnits-btn{
+    padding:10px 30px;
+    background-color: #d1d1d1;
+    color:black;
+    border:none;
+    cursor: pointer;
+    text-align:center;
+    font-weight:500;
+}
+.newUnit-btn{
+    padding:10px 30px;
+    background-color: #2666CF;
+    color:white;
+    border:none;
+    cursor: pointer;
+    text-align:center;
+    margin-left:8px;
+}
 .add-product button{
     padding:10px 30px;
     background-color: orangered;
@@ -49,6 +69,7 @@
     border:none;
     cursor: pointer;
     text-align:center;
+    margin-left:7px;
 }
 .add-product span{
     position:absolute;

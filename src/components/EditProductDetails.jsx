@@ -10,6 +10,7 @@ import "../css/EditProductDetails.css"
 const EditProductDetails = () => {
   const { id } = useParams()
   const productData = localStorage.getItem("products") !== null ? JSON.parse(localStorage.getItem("products")) : []
+  const units = localStorage.getItem("units") !== null ? JSON.parse(localStorage.getItem("units")) : []
   const categories = localStorage.getItem("categories") !== null ? JSON.parse(localStorage.getItem("categories")) : []
   const brands = localStorage.getItem("brands") !== null ? JSON.parse(localStorage.getItem("brands")) : []
   const foundProduct = productData.find((p)=> p.id === id)
@@ -51,8 +52,8 @@ const EditProductDetails = () => {
             product:productName,
             price:price,
             stockLevel:stockLevel,
-            UnitOfMeasurement:measurementUnit !== "None" ?
-            newMeasurement+measurementUnit.split('(')[1].replace(')', ''):oldMeasurement,
+            Measurement:measurementUnit !== "None" ?
+            newMeasurement + measurementUnit:oldMeasurement,
             lowStock:lowStock,
             category:category,
             brand:brand
@@ -108,8 +109,8 @@ const EditProductDetails = () => {
               product:productName,
               price:price,
               stockLevel:stockLevel,
-              UnitOfMeasurement:measurementUnit !== "None" ?
-              newMeasurement+measurementUnit.split('(')[1].replace(')', ''):oldMeasurement,
+              Measurement:measurementUnit !== "None" ?
+              newMeasurement + measurementUnit:oldMeasurement,
               lowStock:lowStock,
               category:category,
               brand:brand
@@ -155,8 +156,8 @@ const EditProductDetails = () => {
            product:productName,
            price:price,
            stockLevel:stockLevel,
-           UnitOfMeasurement:measurementUnit !== "None" ?
-           newMeasurement+measurementUnit.split('(')[1].replace(')', ''):oldMeasurement,
+           Measurement:measurementUnit !== "None" ?
+           newMeasurement + measurementUnit:oldMeasurement,
            lowStock:lowStock,
            category:category,
            brand:brand,
@@ -197,8 +198,8 @@ const EditProductDetails = () => {
               product:productName,
               price:price,
               stockLevel:stockLevel,
-              UnitOfMeasurement:measurementUnit !== "None" ?
-              newMeasurement+measurementUnit.split('(')[1].replace(')', ''):oldMeasurement,
+              Measurement:measurementUnit !== "None" ?
+              newMeasurement + measurementUnit:oldMeasurement,
               lowStock:lowStock,
               category:category,
               brand:brand
@@ -244,8 +245,8 @@ const EditProductDetails = () => {
            product:productName,
            price:price,
            stockLevel:stockLevel,
-           UnitOfMeasurement:measurementUnit !== "None" ?
-           newMeasurement+measurementUnit.split('(')[1].replace(')', ''):oldMeasurement,
+           Measurement:measurementUnit !== "None" ?
+           newMeasurement + measurementUnit:oldMeasurement,
            lowStock:lowStock,
            category:category,
            brand:brand,
@@ -281,7 +282,7 @@ const EditProductDetails = () => {
   useEffect(()=>{
     setProductName(foundProduct.product)
     setPrice(foundProduct.price)
-    setOldMeasurement(foundProduct.UnitOfMeasurement)
+    setOldMeasurement(foundProduct.Measurement)
     setStockLevel(foundProduct.stockLevel)
     setLowStock(foundProduct.lowStock)
     setCategory(foundProduct.category)
@@ -323,9 +324,10 @@ const EditProductDetails = () => {
               <label>New Unit Of Measurement</label><br/>
               <select onChange={(e)=>setMeasurementUnit(e.target.value)}>
                 <option>None</option>
-                <option>Kilograms(kg)</option>
-                <option>Liters(L)</option>
-                <option>Pounds(Ib)</option>
+                {units.length > 0 && units.map((unitData)=>(
+                    <option key={unitData.unit}>{unitData.unit}</option>
+                    ))
+                }
               </select>
             </div>
             {showMeasurement  ? (

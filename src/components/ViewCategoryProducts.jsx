@@ -32,7 +32,7 @@ const ViewCategoryProducts = ({category,products,setDisplayProducts}) => {
                     <img src={product.Img ? product.Img : noImg } alt="Product"/>
                     </div>
                    <div>{product.product}</div>
-                   <div>{product.UnitOfMeasurement}</div>
+                   <div>{product.Measurement}</div>
                    <div>${product.price}.00</div>
                    <div>{product.stockLevel}</div>
                    <div>{product.brand}</div>

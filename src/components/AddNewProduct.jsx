@@ -10,6 +10,7 @@ import noUser from "../images/camera-off.png"
 
 
 const AddNewProduct = () => {
+  const units = localStorage.getItem("units") !== null ? JSON.parse(localStorage.getItem("units")) : []
   const categories = localStorage.getItem("categories") !== null ? JSON.parse(localStorage.getItem("categories")) : []
   const brands = localStorage.getItem("brands") !== null ? JSON.parse(localStorage.getItem("brands")) : []
   const [file,setFile] = useState("")
@@ -107,8 +108,8 @@ const AddNewProduct = () => {
               id:String(Math.round(Math.random()*5000)),
               Img:imageUrl,
               product:product,
-              UnitOfMeasurement:measurementUnit !== "None" ?
-              productMesurement+measurementUnit.split('(')[1].replace(')', ''):measurementUnit,
+              Measurement:measurementUnit !== "None" ?
+              productMesurement + measurementUnit:measurementUnit,
               price:price,
               stockLevel:stockLevel,
               lowStock:lowStock,
@@ -234,6 +235,7 @@ const AddNewProduct = () => {
         console.log(error)
       }
     }
+
     // eslint-disable-next-line
     useEffect(()=>{
       fetchCategories()
@@ -310,9 +312,10 @@ const AddNewProduct = () => {
               <label>Unit Of Measurement</label><br/>
               <select onChange={(e)=>setMeasurementUnit(e.target.value)}>
                 <option>None</option>
-                <option>Kilograms(kg)</option>
-                <option>Liters(L)</option>
-                <option>Pounds(Ib)</option>
+                {units.length > 0 && units.map((unitData)=>(
+                    <option key={unitData.unit}>{unitData.unit}</option>
+                    ))
+                }
               </select>
             </div>
             {showMeasurement ? (
