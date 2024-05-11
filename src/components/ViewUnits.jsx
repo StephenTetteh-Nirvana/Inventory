@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import { Pencil, Trash,Loader } from "lucide-react"
 import { ChevronLeft } from "lucide-react"
 import {collection, doc, getDoc, getDocs, updateDoc, deleteDoc } from "firebase/firestore"
@@ -163,7 +164,9 @@ const deleteUnitInBrands = async(unit) =>{
                           <button className="delete-loader"><Loader size={17} style={{color:"white"}} /></button>
                     ) : (
                         <div>
-                            <Pencil size={20} style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}}/>
+                            <Link to={`/dashboard/editUnit/${unit.id}`}>
+                             <Pencil size={20} style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}}/>
+                            </Link>
                             <Trash onClick={()=>deletePopUp(unit.id,unit.unit)} 
                             size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}}/>
                         </div>

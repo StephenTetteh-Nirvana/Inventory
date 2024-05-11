@@ -27,6 +27,7 @@ import NewUser from "./pages/NewUser.js"
 import Inventory from "./pages/Inventory.js"
 import NewInventoryPage from "./pages/NewInventoryPage.js"
 import EditBrandPage from "./pages/EditBrandPage.js";
+import EditUnit from "./pages/EditUnit.js";
 
 
 
@@ -67,6 +68,7 @@ return(
         <Route path="/dashboard" element={<Dashboard/>}></Route>
         <Route path="/dashboard/add" element={<NewProduct/>}></Route>
         <Route path="/dashboard/editProduct/:id" element={<EditProduct/>}></Route>
+        <Route path="/dashboard/editUnit/:id" element={<EditUnit/>}></Route>
         <Route path="/categories" element={<CategoriesPage/>}></Route>
         <Route path="/categories/add" element={<NewCategory/>}></Route>
         <Route path="/categories/edit/:id" element={<EditCategoryPage/>}></Route>

@@ -53,7 +53,7 @@ const EditProductDetails = () => {
             price:price,
             stockLevel:stockLevel,
             Measurement:measurementUnit !== "None" ?
-            newMeasurement + measurementUnit:oldMeasurement,
+            `${newMeasurement}  ${measurementUnit}`:oldMeasurement,
             lowStock:lowStock,
             category:category,
             brand:brand
@@ -110,7 +110,7 @@ const EditProductDetails = () => {
               price:price,
               stockLevel:stockLevel,
               Measurement:measurementUnit !== "None" ?
-              newMeasurement + measurementUnit:oldMeasurement,
+              `${newMeasurement}  ${measurementUnit}`:oldMeasurement,
               lowStock:lowStock,
               category:category,
               brand:brand
@@ -157,7 +157,7 @@ const EditProductDetails = () => {
            price:price,
            stockLevel:stockLevel,
            Measurement:measurementUnit !== "None" ?
-           newMeasurement + measurementUnit:oldMeasurement,
+           `${newMeasurement}  ${measurementUnit}`:oldMeasurement,
            lowStock:lowStock,
            category:category,
            brand:brand,
@@ -199,7 +199,7 @@ const EditProductDetails = () => {
               price:price,
               stockLevel:stockLevel,
               Measurement:measurementUnit !== "None" ?
-              newMeasurement + measurementUnit:oldMeasurement,
+              `${newMeasurement}  ${measurementUnit}`:oldMeasurement,
               lowStock:lowStock,
               category:category,
               brand:brand
@@ -246,7 +246,7 @@ const EditProductDetails = () => {
            price:price,
            stockLevel:stockLevel,
            Measurement:measurementUnit !== "None" ?
-           newMeasurement + measurementUnit:oldMeasurement,
+           `${newMeasurement}  ${measurementUnit}`:oldMeasurement,
            lowStock:lowStock,
            category:category,
            brand:brand,
