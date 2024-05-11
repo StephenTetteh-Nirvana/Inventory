@@ -109,7 +109,7 @@ const AddNewProduct = () => {
               Img:imageUrl,
               product:product,
               Measurement:measurementUnit !== "None" ?
-              productMesurement + measurementUnit:measurementUnit,
+              `${productMesurement}  ${measurementUnit}`:measurementUnit,
               price:price,
               stockLevel:stockLevel,
               lowStock:lowStock,

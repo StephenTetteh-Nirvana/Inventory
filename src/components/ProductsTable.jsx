@@ -5,12 +5,14 @@ import { Link } from "react-router-dom"
 import AllProducts from "./AllProducts"
 import OutOfStock from "./OutOfStock"
 import NewUnit from "./NewUnit"
+import ViewUnits from "./ViewUnits"
 
 const ProductsTable = ({data,fetchProducts}) => {
   // const productData = localStorage.getItem("products") !== null ? JSON.parse(localStorage.getItem("products")) : []
   const [ProductState,setProductState] = useState("All")
   const [dropDown,setdropDown] = useState(false)
   const [newUnit,setNewUnit] = useState(false)
+  const [allUnits,setAllUnits] = useState(false)
 
   const toggleSelect = () =>{
     setdropDown(!dropDown)
@@ -22,6 +24,10 @@ const ProductsTable = ({data,fetchProducts}) => {
   
   const NewUnitPopUp = () => {
      setNewUnit(true)
+  }
+
+  const allUnitsPopup = () =>{
+    setAllUnits(true)
   }
 
   // Search Functionality
@@ -54,7 +60,7 @@ const ProductsTable = ({data,fetchProducts}) => {
 
         <div className="units-section">   
           <div>
-            <button className="allUnits-btn">See All Units</button>
+            <button className="allUnits-btn" onClick={allUnitsPopup}>See All Units</button>
           </div>
           <div>
             <button className="newUnit-btn" onClick={NewUnitPopUp}>Add New Unit</button>
@@ -90,6 +96,7 @@ const ProductsTable = ({data,fetchProducts}) => {
         : 
         (<OutOfStock/>)
         }
+        {allUnits && <ViewUnits setAllUnits={setAllUnits}/>}
         {newUnit && <NewUnit setNewUnit={setNewUnit}/>}
     </div>
   )

@@ -129,7 +129,7 @@ const AllProducts = () => {
                     <div>
                     <p>{product.Measurement}</p>
                     </div>
-
+                    
                     <div>
                     <p>${product.price.toLocaleString()}.00</p>
                     </div>
