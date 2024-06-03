@@ -21,7 +21,7 @@ const AllProducts = () => {
         }
     }
 
-    const deleteProduct = async(Id,category,brand) =>{
+    const deleteProduct = async(Id,category,brand,warehouse) =>{
       setLoading(true)
       try{
         const productArrayReference = doc(db,"Products","Product Arrays")
@@ -34,6 +34,7 @@ const AllProducts = () => {
         toast.success("Product Deleted",{
           autoClose:1000
         })
+        await deleteProductFromWarehouse(Id,warehouse)
         await deleteFromCategories(Id,category)
         await deleteFromBrands(Id,brand)
         setLoading(false)
@@ -91,27 +92,27 @@ const AllProducts = () => {
           }  
         }
 
-    // const deleteProductFromWarehouse = async(Id,warehouse) => {
-    //   try{
-    //     const colRef = collection(db,"Warehouses")
-    //     const docRef = await getDocs(colRef)
+    const deleteProductFromWarehouse = async(Id,warehouse) => {
+      try{
+        const colRef = collection(db,"Warehouses")
+        const docRef = await getDocs(colRef)
 
-    //     docRef.forEach(async(document)=>{
-    //       if(warehouse === document.id){
-    //         const warehouseRef = doc(db,"Warehouses",document.id)
-    //         const productsArr = document.data().products
-    //         const productToDelete = productsArr.filter((p)=>p.id !== Id)
-    //         await updateDoc(warehouseRef,{
-    //          products:productToDelete
-    //        })
-    //       }
-    //     })
+        docRef.forEach(async(document)=>{
+          if(warehouse === document.id){
+            const warehouseRef = doc(db,"Warehouses",document.id)
+            const productsArr = document.data().products
+            const productToDelete = productsArr.filter((p)=>p.id !== Id)
+            await updateDoc(warehouseRef,{
+             products:productToDelete
+           })
+          }
+        })
      
-    //   }catch(error){
-    //     console.log(error)
-    //     toast.error("Network Error")
-    //   }  
-    // }
+      }catch(error){
+        console.log(error)
+        toast.error("Network Error")
+      }  
+    }
 
 
   return (
@@ -161,7 +162,7 @@ const AllProducts = () => {
                         <Pencil size={20} style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
                         </Link>
                         <Trash 
-                        onClick={()=>deleteProduct(product.id,product.category,product.brand)} 
+                        onClick={()=>deleteProduct(product.id,product.category,product.brand,product.warehouse)} 
                         size={20} style={{marginLeft:5,color:"red",cursor:"pointer"}}
                         />
                         </div>

@@ -10,6 +10,7 @@ import noUser from "../images/camera-off.png"
 
 
 const AddNewProduct = () => {
+  const warehouseData = localStorage.getItem("warehouses") !== null ? JSON.parse(localStorage.getItem("warehouses")) : []
   const units = localStorage.getItem("units") !== null ? JSON.parse(localStorage.getItem("units")) : []
   const categories = localStorage.getItem("categories") !== null ? JSON.parse(localStorage.getItem("categories")) : []
   const brands = localStorage.getItem("brands") !== null ? JSON.parse(localStorage.getItem("brands")) : []
@@ -19,7 +20,7 @@ const AddNewProduct = () => {
   
   const [category,setCategory] = useState("")
   const [brand,setBrand] = useState("")
-  const [warehouse] = useState("")
+  const [warehouse,setWarehouse] = useState("")
   const [product,setProduct] = useState("")
   const [measurementUnit,setMeasurementUnit] = useState("None")
   const [productMesurement,setProductMeasurement] = useState("")
@@ -127,6 +128,7 @@ const AddNewProduct = () => {
             })
           await addProductToCategory(newProduct)
           await addProductToBrand(newProduct)
+          await addProductToWarehouse(newProduct)
        }catch(error){
         console.log(error)
         setdisabled(false)
@@ -177,44 +179,35 @@ const AddNewProduct = () => {
           }  
     }
 
-    // const addProductToWarehouse = async(newProduct) => {
-    //   const updatedProduct = {
-    //     id:newProduct.id,
-    //     product:newProduct.product,
-    //     price:newProduct.price,
-    //     quantity:newProduct.quantity,
-    //     Img:newProduct.Img,
-    //     warehouse:newProduct.warehouse,
-    //     createdAt:newProduct.createdAt
-    //   }
-    //   try{
-    //     const colRef = collection(db,"Warehouses")
-    //     const docRef = await getDocs(colRef)
+    const addProductToWarehouse = async(newProduct) => {
+      try{
+        const colRef = collection(db,"Warehouses")
+        const docRef = await getDocs(colRef)
      
-    //     docRef.forEach(async(document)=>{
-    //       if(warehouse === document.id){
-    //         const warehouseRef = doc(db,"Warehouses",document.id)
-    //         const warehouseProductsArr = document.data().products
-    //         await updateDoc(warehouseRef,{
-    //          products:[...warehouseProductsArr,updatedProduct]
-    //        })
-    //       }
-    //     })
-    //   }catch(error){
-    //     console.log(error)
-    //   }  
-    // }
+        docRef.forEach(async(document)=>{
+          if(warehouse === document.id){
+            const warehouseRef = doc(db,"Warehouses",document.id)
+            const warehouseProductsArr = document.data().products
+            await updateDoc(warehouseRef,{
+             products:[...warehouseProductsArr,newProduct]
+           })
+          }
+        })
+      }catch(error){
+        console.log(error)
+      }  
+    }
 
 
-    // const fetchWarehouses = () =>{
-    //   try{
-    //     if(warehouseData.length > 0 && warehouse === ""){
-    //       setWarehouse(warehouseData[0].name);
-    //     }
-    //   }catch(error){
-    //     console.log(error)
-    //   }
-    // }
+    const fetchWarehouses = () =>{
+      try{
+        if(warehouseData.length > 0 && warehouse === ""){
+          setWarehouse(warehouseData[0].name);
+        }
+      }catch(error){
+        console.log(error)
+      }
+    }
 
     const fetchCategories = () =>{
       try{
@@ -240,6 +233,7 @@ const AddNewProduct = () => {
     useEffect(()=>{
       fetchCategories()
       fetchBrands()
+      fetchWarehouses()
     },[])
 
     useEffect(()=>{
@@ -290,14 +284,14 @@ const AddNewProduct = () => {
                     )) : (<option>No brands found!!</option>)}
                 </select>
             </div>
-          {/* <div className="warehouse-section">
+            <div className="warehouse-section">
                 <label>Select Warehouse</label><br/>
                 <select onChange={(e)=>setWarehouse(e.target.value)}>
                 {warehouseData.length > 0 ? warehouseData.map((warehouse)=>(
                       <option key={warehouse.name}>{warehouse.name}</option>
                     )) : (<option>No warehouse to add product!!</option>)}
                 </select>
-            </div> */}
+            </div>
             <div className="new-product-name">
                 <label>Product Name</label><br/>
                 <input type="text"  
@@ -357,7 +351,9 @@ const AddNewProduct = () => {
             </div>
           </div>
           <p className="error-msg">{errMsg}</p>
-          {categories && categories.length === 0 ?
+          {warehouseData && warehouseData.length === 0 ? 
+          (<p className="error-msg">Create a warehouse before adding product</p>)
+          : categories && categories.length === 0 ?
           (<p className="error-msg">Create a category before adding product</p>)
           : brands && brands.length === 0 ?
           (<p className="error-msg">Create a brand before adding product</p>)

@@ -18,11 +18,13 @@ const WarehouseProducts = ({products,setViewProducts}) => {
          <X size={25} style={{color:"black",cursor:"pointer"}}/>
         </div>
          <ul>
+          <li>Image</li>
           <li>Product</li>
-          <li>Name</li>
-          <li>Price</li>
-          <li>Quantity</li>
-          <li>Date Created</li>
+          <li>Measurement</li>
+          <li>Unit Price</li>
+          <li>Stock Level</li>
+          <li>Category</li>
+          <li>Brand</li>
          </ul>
          <div>
           {products && products.length > 0 ? (
@@ -31,10 +33,30 @@ const WarehouseProducts = ({products,setViewProducts}) => {
                    <div className="ImageBox">
                     <img src={product.Img ? product.Img : noImg } alt="Product"/>
                     </div>
-                   <div>{product.product}</div>
-                   <div>{product.price}</div>
-                   <div>{product.quantity}</div>
-                   <div>{product.createdAt}</div>
+
+                    <div>
+                    <p>{product.product}</p>
+                    </div>
+
+                    <div>
+                    <p>{product.Measurement}</p>
+                    </div>
+
+                    <div>
+                    <p>{product.price}</p>
+                    </div>
+
+                    <div>
+                    <p>{product.stockLevel}</p>
+                    </div>
+
+                    <div>
+                    <p>{product.category}</p>
+                    </div>
+
+                    <div>
+                    <p>{product.brand}</p>
+                    </div>
                 </div>
               ))
             ) : (

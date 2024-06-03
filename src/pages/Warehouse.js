@@ -6,8 +6,8 @@ import { Eye, Trash, Pencil } from "lucide-react";
 import { toast } from "react-toastify";
 import Sidebar from "../components/Sidebar.jsx";
 import Navbar from "../components/Navbar.jsx";
-import "../css/Warehouse.css"
 import WarehouseProducts from "../components/WarehouseProducts.jsx";
+import "../css/Warehouse.css"
 
 const Warehouse = () =>{
     const warehouses = localStorage.getItem("warehouses") !== null ? JSON.parse(localStorage.getItem("warehouses")) : []

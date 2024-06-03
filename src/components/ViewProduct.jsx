@@ -16,6 +16,7 @@ const ViewProduct = ({product,setViewProduct}) => {
             </div>
             <div className="product-displayDetails">
               <p>Created At : {product.createdAt}</p>
+              <p>Warehouse : {product.warehouse}</p>
             </div> 
         </div>
     </div>

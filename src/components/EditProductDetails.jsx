@@ -26,10 +26,12 @@ const EditProductDetails = () => {
   const [category,setCategory] = useState("")
   const [brand,setBrand] = useState("")
   const [loading,setLoading] = useState(false)
+  const [notification,setNotifiction] = useState(false)
   const [disabled] = useState(true)
   const date = new Date().toDateString();
   const time = new Date().toLocaleTimeString()
   const navigate = useNavigate()
+  const text = "This may take a minute..."
 
    const closeuserPopup = () =>{
       navigate(-1)
@@ -39,6 +41,7 @@ const EditProductDetails = () => {
     try{
     if(productName !== "" && price !== "" && stockLevel !== "" && lowStock !== "" && category !== "" && brand !== "") {
     setLoading(true)
+    setNotifiction(true)
     const colRef = collection(db,"Products")
     const productArrayReference = doc(colRef,"Product Arrays")
     const productArr = await getDoc(productArrayReference)
@@ -70,6 +73,7 @@ const EditProductDetails = () => {
     toast.success("Product Updated",{
       autoClose:1000
     })
+    await editProductInWarehouse()
     await editProductInCategory()
     await editProductInBrand()
   }
@@ -81,7 +85,8 @@ const EditProductDetails = () => {
   }
     }catch(error){
       setLoading(false)
-      console.log(error)
+      setNotifiction(false)
+      toast.error("Network Error")
    }
 }
 
@@ -264,19 +269,42 @@ const EditProductDetails = () => {
     }
   }
 
-// const editProductInWarehouse = async(foundProduct,updatedProductArray) =>{
-//   const colRef = collection(db,"Warehouses")
-//   const docRef = await getDocs(colRef)
+    const editProductInWarehouse = async() =>{
+      const colRef = collection(db,"Warehouses")
+      const docRef = await getDocs(colRef)
 
-//   docRef.forEach(async(document)=>{
-//     if(foundProduct.warehouse === document.id){
-//       const warehouseRef = doc(db,"Warehouses",document.id)
-//       await updateDoc(warehouseRef,{
-//        products:updatedProductArray
-//      })
-//     }
-//   })
-// }
+      docRef.forEach(async(document)=>{
+        if(foundProduct.warehouse === document.id){
+          const warehouseRef = doc(db,"Warehouses",document.id)
+          const warehouseDoc = await getDoc(warehouseRef)
+          if(warehouseDoc.exists()){
+            const productsArr = warehouseDoc.data().products;
+            const updatedProductArray = productsArr.map((product)=>{
+              if(foundProduct.id === product.id){
+                const updatedProduct = {
+                  ...product,
+                  id:foundProduct.id,
+                  product:productName,
+                  price:price,
+                  stockLevel:stockLevel,
+                  Measurement:measurementUnit !== "None" ?
+                  `${newMeasurement}  ${measurementUnit}`:oldMeasurement,
+                  lowStock:lowStock,
+                  category:category,
+                  brand:brand
+                }
+                return updatedProduct;
+              }else{
+                return product;
+              }
+            })
+            await updateDoc(warehouseRef,{
+              products:updatedProductArray
+            })
+          }
+        }
+      })
+    }
 
   // eslint-disable-next-line
   useEffect(()=>{
@@ -368,6 +396,7 @@ const EditProductDetails = () => {
         </select>
         </div>
     </div>
+    {notification && (<p style={{fontWeight:600,fontSize:15,marginTop:10,textAlign:"center",color:"red"}}>{text}</p>)}
     <div className="edit-product-buttons">
         { loading ? (
             <Loader/>
