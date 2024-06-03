@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react"
-import {Link} from "react-router-dom"
-import Navbar from "../components/Navbar"
 import { collection, doc, getDoc, getDocs,onSnapshot,updateDoc } from "firebase/firestore"
-import { db } from "../firebase"
+import { Link } from "react-router-dom"
 import { CheckCheck,Pencil, Trash,Loader } from "lucide-react"
 import { toast } from "react-toastify"
-import "../css/Inventory.css" 
+import { db } from "../firebase"
+import Navbar from "../components/Navbar"
 import ContactAdmin from "../components/ContactAdmin"
 import noImg from "../images/camera-off.png"
+import "../css/Inventory.css" 
 
 const Inventory = () => {
     const userData = localStorage.getItem("user") !== null ? JSON.parse(localStorage.getItem("user")) : []
@@ -92,6 +92,39 @@ const Inventory = () => {
       })
     }
 
+    const fetchUnits = () =>{
+      const unsub = onSnapshot(collection(db,"Units"),(snapshot)=>{
+        let list = []
+        snapshot.forEach((doc)=>{
+          list.unshift({id:doc.id,...doc.data()})
+        })
+        localStorage.setItem("units",JSON.stringify(list))
+      })
+      return unsub;
+      }
+
+    const fetchCategories = () => {
+      const unsub = onSnapshot(collection(db,"Categories"),(snapshot)=>{
+        let list = []
+        snapshot.forEach((doc)=>{
+          list.unshift({id:doc.id,...doc.data()})
+        })
+        localStorage.setItem("categories",JSON.stringify(list))
+      })
+      return unsub;
+      }
+
+    const fetchBrands = () => {
+    const unsub = onSnapshot(collection(db,"Brands"),(snapshot)=>{
+      let list = []
+      snapshot.forEach((doc)=>{
+        list.unshift({id:doc.id,...doc.data()})
+      })
+      localStorage.setItem("brands",JSON.stringify(list))
+    })
+    return unsub;
+    }
+
     const deleteProduct = async(Id,warehouse) =>{
       try{
         setDeleting(true)
@@ -132,6 +165,9 @@ const Inventory = () => {
     // eslint-disable-next-line
     useEffect(()=>{
       fetchProducts()
+      fetchUnits()
+      fetchCategories()
+      fetchBrands()
       checkMessageSent()
       checkUserState()
       fetchAdmins()
@@ -149,10 +185,13 @@ const Inventory = () => {
           </Link>
           </div>
           <ul>
+          <li>Image</li>
           <li>Product</li>
-          <li>Name</li>
-          <li>Price</li>
-          <li>Quantity</li>
+          <li>Measurement</li>
+          <li>Unit Price</li>
+          <li>Stock Level</li>
+          <li>Category</li>
+          <li>Brand</li>
           <li>Actions</li>
           <li>Date Created</li>
           </ul>
@@ -161,9 +200,33 @@ const Inventory = () => {
                    <div className="item-imageBox">
                     <img src={item.Img ? item.Img : noImg } alt="Product"/>
                     </div>
-                   <div>{item.product}</div>
-                   <div>{item.price}</div>
-                   <div>{item.quantity}</div>
+
+                    <div>
+                    <p>{item.product}</p>
+                    </div>
+
+                    <div>
+                    <p>{item.Measurement}</p>
+                    </div>
+
+                    <div>
+                    <p>${item.price}.00</p>
+                    </div>
+
+                    <div>
+                    <p>{item.stockLevel}
+                    {item.stockLevel === "0" && <span className="out-of-stock-span">Out Of Stock</span>}
+                    {item.stockLevel === item.lowStock && <span className="low-stock-span">Low Stock</span>}
+                    </p>
+                    </div>
+
+                    <div>
+                    <p>{item.category}</p>
+                    </div>
+
+                    <div>
+                    <p>{item.brand}</p>
+                    </div>
                    <div>
                     { deleting ? (
                       <button className="delete-loader"><Loader size={17} style={{color:"white"}} /></button>

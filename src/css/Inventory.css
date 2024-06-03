@@ -28,7 +28,7 @@
 .userWarehouse-products-container ul{
     margin-top:20px;
     display:grid;
-    grid-template-columns:repeat(6,1fr);
+    grid-template-columns:repeat(9,1fr);
     border-bottom:2px solid black;
 }
 .userWarehouse-products-container ul li{
@@ -52,7 +52,7 @@
 }
 .item{
     display:grid;
-    grid-template-columns:repeat(6,1fr);
+    grid-template-columns:repeat(9,1fr);
     font-weight:600;
     margin-top:10px;
     border-bottom:2px solid grey;
