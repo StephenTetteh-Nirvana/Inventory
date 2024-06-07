@@ -1,4 +1,8 @@
 import "../css/OutOfStock.css"
+
+
+
+
 const OutOfStock = () => {
   const noStock = localStorage.getItem("OutOfStock") !== null ? JSON.parse(localStorage.getItem("OutOfStock")) : []
 
@@ -16,15 +20,11 @@ const OutOfStock = () => {
               </div>
 
               <div>
-               <p>{product.measurement}</p>
+               <p>{product.Measurement}</p>
               </div>
 
               <div>
-               <p>${product.price.toLocaleString()}</p>
-              </div>
-
-              <div>
-               <p>{product.stockLevel}</p>
+               <p>${product.price}.00</p>
               </div>
 
               <div>

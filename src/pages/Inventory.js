@@ -180,7 +180,7 @@ const Inventory = () => {
         <div className="userWarehouse-products-container">
           <div className="header-section">
           <h1>Products List</h1>
-          <Link to="/inventory/add">
+          <Link to="/dashboard/add">
           <button>Add New Product</button>
           </Link>
           </div>

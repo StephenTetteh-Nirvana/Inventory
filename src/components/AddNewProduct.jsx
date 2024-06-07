@@ -10,7 +10,9 @@ import noUser from "../images/camera-off.png"
 
 
 const AddNewProduct = () => {
+  const currentUser = localStorage.getItem("userRole") !== null ? JSON.parse(localStorage.getItem("userRole")) : ""
   const warehouseData = localStorage.getItem("warehouses") !== null ? JSON.parse(localStorage.getItem("warehouses")) : []
+  const assignedWarehouse = localStorage.getItem("userWarehouse") !== null ? JSON.parse(localStorage.getItem("userWarehouse")) : []
   const units = localStorage.getItem("units") !== null ? JSON.parse(localStorage.getItem("units")) : []
   const categories = localStorage.getItem("categories") !== null ? JSON.parse(localStorage.getItem("categories")) : []
   const brands = localStorage.getItem("brands") !== null ? JSON.parse(localStorage.getItem("brands")) : []
@@ -116,7 +118,7 @@ const AddNewProduct = () => {
               lowStock:lowStock,
               category:category,
               brand:brand,
-              warehouse:warehouse === "" ? "Not Assigned" : warehouse,
+              warehouse:currentUser == "Regular" ? assignedWarehouse : warehouse,
               createdAt:`${date} at ${time}`,
            }
            toast.success("New Product Added",{
@@ -128,7 +130,11 @@ const AddNewProduct = () => {
             })
           await addProductToCategory(newProduct)
           await addProductToBrand(newProduct)
-          await addProductToWarehouse(newProduct)
+          if(currentUser == "Admin"){
+            await addProductToWarehouse(newProduct)
+          }else if(currentUser == "Regular"){
+            await addProductToWarehouseForRegular(newProduct)
+          }
        }catch(error){
         console.log(error)
         setdisabled(false)
@@ -196,6 +202,26 @@ const AddNewProduct = () => {
       }catch(error){
         console.log(error)
       }  
+    }
+
+    const addProductToWarehouseForRegular = async(newProduct) => {
+      try{
+        const assignedWarehouse = doc(db,"Warehouses",newProduct.warehouse)
+        const warehouseDoc = await getDoc(assignedWarehouse)
+        if(warehouseDoc.exists()){
+          const warehouseProducts = warehouseDoc.data().products
+          const updatedWarehouseProducts = [...warehouseProducts,newProduct]
+          await updateDoc(assignedWarehouse,{
+            products:updatedWarehouseProducts
+          })
+          console.log("success")
+        }else{
+          console.log("no exists")
+        }
+      }catch(error){
+        toast.error("Oops...An error occurred")
+      }
+      
     }
 
 
@@ -284,14 +310,22 @@ const AddNewProduct = () => {
                     )) : (<option>No brands found!!</option>)}
                 </select>
             </div>
-            <div className="warehouse-section">
-                <label>Select Warehouse</label><br/>
-                <select onChange={(e)=>setWarehouse(e.target.value)}>
-                {warehouseData.length > 0 ? warehouseData.map((warehouse)=>(
-                      <option key={warehouse.name}>{warehouse.name}</option>
-                    )) : (<option>No warehouse to add product!!</option>)}
-                </select>
-            </div>
+            {currentUser == "Admin" ? (
+                   <div className="warehouse-section">
+                   <label>Select Warehouse</label><br/>
+                   <select onChange={(e)=>setWarehouse(e.target.value)}>
+                   {warehouseData.length > 0 ? warehouseData.map((warehouse)=>(
+                         <option key={warehouse.name}>{warehouse.name}</option>
+                       )) : (<option>No warehouse to add product!!</option>)}
+                   </select>
+               </div>
+            ) : (
+              <div className="warehouse-section">
+                <label>Assigned Warehouse</label><br/>
+                <input type="text" value={assignedWarehouse} readOnly/>
+              </div>
+            ) }
+          
             <div className="new-product-name">
                 <label>Product Name</label><br/>
                 <input type="text"  
@@ -351,7 +385,7 @@ const AddNewProduct = () => {
             </div>
           </div>
           <p className="error-msg">{errMsg}</p>
-          {warehouseData && warehouseData.length === 0 ? 
+          {warehouseData && currentUser == "Admin" && warehouseData.length === 0 ? 
           (<p className="error-msg">Create a warehouse before adding product</p>)
           : categories && categories.length === 0 ?
           (<p className="error-msg">Create a category before adding product</p>)
