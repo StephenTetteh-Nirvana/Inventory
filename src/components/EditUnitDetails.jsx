@@ -48,19 +48,19 @@ const EditUnitDetails = () => {
             if (productsDoc.exists()) {
                 const productsArray = productsDoc.data().products;
                 const updatedProductsArr = productsArray.map((product)=>{
-                    const measurement = product.Measurement;
-                    const productUnit = measurement.match(/[a-zA-Z]+$/)[0];
-                    if(foundUnit.unit === productUnit){
-                     const oldValue = measurement.split(" ")
-                     let measureValue = oldValue[0]
-                     let unitValue = oldValue[1]
-                     unitValue = unitName
-                     const newValue = `${measureValue} ${unitValue}`
-                     const updatedProduct = {
-                        ...product,
-                        Measurement:newValue
-                     }   
-                    return updatedProduct;
+                  const measurement = product.Measurement;
+                  const productUnit = measurement.match(/[a-zA-Z]+$/)[0];
+                  if(foundUnit.unit === productUnit){
+                    const oldValue = measurement.split(" ")
+                    let measureValue = oldValue[0]
+                    let unitValue = oldValue[1]
+                    unitValue = unitName
+                    const newValue = `${measureValue} ${unitValue}`
+                    const updatedProduct = {
+                      ...product,
+                      Measurement:newValue
+                    }   
+                  return updatedProduct;
                   }else{
                     return product;
                   }

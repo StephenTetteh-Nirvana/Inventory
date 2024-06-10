@@ -43,7 +43,7 @@ const WarehouseProducts = ({products,setViewProducts}) => {
                     </div>
 
                     <div>
-                    <p>{product.price}</p>
+                    <p>${product.price}.00</p>
                     </div>
 
                     <div>

@@ -93,7 +93,7 @@ const AddNewProduct = () => {
             const newProduct = {
               id:String(Math.round(Math.random()*1000)),
               product:product,
-              price:price,
+              price:Number(price),
               quantity:quantity,
               Img:imageUrl,
               warehouse:assignedWarehouse,

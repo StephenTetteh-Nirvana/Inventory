@@ -113,7 +113,7 @@ const AddNewProduct = () => {
               product:product,
               Measurement:measurementUnit !== "None" ?
               `${productMesurement}  ${measurementUnit}`:measurementUnit,
-              price:price,
+              price:Number(price),
               stockLevel:stockLevel,
               lowStock:lowStock,
               category:category,

@@ -62,32 +62,32 @@ const Dashboard = () => {
     return unsub;
     }
 
-     // const totalAmount = async() =>{
-    //   const colRef = collection(db,"Products")
-    //   const unsub = onSnapshot(doc(colRef,"Product Arrays"), (snapshot) => {
-    //   try {
-    //   const products = snapshot.data().products;
-    //   let sum = 0;
-        
-    //         products.forEach((product)=>{
-    //           const total = product.price*product.quantity;
-    //           sum += total;
-    //         })
-    //       localStorage.setItem("totalAmount",JSON.stringify(sum))
-    //   } catch (error) {
-    //       console.error("Error fetching data: ", error);
-    //   }
-    // });
-    // return unsub;
-    // }
-    
-
+     const totalAmount = async() =>{
+      const colRef = collection(db,"Products")
+      const unsub = onSnapshot(doc(colRef,"Product Arrays"), (snapshot) => {
+      try {
+        let sum = 0;
+        const products = snapshot.data().products;
+        products.forEach((item)=>{
+        const unitPrice = item.price;
+        const stockLevel = item.stockLevel;
+        let total = unitPrice*stockLevel;
+        sum += total
+        localStorage.setItem("totalAmount",JSON.stringify(sum))
+      })
+      } catch (error) {
+          console.error("Error fetching data: ", error);
+      }
+    });
+    return unsub;
+    }
 
       useEffect(()=>{
-         fetchProducts()
-         fetchUnits()
-         fetchCategories()
-         fetchBrands()
+        fetchProducts()
+        totalAmount()
+        fetchUnits()
+        fetchCategories()
+        fetchBrands()
       },[])
 
     return(
