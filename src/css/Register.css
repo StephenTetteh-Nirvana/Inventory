@@ -37,8 +37,17 @@
 .register-role-section select{
   width:97%;
 }
-.register-email-section,.register-role-section,.register-password-section{
+.register-email-section,.register-role-section{
     margin-top:8px;
+}
+.register-password-section{
+    margin-top: 8px;
+    position: relative;
+}
+.register-password-section span{
+    position: absolute;
+    left: 85%;
+    top: 50%;
 }
 .register-form-container button{
     width:97%;

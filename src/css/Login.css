@@ -34,6 +34,12 @@
 }
 .login-password-section{
     margin-top:15px;
+    position:relative;
+}
+.login-password-section span{
+    position: absolute;
+    left: 85%;
+    top: 50%;
 }
 .login-form-container button{
     width:97%;

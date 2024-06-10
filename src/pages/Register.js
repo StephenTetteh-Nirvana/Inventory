@@ -1,18 +1,20 @@
+import { useEffect, useState } from "react"
+import { Link,useNavigate } from "react-router-dom"
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import { collection,doc,setDoc } from "firebase/firestore"
 import { auth,db } from "../firebase"
-import { Link,useNavigate } from "react-router-dom"
-import "../css/Register.css"
-import Logo from "../images/logo.png"
-import { useEffect, useState } from "react"
-import  Loader  from "../components/Loader.jsx"
 import { toast } from "react-toastify"
+import { Eye,EyeOff } from "lucide-react"
+import Logo from "../images/logo.png"
+import Loader  from "../components/Loader.jsx"
+import "../css/Register.css"
 
 const Register = () => {
   const [userName,setUsername] = useState("")
   const [role,setRole] = useState("Admin")
   const [email,setEmail] = useState("")
   const [password,setPassword] = useState("")
+  const [viewPassword,setViewPassword] = useState(false)
   const [loading,setLoading] = useState(false)
   const [disabled,setdisabled] = useState(false)
   const [errMsg,setErrMsg] = useState("")
@@ -65,6 +67,10 @@ const Register = () => {
     } 
   }
 
+  const displayPassword = () =>{
+    setViewPassword(!viewPassword)
+  }
+
   useEffect(()=>{
     if(userName !== "" && role !== "" && email !== "" && password !== ""){
       setdisabled(false)
@@ -108,11 +114,17 @@ const Register = () => {
 
           <div className="register-password-section">
             <label>Password</label><br/>
-            <input type="password" 
+            <input type={viewPassword ? "text" : "password"}  
             placeholder="Password"
             value={password}
             onChange={(e)=>setPassword(e.target.value)}
             />
+            <div onClick={displayPassword}>
+              {viewPassword ? (<span><EyeOff color="grey" style={{cursor:"pointer"}}/></span>) 
+              : 
+              (<span><Eye color="grey" style={{cursor:"pointer"}}/></span>)
+              }
+            </div>
           </div>
         </div>
         { loading ? (

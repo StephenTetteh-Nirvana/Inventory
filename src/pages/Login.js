@@ -1,16 +1,17 @@
-import { signInWithEmailAndPassword } from "firebase/auth"
-import {auth,db} from "../firebase"
 import { useEffect, useState  } from "react"
-import { useNavigate  } from "react-router-dom"
-import { Link } from "react-router-dom"
-import "../css/Login.css"
+import { useNavigate,Link  } from "react-router-dom"
+import { signInWithEmailAndPassword } from "firebase/auth"
+import { collection, doc, getDoc } from "firebase/firestore"
+import { auth,db } from "../firebase"
+import { Eye,EyeOff } from "lucide-react"
 import  Loader  from "../components/Loader.jsx"
 import Logo from "../images/logo.png"
-import { collection, doc, getDoc } from "firebase/firestore"
+import "../css/Login.css"
 
 const Login = () => {
   const [email,setEmail] = useState("")
   const [password,setPassword] = useState("")
+  const [viewPassword,setViewPassword] = useState(false)
   const [errMsg,setErrMsg] = useState("")
   const [disabled,setdisabled] = useState(false)
   const [loading,setLoading] = useState(false)
@@ -40,7 +41,6 @@ const Login = () => {
       }
     }catch(error){
       setLoading(false)
-      console.log(error)
       if (error.code === 'auth/invalid-email') {
       setErrMsg("Invalid Email(eg.stephen@gmail.com)")
       }else if (error.code === 'auth/invalid-credential') {
@@ -57,6 +57,10 @@ const Login = () => {
       console.log(error)
       }
     }
+  }
+
+  const displayPassword = () =>{
+    setViewPassword(!viewPassword)
   }
 
   useEffect(()=>{
@@ -84,11 +88,17 @@ const Login = () => {
 
           <div className="login-password-section">
             <label>Password</label><br/>
-            <input type="password" 
+            <input type={viewPassword ? "text" : "password"} 
             placeholder="Password"
             value={password}
             onChange={(e)=>setPassword(e.target.value)}
             />
+            <div onClick={displayPassword}>
+              {viewPassword ? (<span><EyeOff color="grey" style={{cursor:"pointer"}}/></span>) 
+              : 
+              (<span><Eye color="grey" style={{cursor:"pointer"}}/></span>)
+              }
+            </div>
           </div>
         </div>
         { loading ? (
