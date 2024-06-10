@@ -71,6 +71,7 @@ const ViewUnits = ({setAllUnits}) => {
     })
     await deleteUnitInCategory(unit)
     await deleteUnitInBrands(unit)
+    await deleteInWarehouse(unit)
   }  
   catch(error){
     console.log(error)
@@ -111,7 +112,7 @@ const ViewUnits = ({setAllUnits}) => {
     }
 }
 
-const deleteUnitInBrands = async(unit) =>{
+  const deleteUnitInBrands = async(unit) =>{
     try{
         const colRef = collection(db,"Brands")
         const allDocs = await getDocs(colRef)
@@ -141,7 +142,39 @@ const deleteUnitInBrands = async(unit) =>{
     }catch(error){
         console.log(error)
     }
-}
+  }
+
+  const deleteInWarehouse = async(unit) => {
+    try{
+      const colRef = collection(db,"Warehouses")
+      const allDocs = await getDocs(colRef)
+  
+      allDocs.forEach(async(document)=>{
+      const docID = document.id 
+      const products = document.data().products
+      const updatedProductsArr = products.map((product)=>{
+          const measurement = product.Measurement;
+          const productUnit = measurement.match(/[a-zA-Z]+$/)[0];
+          if(unit === productUnit){
+           const updatedProduct = {
+              ...product,
+              Measurement:"None"
+           }   
+           return updatedProduct;
+          }else{
+            return product;
+          }
+      })
+      const warehouseRef = doc(db,"Warehouses",docID)
+      await updateDoc(warehouseRef,{
+          products:updatedProductsArr
+      })
+      })
+      console.log("deleted")
+  }catch(error){
+      console.log(error)
+  }
+  }
 
   return (
     <div className="units-container">

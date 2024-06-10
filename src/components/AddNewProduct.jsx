@@ -41,7 +41,7 @@ const AddNewProduct = () => {
   const navigate = useNavigate()
 
     const closePopup = () =>{
-        navigate("/dashboard")
+        navigate(-1)
     }
 
     const handleProductImg = (e) =>{
