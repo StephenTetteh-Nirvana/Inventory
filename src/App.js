@@ -28,6 +28,7 @@ import Inventory from "./pages/Inventory.js"
 import NewInventoryPage from "./pages/NewInventoryPage.js"
 import EditBrandPage from "./pages/EditBrandPage.js";
 import EditUnit from "./pages/EditUnit.js";
+import Restock from "./pages/Restock.js";
 
 
 
@@ -59,29 +60,30 @@ return(
   <div className="App">
     <ToastContainer/>
      <Routes>
-        <Route path="/" element={<Home/>}></Route>
-        <Route path="/login" element={<Login/>}></Route>
-        <Route path="/register" element={<Register/>}></Route>
-        <Route path="*" element={<NotFound/>}></Route>
+      <Route path="/" element={<Home/>}></Route>
+      <Route path="/login" element={<Login/>}></Route>
+      <Route path="/register" element={<Register/>}></Route>
+      <Route path="*" element={<NotFound/>}></Route>
 
 
-        <Route path="/dashboard" element={<Dashboard/>}></Route>
-        <Route path="/dashboard/add" element={<NewProduct/>}></Route>
-        <Route path="/dashboard/editProduct/:id" element={<EditProduct/>}></Route>
-        <Route path="/dashboard/editUnit/:id" element={<EditUnit/>}></Route>
-        <Route path="/categories" element={<CategoriesPage/>}></Route>
-        <Route path="/categories/add" element={<NewCategory/>}></Route>
-        <Route path="/categories/edit/:id" element={<EditCategoryPage/>}></Route>
-        <Route path="/brands" element={<Brands/>}></Route>
-        <Route path="/brands/add" element={<NewBrand/>}></Route>
-        <Route path="/brands/edit/:id" element={<EditBrandPage/>}></Route>
-        <Route path="/warehouse" element={<Warehouse/>}></Route>
-        <Route path="/warehouse/add" element={<NewWarehouse/>}></Route>
-        <Route path= "/warehouse/edit/:id" element={<EditWarehouse/>}></Route>
-        <Route path="/users" element={<Users/>}></Route>
-        <Route path="/users/new" element={<NewUser/>}></Route>
-        <Route path="/inventory" element={<Inventory/>}></Route>
-        <Route path="/inventory/add" element={<NewInventoryPage/>}></Route>
+      <Route path="/dashboard" element={<Dashboard/>}></Route>
+      <Route path="/dashboard/add" element={<NewProduct/>}></Route>
+      <Route path="/dashboard/editProduct/:id" element={<EditProduct/>}></Route>
+      <Route path="/dashboard/editUnit/:id" element={<EditUnit/>}></Route>
+      <Route path="/categories" element={<CategoriesPage/>}></Route>
+      <Route path="/categories/add" element={<NewCategory/>}></Route>
+      <Route path="/categories/edit/:id" element={<EditCategoryPage/>}></Route>
+      <Route path="/brands" element={<Brands/>}></Route>
+      <Route path="/brands/add" element={<NewBrand/>}></Route>
+      <Route path="/brands/edit/:id" element={<EditBrandPage/>}></Route>
+      <Route path="/restock" element={<Restock/>}></Route>
+      <Route path="/warehouse" element={<Warehouse/>}></Route>
+      <Route path="/warehouse/add" element={<NewWarehouse/>}></Route>
+      <Route path= "/warehouse/edit/:id" element={<EditWarehouse/>}></Route>
+      <Route path="/users" element={<Users/>}></Route>
+      <Route path="/users/new" element={<NewUser/>}></Route>
+      <Route path="/inventory" element={<Inventory/>}></Route>
+      <Route path="/inventory/add" element={<NewInventoryPage/>}></Route>
       </Routes>
   </div>
 )

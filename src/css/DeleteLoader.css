@@ -15,7 +15,7 @@
     display: block;
     width: 40px;
     height: 40px;
-    margin-left:25px;
+    margin: auto;
     border: 5px solid #fff;
     border-radius: 50%;
     animation: loading 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;

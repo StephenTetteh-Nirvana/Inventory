@@ -16,13 +16,38 @@
 .product > div p{
     font-weight:500;
 }
+.notificationMsg {
+    visibility: hidden;
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    font-size:10px;
+    z-index: 1;
+    bottom: 100%;
+    left: 52%;
+    transform: translateX(-50%);
+    transition: 0.5s ease-in;
+    white-space: nowrap;
+  }
+  .notificationMsg::before{
+    content:"";
+    position:absolute;
+    left:40%;
+    top:90%;
+    transform:translateX(-50%);
+     border:13px solid;
+     border-color:#000 #0000 #0000 #0000;
+}
 .delete-loader{
     padding:5px 20px;
     background-color: #2666CF;
     border:none;
     border-radius:5px;
 }
-.out-of-stock-span,.low-stock-span{
+.out-of-stock-span{
     margin-left:5px;
     padding:5px;
     background-color: red;

@@ -1,4 +1,4 @@
-import { LayoutDashboard,Warehouse,UsersRound,ArrowLeft,ArrowRight,SquareMenu,Notebook} from "lucide-react"
+import { LayoutDashboard,Warehouse,UsersRound,ArrowLeft,ArrowRight,SquareMenu,Notebook,BarChart4} from "lucide-react"
 import { useState } from "react"
 import { Link, useLocation } from "react-router-dom"
 import "../css/Sidebar.css"
@@ -37,6 +37,12 @@ const Sidebar = ({width,setWidth}) => {
         <li className={`${location.pathname === "/brands" ? "active" : ''}`}>
           <Notebook /> 
           {isOpen && <p>Brands</p>}
+        </li>
+        </Link>
+        <Link style={{color:"white",textDecoration:"none"}}  to="/restock">
+        <li className={`${location.pathname === "/restock" ? "active" : ''}`}>
+          <BarChart4 />
+          {isOpen && <p>Restock</p>}
         </li>
         </Link>
         <Link style={{color:"white",textDecoration:"none"}} to="/warehouse">

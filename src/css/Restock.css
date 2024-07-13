@@ -1,0 +1,55 @@
+.restock-header {
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+    margin-top:10px;
+}
+.restock-btnBox .savebtn,.restock-btnBox .cancelbtn{
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+}
+.restock-btnBox .savebtn{
+    background-color: #2666CF;
+    color: white;
+    margin-right: 15px;
+}
+.restock-btnBox .cancelbtn{
+    background-color: red;
+    color: white;
+}
+.content-container{
+    margin-top: 20px;
+    width: 95%;
+    height: 70vh;
+    padding: 10px;
+    border: 1px solid grey;
+    overflow: auto;
+}
+.content-container ul {
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    border-bottom: 1px solid grey;
+    font-weight:600;
+}
+.content-container ul li {
+    list-style: none;
+    text-align: center;
+}
+.restock-product{
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    margin-top: 20px;
+    padding-bottom: 7px;
+    border-bottom:1px solid grey;
+    font-weight: 500;
+    text-align: center;
+}
+.restock-btn{
+   padding:10px;
+   background-color: grey;
+   border-radius: 7px;
+   color: white;
+   border: none;
+   cursor: pointer;
+}

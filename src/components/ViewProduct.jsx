@@ -3,7 +3,7 @@ import noImg from "../images/camera-off.png"
 import "../css/ViewProduct.css"
 
 
-const ViewProduct = ({product,setViewProduct}) => {
+const ViewProduct = ({product,setViewProduct,lowStock}) => {
     const hideProductDetails = () =>{
          setViewProduct(false)
     }
@@ -16,7 +16,7 @@ const ViewProduct = ({product,setViewProduct}) => {
             </div>
             <div className="product-displayDetails">
               <p>Created At : {product.createdAt}</p>
-              <p>Warehouse : {product.warehouse}</p>
+              <p>Minimum Stock Level : {product.lowStock}</p>
             </div> 
         </div>
     </div>

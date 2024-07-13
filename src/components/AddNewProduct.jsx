@@ -10,9 +10,9 @@ import noUser from "../images/camera-off.png"
 
 
 const AddNewProduct = () => {
-  const currentUser = localStorage.getItem("userRole") !== null ? JSON.parse(localStorage.getItem("userRole")) : ""
-  const warehouseData = localStorage.getItem("warehouses") !== null ? JSON.parse(localStorage.getItem("warehouses")) : []
-  const assignedWarehouse = localStorage.getItem("userWarehouse") !== null ? JSON.parse(localStorage.getItem("userWarehouse")) : []
+  // const currentUser = localStorage.getItem("userRole") !== null ? JSON.parse(localStorage.getItem("userRole")) : ""
+  // const warehouseData = localStorage.getItem("warehouses") !== null ? JSON.parse(localStorage.getItem("warehouses")) : []
+  // const assignedWarehouse = localStorage.getItem("userWarehouse") !== null ? JSON.parse(localStorage.getItem("userWarehouse")) : []
   const units = localStorage.getItem("units") !== null ? JSON.parse(localStorage.getItem("units")) : []
   const categories = localStorage.getItem("categories") !== null ? JSON.parse(localStorage.getItem("categories")) : []
   const brands = localStorage.getItem("brands") !== null ? JSON.parse(localStorage.getItem("brands")) : []
@@ -22,14 +22,14 @@ const AddNewProduct = () => {
   
   const [category,setCategory] = useState("")
   const [brand,setBrand] = useState("")
-  const [warehouse,setWarehouse] = useState("")
+  // const [warehouse,setWarehouse] = useState("")
   const [product,setProduct] = useState("")
   const [measurementUnit,setMeasurementUnit] = useState("None")
   const [productMesurement,setProductMeasurement] = useState("")
   const [showMeasurement,setShowMeasurement] = useState(false)
   const [price,setPrice] = useState("")
-  const [stockLevel,setStockLevel] = useState("")
-  const [lowStock,setLowStock] = useState("")
+  const [stockLevel,setStockLevel] = useState(0)
+  const [lowStock,setLowStock] = useState(0)
   const [errMsg,setErrMsg] = useState("")
   const [disabled,setdisabled] = useState(true)
   const [cancel,setCancel] = useState(false)
@@ -41,7 +41,7 @@ const AddNewProduct = () => {
   const navigate = useNavigate()
 
     const closePopup = () =>{
-        navigate(-1)
+      navigate(-1)
     }
 
     const handleProductImg = (e) =>{
@@ -68,11 +68,11 @@ const AddNewProduct = () => {
           setTrackProgress(progress)
           switch (snapshot.state) {
           case 'paused':
-              console.log('Upload is paused');
-              break;
+            console.log('Upload is paused');
+            break;
           case 'running':
-              console.log('Upload is running');
-              break;
+            console.log('Upload is running');
+            break;
           default:
             console.log("Upload Failed")
           break;
@@ -95,9 +95,9 @@ const AddNewProduct = () => {
   }
     
     const addNewProduct =  async() =>{
-      if(price <= 0 || stockLevel <= 0 || lowStock <= 0){
-          setErrMsg("Must be greater than 0")
-          return;
+      if(price <= 0){
+        setErrMsg("Unit price must be greater than 0")
+        return;
       }else{
        try{
        setErrMsg("")
@@ -107,34 +107,34 @@ const AddNewProduct = () => {
        const productArrayReference = doc(db,"Products","Product Arrays")
        const productArrays = await getDoc(productArrayReference)
        const productArray = productArrays.data().products || []
-            const newProduct = {
-              id:String(Math.round(Math.random()*5000)),
-              Img:imageUrl,
-              product:product,
-              Measurement:measurementUnit !== "None" ?
-              `${productMesurement}  ${measurementUnit}`:measurementUnit,
-              price:Number(price),
-              stockLevel:stockLevel,
-              lowStock:lowStock,
-              category:category,
-              brand:brand,
-              warehouse:currentUser == "Regular" ? assignedWarehouse : warehouse,
-              createdAt:`${date} at ${time}`,
-           }
-           toast.success("New Product Added",{
-            autoClose:1500
-          })
-          navigate(-1)
-          await updateDoc(productArrayReference,{
-              products: [...productArray,newProduct]
-            })
-          await addProductToCategory(newProduct)
-          await addProductToBrand(newProduct)
-          if(currentUser == "Admin"){
-            await addProductToWarehouse(newProduct)
-          }else if(currentUser == "Regular"){
-            await addProductToWarehouseForRegular(newProduct)
+          const newProduct = {
+            id:String(Math.round(Math.random()*5000)),
+            Img:imageUrl,
+            product:product,
+            Measurement:measurementUnit !== "None" ?
+            `${productMesurement}  ${measurementUnit}`:measurementUnit,
+            price:Number(price),
+            stockLevel:Number(stockLevel),
+            lowStock:Number(lowStock),
+            category:category,
+            brand:brand,
+            // warehouse:currentUser == "Regular" ? assignedWarehouse : warehouse,
+            createdAt:`${date} at ${time}`,
           }
+          toast.success("New Product Added",{
+          autoClose:1500
+        })
+        navigate(-1)
+        await updateDoc(productArrayReference,{
+            products: [...productArray,newProduct]
+          })
+        await addProductToCategory(newProduct)
+        await addProductToBrand(newProduct)
+          // if(currentUser == "Admin"){
+          //   await addProductToWarehouse(newProduct)
+          // }else if(currentUser == "Regular"){
+          //   await addProductToWarehouseForRegular(newProduct)
+          // }
        }catch(error){
         console.log(error)
         setdisabled(false)
@@ -185,55 +185,55 @@ const AddNewProduct = () => {
           }  
     }
 
-    const addProductToWarehouse = async(newProduct) => {
-      try{
-        const colRef = collection(db,"Warehouses")
-        const docRef = await getDocs(colRef)
+    // const addProductToWarehouse = async(newProduct) => {
+    //   try{
+    //     const colRef = collection(db,"Warehouses")
+    //     const docRef = await getDocs(colRef)
      
-        docRef.forEach(async(document)=>{
-          if(warehouse === document.id){
-            const warehouseRef = doc(db,"Warehouses",document.id)
-            const warehouseProductsArr = document.data().products
-            await updateDoc(warehouseRef,{
-             products:[...warehouseProductsArr,newProduct]
-           })
-          }
-        })
-      }catch(error){
-        console.log(error)
-      }  
-    }
+    //     docRef.forEach(async(document)=>{
+    //       if(warehouse === document.id){
+    //         const warehouseRef = doc(db,"Warehouses",document.id)
+    //         const warehouseProductsArr = document.data().products
+    //         await updateDoc(warehouseRef,{
+    //          products:[...warehouseProductsArr,newProduct]
+    //        })
+    //       }
+    //     })
+    //   }catch(error){
+    //     console.log(error)
+    //   }  
+    // }
 
-    const addProductToWarehouseForRegular = async(newProduct) => {
-      try{
-        const assignedWarehouse = doc(db,"Warehouses",newProduct.warehouse)
-        const warehouseDoc = await getDoc(assignedWarehouse)
-        if(warehouseDoc.exists()){
-          const warehouseProducts = warehouseDoc.data().products
-          const updatedWarehouseProducts = [...warehouseProducts,newProduct]
-          await updateDoc(assignedWarehouse,{
-            products:updatedWarehouseProducts
-          })
-          console.log("success")
-        }else{
-          console.log("no exists")
-        }
-      }catch(error){
-        toast.error("Oops...An error occurred")
-      }
+    // const addProductToWarehouseForRegular = async(newProduct) => {
+    //   try{
+    //     const assignedWarehouse = doc(db,"Warehouses",newProduct.warehouse)
+    //     const warehouseDoc = await getDoc(assignedWarehouse)
+    //     if(warehouseDoc.exists()){
+    //       const warehouseProducts = warehouseDoc.data().products
+    //       const updatedWarehouseProducts = [...warehouseProducts,newProduct]
+    //       await updateDoc(assignedWarehouse,{
+    //         products:updatedWarehouseProducts
+    //       })
+    //       console.log("success")
+    //     }else{
+    //       console.log("no exists")
+    //     }
+    //   }catch(error){
+    //     toast.error("Oops...An error occurred")
+    //   }
       
-    }
+    // }
 
 
-    const fetchWarehouses = () =>{
-      try{
-        if(warehouseData.length > 0 && warehouse === ""){
-          setWarehouse(warehouseData[0].name);
-        }
-      }catch(error){
-        console.log(error)
-      }
-    }
+    // const fetchWarehouses = () =>{
+    //   try{
+    //     if(warehouseData.length > 0 && warehouse === ""){
+    //       setWarehouse(warehouseData[0].name);
+    //     }
+    //   }catch(error){
+    //     console.log(error)
+    //   }
+    // }
 
     const fetchCategories = () =>{
       try{
@@ -259,7 +259,6 @@ const AddNewProduct = () => {
     useEffect(()=>{
       fetchCategories()
       fetchBrands()
-      fetchWarehouses()
     },[])
 
     useEffect(()=>{
@@ -295,54 +294,53 @@ const AddNewProduct = () => {
         }
           <div className="all-newProduct-inputs">
           <div className="categories-section">
-                <label>Select Category</label><br/>
-                <select onChange={(e)=>setCategory(e.target.value)}>
-                {categories.length > 0 ? categories.map((categoryData)=>(
-                      <option key={categoryData.name}>{categoryData.name}</option>
-                    )) : (<option>No categories found!!!</option>)}
-                </select>
+            <label>Select Category</label><br/>
+            <select onChange={(e)=>setCategory(e.target.value)}>
+            {categories.length > 0 ? categories.map((categoryData)=>(
+                  <option key={categoryData.name}>{categoryData.name}</option>
+                )) : (<option>No categories found!!!</option>)}
+            </select>
             </div>
             <div className="brands-section">
-                <label>Select Brand</label><br/>
-                <select onChange={(e)=>setBrand(e.target.value)}>
-                {brands.length > 0 ? brands.map((brandData)=>(
-                      <option key={brandData.name}>{brandData.name}</option>
-                    )) : (<option>No brands found!!</option>)}
-                </select>
+              <label>Select Brand</label><br/>
+              <select onChange={(e)=>setBrand(e.target.value)}>
+              {brands.length > 0 ? brands.map((brandData)=>(
+                    <option key={brandData.name}>{brandData.name}</option>
+                  )) : (<option>No brands found!!</option>)}
+              </select>
             </div>
-            {currentUser == "Admin" ? (
-                   <div className="warehouse-section">
-                   <label>Select Warehouse</label><br/>
-                   <select onChange={(e)=>setWarehouse(e.target.value)}>
-                   {warehouseData.length > 0 ? warehouseData.map((warehouse)=>(
-                         <option key={warehouse.name}>{warehouse.name}</option>
-                       )) : (<option>No warehouse to add product!!</option>)}
-                   </select>
+            {/* {currentUser == "Admin" ? (
+                <div className="warehouse-section">
+                <label>Select Warehouse</label><br/>
+                <select onChange={(e)=>setWarehouse(e.target.value)}>
+                {warehouseData.length > 0 ? warehouseData.map((warehouse)=>(
+                      <option key={warehouse.name}>{warehouse.name}</option>
+                    )) : (<option>No warehouse to add product!!</option>)}
+                </select>
                </div>
             ) : (
               <div className="warehouse-section">
                 <label>Assigned Warehouse</label><br/>
                 <input type="text" value={assignedWarehouse} readOnly/>
               </div>
-            ) }
+            ) } */}
           
             <div className="new-product-name">
-                <label>Product Name</label><br/>
-                <input type="text"  
-                value={product}
-                onChange={(e)=>{setProduct(e.target.value)}}
-                
-                placeholder="Enter Product Name..."
-                required
-                />
+              <label>Product Name</label><br/>
+              <input type="text"  
+              value={product}
+              onChange={(e)=>{setProduct(e.target.value)}}
+              placeholder="Enter Product Name..."
+              required
+              />
             </div>
             <div className="measurement-section">
               <label>Unit Of Measurement</label><br/>
               <select onChange={(e)=>setMeasurementUnit(e.target.value)}>
                 <option>None</option>
                 {units.length > 0 && units.map((unitData)=>(
-                    <option key={unitData.unit}>{unitData.unit}</option>
-                    ))
+                  <option key={unitData.unit}>{unitData.unit}</option>
+                  ))
                 }
               </select>
             </div>
@@ -375,19 +373,19 @@ const AddNewProduct = () => {
                 />
             </div>
             <div className="new-product-stockLvl">
-                <label>Minimum Stock Level</label><br/>
-                <input type="number" 
-                 value={lowStock}
-                 onChange={(e)=>{setLowStock(e.target.value)}}
-                 placeholder="Enter Minimum Stock Level..."
-                required
-                />
+              <label>Minimum Stock Level</label><br/>
+              <input type="number" 
+                value={lowStock}
+                onChange={(e)=>{setLowStock(e.target.value)}}
+                placeholder="Enter Minimum Stock Level..."
+              required
+              />
             </div>
           </div>
           <p className="error-msg">{errMsg}</p>
-          {warehouseData && currentUser == "Admin" && warehouseData.length === 0 ? 
-          (<p className="error-msg">Create a warehouse before adding product</p>)
-          : categories && categories.length === 0 ?
+          {/* {warehouseData && currentUser == "Admin" && warehouseData.length === 0 ? 
+          (<p className="error-msg">Create a warehouse before adding product</p>) */}
+          {categories && categories.length === 0 ?
           (<p className="error-msg">Create a category before adding product</p>)
           : brands && brands.length === 0 ?
           (<p className="error-msg">Create a brand before adding product</p>)

@@ -53,11 +53,11 @@ const EditProductDetails = () => {
             ...product,
             id:foundProduct.id,
             product:productName,
-            price:price,
-            stockLevel:stockLevel,
+            price:Number(price),
+            stockLevel:Number(stockLevel),
             Measurement:measurementUnit !== "None" ?
             `${newMeasurement}  ${measurementUnit}`:oldMeasurement,
-            lowStock:lowStock,
+            lowStock:Number(lowStock),
             category:category,
             brand:brand
           }
@@ -112,11 +112,11 @@ const EditProductDetails = () => {
               ...product,
               id:foundProduct.id,
               product:productName,
-              price:price,
-              stockLevel:stockLevel,
+              price:Number(price),
+              stockLevel:Number(stockLevel),
               Measurement:measurementUnit !== "None" ?
               `${newMeasurement}  ${measurementUnit}`:oldMeasurement,
-              lowStock:lowStock,
+              lowStock:Number(lowStock),
               category:category,
               brand:brand
             }
@@ -159,11 +159,11 @@ const EditProductDetails = () => {
          const newProduct = {
            id:foundProduct.id,
            product:productName,
-           price:price,
-           stockLevel:stockLevel,
+           price:Number(price),
+           stockLevel:Number(stockLevel),
            Measurement:measurementUnit !== "None" ?
            `${newMeasurement}  ${measurementUnit}`:oldMeasurement,
-           lowStock:lowStock,
+           lowStock:Number(lowStock),
            category:category,
            brand:brand,
            createdAt:`${date} at ${time}`
@@ -201,11 +201,11 @@ const EditProductDetails = () => {
               ...product,
               id:foundProduct.id,
               product:productName,
-              price:price,
-              stockLevel:stockLevel,
+              price:Number(price),
+              stockLevel:Number(stockLevel),
               Measurement:measurementUnit !== "None" ?
               `${newMeasurement}  ${measurementUnit}`:oldMeasurement,
-              lowStock:lowStock,
+              lowStock:Number(lowStock),
               category:category,
               brand:brand
             }
@@ -248,11 +248,11 @@ const EditProductDetails = () => {
          const newProduct = {
            id:foundProduct.id,
            product:productName,
-           price:price,
-           stockLevel:stockLevel,
+           price:Number(price),
+           stockLevel:Number(stockLevel),
            Measurement:measurementUnit !== "None" ?
            `${newMeasurement}  ${measurementUnit}`:oldMeasurement,
-           lowStock:lowStock,
+           lowStock:Number(lowStock),
            category:category,
            brand:brand,
            createdAt:`${date} at ${time}`
@@ -285,11 +285,11 @@ const EditProductDetails = () => {
                   ...product,
                   id:foundProduct.id,
                   product:productName,
-                  price:price,
-                  stockLevel:stockLevel,
+                  price:Number(price),
+                  stockLevel:Number(stockLevel),
                   Measurement:measurementUnit !== "None" ?
                   `${newMeasurement}  ${measurementUnit}`:oldMeasurement,
-                  lowStock:lowStock,
+                  lowStock:Number(lowStock),
                   category:category,
                   brand:brand
                 }

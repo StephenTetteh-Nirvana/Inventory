@@ -115,20 +115,19 @@ const CategoriesPage = () => {
       <Sidebar width={width} setWidth={setWidth}/>
       <div className={`content ${width ? "add-width" : ""}`}>
         <div className="categories-header-section">
-        <h2>Categories</h2>
-        <Link to="/categories/add">
-        <button>Add Category</button>
-        </Link>
+          <h2>Categories</h2>
+          <Link to="/categories/add">
+          <button>Add Category</button>
+          </Link>
         </div>
 
         <div className="categories-container">
-            <ul>
-              <li>Id</li>
-              <li>Name</li>
-              <li>Created On</li>
-              <li>Actions</li>
-            </ul>
-
+          <ul>
+            <li>Id</li>
+            <li>Name</li>
+            <li>Created On</li>
+            <li>Actions</li>
+          </ul>
       {categories.length > 0 ? (
         categories.map((category,index)=>(
           <div key={index} className="category">

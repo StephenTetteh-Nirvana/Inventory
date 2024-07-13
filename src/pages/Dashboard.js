@@ -19,7 +19,7 @@ const Dashboard = () => {
             list = snapshot.data().products;
             setData(list);
             localStorage.setItem("products",JSON.stringify(list))
-            const newList = list.filter((p)=>p.stockLevel === "0")
+            const newList = list.filter((p)=>p.stockLevel === 0)
             localStorage.setItem("OutOfStock",JSON.stringify(newList))
         } catch (error) {
             console.error("Error fetching data: ", error);

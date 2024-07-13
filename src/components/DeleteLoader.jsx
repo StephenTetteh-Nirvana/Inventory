@@ -5,7 +5,7 @@ const DeleteLoader = () => {
     <div className="loader-wrapper">
       <div>
       <div className="loader"></div>
-      <h3>Deleting...</h3>
+      <h3>Please wait...</h3>
       </div>
     </div>
   )

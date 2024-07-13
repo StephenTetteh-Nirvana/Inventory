@@ -81,28 +81,28 @@ const Users = () => {
                     { 
                     data.length > 0 ? ( 
                     data.map((user,index)=>(
-                          <div key={index} className="user">
-                          <div className="user-image-box">
-                           <img src={user.Img ? user.Img : User} alt="User"/>
-                          </div>
-                          <div>
-                              <p>{user.userName}</p>
-                          </div>
-                          <div>
-                              <p>{user.email}</p>
-                          </div>
-                          <div>
-                              <p>{user.role}</p>
-                          </div>
-                          <div>
-                              <p>{user.warehouse}</p>
-                          </div>
-                          <div>
-                          <Eye 
-                          size={20} 
-                          onClick={()=>toggleFullImage(user.id)} 
-                          style={{color:"green",cursor:"pointer"}}/>
-                          </div>
+                        <div key={index} className="user">
+                            <div className="user-image-box">
+                            <img src={user.Img ? user.Img : User} alt="User"/>
+                            </div>
+                            <div>
+                                <p>{user.userName}</p>
+                            </div>
+                            <div>
+                                <p>{user.email}</p>
+                            </div>
+                            <div>
+                                <p>{user.role}</p>
+                            </div>
+                            <div>
+                                <p>{user.warehouse}</p>
+                            </div>
+                            <div>
+                            <Eye 
+                            size={20} 
+                            onClick={()=>toggleFullImage(user.id)} 
+                            style={{color:"green",cursor:"pointer"}}/>
+                            </div>
                       </div>
                     ))
                     ) : (

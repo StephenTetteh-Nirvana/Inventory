@@ -27,7 +27,7 @@ const UserAccount = ({setViewUser}) => {
     const [disabled] = useState(true)
     const [btnDisabled,setbtnDisabled] = useState(false)
     const [editing,setEditing] = useState(false)
-    const [loading,setLoading] = useState(false)
+    const [loading,setLoading] = useState(true)
     const [errMsg,setErrMsg] = useState("")
     const [deleteLoader,setdeleteLoader] = useState(false)
     const navigate = useNavigate()
