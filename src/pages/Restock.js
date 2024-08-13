@@ -212,12 +212,16 @@ const Restock = () => {
     }
   },[newStock,retrievedID])
 
-  useEffect(()=>{
+  const checkUserRole = () =>{
     if(currentUser === "Admin"){
       fetchProducts()
     }else if(currentUser === "Regular"){
       fetchWarehouseProducts()
     }
+  }
+
+  useEffect(()=>{
+    checkUserRole()
   },[])
 
 
@@ -242,7 +246,7 @@ const Restock = () => {
                 className="savebtn" onClick={()=>restockProducts()}>Save Changes</button>
                 <button
                 style={disabled ? {cursor:"not-allowed",opacity:"0.5"} : {cursor:"pointer"}} 
-                className="cancelbtn" onClick={()=>fetchProducts()}>Cancel</button>
+                className="cancelbtn" onClick={()=>checkUserRole()}>Cancel</button>
               </div>
             </div>
             <div className="content-container">
