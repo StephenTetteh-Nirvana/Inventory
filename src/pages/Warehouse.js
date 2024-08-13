@@ -51,10 +51,10 @@ const Warehouse = () =>{
 
    const displayProducts = (name) =>{
     const foundWarehouse = warehouses.find((w)=>w.name === name)
-        if(foundWarehouse){
-            setProducts(foundWarehouse.products)
-            setViewProducts(true)
-        }
+      if(foundWarehouse){
+        setProducts(foundWarehouse.products)
+        setViewProducts(true)
+      }
    }
 
     const deleteWarehouse = async(name) =>{

@@ -10,7 +10,6 @@ const Home = () => {
   const userRole = localStorage.getItem("userRole") !== null ? JSON.parse(localStorage.getItem("userRole")) : []
   const [user,setUser] = useState(null)
 
-  
 
   useEffect(()=>{
     onAuthStateChanged(auth,(user)=>{

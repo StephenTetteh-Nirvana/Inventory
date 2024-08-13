@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import { collection, doc, getDoc, getDocs,onSnapshot,updateDoc } from "firebase/firestore"
 import { Link } from "react-router-dom"
-import { CheckCheck,Pencil, Trash,Loader } from "lucide-react"
+import { CheckCheck,Pencil, Trash,Loader,CircleAlert } from "lucide-react"
+import { Tooltip } from "@mui/material"
 import { toast } from "react-toastify"
 import { db } from "../firebase"
 import Navbar from "../components/Navbar"
@@ -21,7 +22,7 @@ const Inventory = () => {
     const [warehouseProducts,setWarehouseProducts] = useState([])
 
     const openPopup = () =>{
-        setShowPopUp(true)
+      setShowPopUp(true)
     }
 
     const fetchProducts = async() =>{
@@ -180,9 +181,14 @@ const Inventory = () => {
         <div className="userWarehouse-products-container">
           <div className="header-section">
           <h1>Products List</h1>
-          <Link to="/dashboard/add">
-          <button>Add New Product</button>
-          </Link>
+          <div>
+            <Link to="/dashboard/add">
+            <button className="addProductBtn">Add New Product</button>
+            </Link>
+            <Link to="/restock">
+            <button className="restockBtn">Restock Products</button>
+            </Link>
+          </div>
           </div>
           <ul>
           <li>Image</li>
@@ -232,6 +238,11 @@ const Inventory = () => {
                       <button className="delete-loader"><Loader size={17} style={{color:"white"}} /></button>
                     ):(
                       <>
+                      {item.stockLevel === item.lowStock && item.stockLevel > 0 && (
+                      <Tooltip title='THIS PRODUCT IS LOW ON STOCK' placement="left" leaveDelay={100}>
+                        <CircleAlert size={20} style={{marginLeft:15,color:"black",cursor:"pointer"}} />
+                      </Tooltip>
+                      )}
                       <Link to={`/dashboard/editProduct/${item.id}`}>
                       <Pencil size={20} style={{marginLeft:5,color:"#2666CF",cursor:"pointer"}} />
                       </Link>

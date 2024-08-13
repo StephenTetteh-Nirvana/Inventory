@@ -10,19 +10,20 @@ import noUser from "../images/camera-off.png"
 
 
 const AddNewProduct = () => {
-  // const currentUser = localStorage.getItem("userRole") !== null ? JSON.parse(localStorage.getItem("userRole")) : ""
-  // const warehouseData = localStorage.getItem("warehouses") !== null ? JSON.parse(localStorage.getItem("warehouses")) : []
-  // const assignedWarehouse = localStorage.getItem("userWarehouse") !== null ? JSON.parse(localStorage.getItem("userWarehouse")) : []
+  const currentUser = localStorage.getItem("userRole") !== null ? JSON.parse(localStorage.getItem("userRole")) : ""
+  const warehouseData = localStorage.getItem("warehouses") !== null ? JSON.parse(localStorage.getItem("warehouses")) : []
+  const assignedWarehouse = localStorage.getItem("userWarehouse") !== null ? JSON.parse(localStorage.getItem("userWarehouse")) : []
   const units = localStorage.getItem("units") !== null ? JSON.parse(localStorage.getItem("units")) : []
   const categories = localStorage.getItem("categories") !== null ? JSON.parse(localStorage.getItem("categories")) : []
   const brands = localStorage.getItem("brands") !== null ? JSON.parse(localStorage.getItem("brands")) : []
+
+
   const [file,setFile] = useState("")
   const [imageUrl,setImageUrl] = useState(null)
   const [Trackprogress,setTrackProgress] = useState(null)
-  
   const [category,setCategory] = useState("")
   const [brand,setBrand] = useState("")
-  // const [warehouse,setWarehouse] = useState("")
+  const [warehouse,setWarehouse] = useState("")
   const [product,setProduct] = useState("")
   const [measurementUnit,setMeasurementUnit] = useState("None")
   const [productMesurement,setProductMeasurement] = useState("")
@@ -34,10 +35,10 @@ const AddNewProduct = () => {
   const [disabled,setdisabled] = useState(true)
   const [cancel,setCancel] = useState(false)
   const [loading,setLoading] = useState(false)
+
+
   const date = new Date().toDateString();
   const time = new Date().toLocaleTimeString()
-
-
   const navigate = useNavigate()
 
     const closePopup = () =>{
@@ -46,12 +47,12 @@ const AddNewProduct = () => {
 
     const handleProductImg = (e) =>{
       try{
-          const selectedFile = e.target.files[0]
-          setFile(selectedFile)
-          uploadProductImg(selectedFile)
-          console.log(file)
+        const selectedFile = e.target.files[0]
+        setFile(selectedFile)
+        uploadProductImg(selectedFile)
+        console.log(file)
       }catch(error){
-          console.log("upload cancelled")
+        console.log("upload cancelled")
       } 
   }
 
@@ -118,7 +119,7 @@ const AddNewProduct = () => {
             lowStock:Number(lowStock),
             category:category,
             brand:brand,
-            // warehouse:currentUser == "Regular" ? assignedWarehouse : warehouse,
+            warehouse:currentUser == "Regular" ? assignedWarehouse : warehouse,
             createdAt:`${date} at ${time}`,
           }
           toast.success("New Product Added",{
@@ -130,11 +131,11 @@ const AddNewProduct = () => {
           })
         await addProductToCategory(newProduct)
         await addProductToBrand(newProduct)
-          // if(currentUser == "Admin"){
-          //   await addProductToWarehouse(newProduct)
-          // }else if(currentUser == "Regular"){
-          //   await addProductToWarehouseForRegular(newProduct)
-          // }
+          if(currentUser == "Admin"){
+            await addProductToWarehouse(newProduct)
+          }else if(currentUser == "Regular"){
+            await addProductToWarehouseForRegular(newProduct)
+          }
        }catch(error){
         console.log(error)
         setdisabled(false)
@@ -185,55 +186,55 @@ const AddNewProduct = () => {
           }  
     }
 
-    // const addProductToWarehouse = async(newProduct) => {
-    //   try{
-    //     const colRef = collection(db,"Warehouses")
-    //     const docRef = await getDocs(colRef)
+    const addProductToWarehouse = async(newProduct) => {
+      try{
+        const colRef = collection(db,"Warehouses")
+        const docRef = await getDocs(colRef)
      
-    //     docRef.forEach(async(document)=>{
-    //       if(warehouse === document.id){
-    //         const warehouseRef = doc(db,"Warehouses",document.id)
-    //         const warehouseProductsArr = document.data().products
-    //         await updateDoc(warehouseRef,{
-    //          products:[...warehouseProductsArr,newProduct]
-    //        })
-    //       }
-    //     })
-    //   }catch(error){
-    //     console.log(error)
-    //   }  
-    // }
+        docRef.forEach(async(document)=>{
+          if(warehouse === document.id){
+            const warehouseRef = doc(db,"Warehouses",document.id)
+            const warehouseProductsArr = document.data().products
+            await updateDoc(warehouseRef,{
+             products:[...warehouseProductsArr,newProduct]
+           })
+          }
+        })
+      }catch(error){
+        console.log(error)
+      }  
+    }
 
-    // const addProductToWarehouseForRegular = async(newProduct) => {
-    //   try{
-    //     const assignedWarehouse = doc(db,"Warehouses",newProduct.warehouse)
-    //     const warehouseDoc = await getDoc(assignedWarehouse)
-    //     if(warehouseDoc.exists()){
-    //       const warehouseProducts = warehouseDoc.data().products
-    //       const updatedWarehouseProducts = [...warehouseProducts,newProduct]
-    //       await updateDoc(assignedWarehouse,{
-    //         products:updatedWarehouseProducts
-    //       })
-    //       console.log("success")
-    //     }else{
-    //       console.log("no exists")
-    //     }
-    //   }catch(error){
-    //     toast.error("Oops...An error occurred")
-    //   }
+    const addProductToWarehouseForRegular = async(newProduct) => {
+      try{
+        const assignedWarehouse = doc(db,"Warehouses",newProduct.warehouse)
+        const warehouseDoc = await getDoc(assignedWarehouse)
+        if(warehouseDoc.exists()){
+          const warehouseProducts = warehouseDoc.data().products
+          const updatedWarehouseProducts = [...warehouseProducts,newProduct]
+          await updateDoc(assignedWarehouse,{
+            products:updatedWarehouseProducts
+          })
+          console.log("success")
+        }else{
+          console.log("no exists")
+        }
+      }catch(error){
+        toast.error("Oops...An error occurred")
+      }
       
-    // }
+    }
 
 
-    // const fetchWarehouses = () =>{
-    //   try{
-    //     if(warehouseData.length > 0 && warehouse === ""){
-    //       setWarehouse(warehouseData[0].name);
-    //     }
-    //   }catch(error){
-    //     console.log(error)
-    //   }
-    // }
+    const fetchWarehouses = () =>{
+      try{
+        if(warehouseData.length > 0 && warehouse === ""){
+          setWarehouse(warehouseData[0].name);
+        }
+      }catch(error){
+        console.log(error)
+      }
+    }
 
     const fetchCategories = () =>{
       try{
@@ -259,22 +260,23 @@ const AddNewProduct = () => {
     useEffect(()=>{
       fetchCategories()
       fetchBrands()
+      fetchWarehouses()
     },[])
 
     useEffect(()=>{
-       if(product !== "" && price !== "" && stockLevel !== "" && lowStock !== "" && category !== "" && brand !== ""){
-        setdisabled(false)
-       }else{
-        setdisabled(true)
-       }
-       if(measurementUnit !== "None"){
-        setShowMeasurement(true)
-       }else{
-        setShowMeasurement(false)
-       }
-       if(measurementUnit !== "None" && productMesurement === ""){
-        setdisabled(true)
-       }
+      if(product !== "" && price !== "" && stockLevel !== "" && lowStock !== "" && category !== "" && brand !== ""){
+      setdisabled(false)
+      }else{
+      setdisabled(true)
+      }
+      if(measurementUnit !== "None"){
+      setShowMeasurement(true)
+      }else{
+      setShowMeasurement(false)
+      }
+      if(measurementUnit !== "None" && productMesurement === ""){
+      setdisabled(true)
+      }
     },[product,measurementUnit,productMesurement,price,stockLevel,lowStock,category,brand])
 
 
@@ -309,7 +311,7 @@ const AddNewProduct = () => {
                   )) : (<option>No brands found!!</option>)}
               </select>
             </div>
-            {/* {currentUser == "Admin" ? (
+            {currentUser == "Admin" ? (
                 <div className="warehouse-section">
                 <label>Select Warehouse</label><br/>
                 <select onChange={(e)=>setWarehouse(e.target.value)}>
@@ -323,8 +325,7 @@ const AddNewProduct = () => {
                 <label>Assigned Warehouse</label><br/>
                 <input type="text" value={assignedWarehouse} readOnly/>
               </div>
-            ) } */}
-          
+            ) }
             <div className="new-product-name">
               <label>Product Name</label><br/>
               <input type="text"  
@@ -383,9 +384,9 @@ const AddNewProduct = () => {
             </div>
           </div>
           <p className="error-msg">{errMsg}</p>
-          {/* {warehouseData && currentUser == "Admin" && warehouseData.length === 0 ? 
-          (<p className="error-msg">Create a warehouse before adding product</p>) */}
-          {categories && categories.length === 0 ?
+          {warehouseData && currentUser == "Admin" && warehouseData.length === 0 ? 
+          (<p className="error-msg">Create a warehouse before adding product</p>)
+          : categories && categories.length === 0 ?
           (<p className="error-msg">Create a category before adding product</p>)
           : brands && brands.length === 0 ?
           (<p className="error-msg">Create a brand before adding product</p>)

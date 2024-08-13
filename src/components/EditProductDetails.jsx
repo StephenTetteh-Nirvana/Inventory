@@ -17,6 +17,7 @@ const EditProductDetails = () => {
 
   const [productName,setProductName] = useState('')
   const [price,setPrice] = useState('')
+  const [warehouse,setWarehouse] = useState('')
   const [oldMeasurement,setOldMeasurement] = useState("")
   const [newMeasurement,setNewMeasurement] = useState("")
   const [measurementUnit,setMeasurementUnit] = useState("None")
@@ -308,6 +309,7 @@ const EditProductDetails = () => {
 
   // eslint-disable-next-line
   useEffect(()=>{
+    setWarehouse(foundProduct.warehouse)
     setProductName(foundProduct.product)
     setPrice(foundProduct.price)
     setOldMeasurement(foundProduct.Measurement)
@@ -376,32 +378,32 @@ const EditProductDetails = () => {
           <input type="number" value={lowStock} onChange={(e)=>setLowStock(e.target.value)} required/>
         </div>
         <div className="edit-product-category">
-        <label>Change Category</label><br/>
-        <select value={category} onChange={(e) => setCategory(e.target.value)}>
+          <label>Change Category</label><br/>
+          <select value={category} onChange={(e) => setCategory(e.target.value)}>
             {categories.length > 0 && (
-                categories.map((categoryData) => (
-                    <option key={categoryData.name} value={categoryData.name}>{categoryData.name}</option>
-                ))
+              categories.map((categoryData) => (
+                <option key={categoryData.name} value={categoryData.name}>{categoryData.name}</option>
+              ))
             )}
-        </select>
+          </select>
         </div>
         <div className="edit-product-brand">
-        <label>Change Brand</label><br/>
-        <select value={brand} onChange={(e) => setBrand(e.target.value)}>
+          <label>Change Brand</label><br/>
+          <select value={brand} onChange={(e) => setBrand(e.target.value)}>
             {brands.length > 0 && (
-                brands.map((brandData) => (
-                    <option key={brandData.name} value={brandData.name}>{brandData.name}</option>
-                ))
+              brands.map((brandData) => (
+                <option key={brandData.name} value={brandData.name}>{brandData.name}</option>
+              ))
             )}
-        </select>
+          </select>
         </div>
     </div>
     {notification && (<p style={{fontWeight:600,fontSize:15,marginTop:10,textAlign:"center",color:"red"}}>{text}</p>)}
     <div className="edit-product-buttons">
         { loading ? (
-            <Loader/>
+          <Loader/>
         ) : (
-            <button className="edit-product-saveBtn" onClick={editProduct}>Save Changes</button>
+          <button className="edit-product-saveBtn" onClick={editProduct}>Save Changes</button>
         )}
     </div>
     </form>

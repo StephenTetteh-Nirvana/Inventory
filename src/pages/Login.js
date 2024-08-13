@@ -28,7 +28,8 @@ const Login = () => {
       const userDocRef = doc(colRef,user.uid)
       const retrieveDoc = await getDoc(userDocRef)
       if(retrieveDoc.exists()){
-       const role = retrieveDoc.data().role;
+       const role = retrieveDoc.data().role
+       const username = retrieveDoc.data().userName
        if(role === "Regular"){
         localStorage.setItem("userRole",JSON.stringify(role))
         navigate("/")

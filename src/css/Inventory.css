@@ -39,12 +39,20 @@
     display:flex;
     justify-content: space-between;
 }
-.header-section button{
+.header-section .addProductBtn{
     padding:8px 50px;
     color:white;
     background-color: #2666CF;
     border:none;
     cursor: pointer;
+}
+.header-section .restockBtn{
+    padding:8px 50px;
+    color:white;
+    background-color: #2666CF;
+    border:none;
+    cursor: pointer;
+    margin-left: 10px;
 }
 .item-imageBox img{
     height:45px;
