@@ -8,8 +8,8 @@ import "../css/EditCategory.css"
 import Loader from "./Loader"
 
 const EditCategory = () => {
-  const parsedData = JSON.parse(localStorage.getItem("categories")) !== null ? JSON.parse(localStorage.getItem("categories")) : []
   const { id } = useParams()
+  const parsedData = JSON.parse(localStorage.getItem("categories")) !== null ? JSON.parse(localStorage.getItem("categories")) : []
   const foundCategory = parsedData.find((c)=>c.id === id)
 
   const [name,setName] = useState("")

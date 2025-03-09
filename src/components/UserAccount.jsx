@@ -27,7 +27,7 @@ const UserAccount = ({setViewUser}) => {
     const [disabled] = useState(true)
     const [btnDisabled,setbtnDisabled] = useState(false)
     const [editing,setEditing] = useState(false)
-    const [loading,setLoading] = useState(true)
+    const [loading,setLoading] = useState(false)
     const [errMsg,setErrMsg] = useState("")
     const [deleteLoader,setdeleteLoader] = useState(false)
     const navigate = useNavigate()
@@ -91,6 +91,7 @@ const UserAccount = ({setViewUser}) => {
     }
 
     const editUserInfo = async() =>{
+        setLoading(true)
         try{
             if(username === ""){
                 toast.error("Username must be filled",{
@@ -115,7 +116,9 @@ const UserAccount = ({setViewUser}) => {
             console.log(error)
             toast.error("Network Error")
             setLoading(false)
-        }   
+        }finally{
+            setLoading(false)
+        }
     }
 
     const showPopup = () =>{
